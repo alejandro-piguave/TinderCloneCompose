@@ -1,0 +1,248 @@
+package com.apiguave.tinderclonecompose
+
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.apiguave.tinderclonecompose.ui.theme.*
+
+@Composable
+fun SignUpView(onAddPicture: () -> Unit) {
+    LazyColumn( modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .background(BasicWhite),
+        ) {
+
+        val rows = 1 + (GridItemCount -1) / ColumnCount
+        item {
+            Text(
+                text = "Crear Perfil",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold)
+        }
+        items(rows){
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)){
+                repeat(ColumnCount) {
+                    PictureGridItem(modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(.6f), onClick = onAddPicture)
+                }
+            }
+        }
+        item{
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp))
+        }
+
+        item {
+            FormView()
+        }
+
+    }
+}
+const val ColumnCount = 3
+const val GridItemCount = 9
+
+@Composable
+fun FormView(){
+    var nameText by remember { mutableStateOf(TextFieldValue("")) }
+    var bioText by remember { mutableStateOf(TextFieldValue("")) }
+
+    val genderOptions = listOf("Hombre", "Mujer")
+    var selectedGenderIndex by remember { mutableStateOf(0) }
+
+    val orientationOptions = listOf("Hombres", "Mujeres", "Ambos")
+    var selectedOrientationIndex by remember { mutableStateOf(0) }
+
+    Column(Modifier.fillMaxWidth()) {
+        SectionTitle(title = "Personal Information")
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = nameText,
+            placeholder = { Text("Introduce tu nombre") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+            ),
+            onValueChange = { newText ->
+                nameText = newText
+            }
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .border(BorderStroke(1.dp, Color.LightGray)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Fecha de nacimiento", modifier = Modifier.padding(start = 8.dp))
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(
+                onClick = { /* ... */ },
+                contentPadding = PaddingValues(
+                    start = 20.dp,
+                    top = 20.dp,
+                    end = 20.dp,
+                    bottom = 20.dp
+                )
+            ) {
+                Text("Nov 17 2004", color = Color.Black)
+            }
+        }
+
+        SectionTitle(title = "Sobre mí" )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(128.dp),
+            value = bioText,
+            placeholder = { Text("Pon algo interesante...") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+            ),
+            onValueChange = { newText ->
+                bioText = newText
+            }
+        )
+
+        SectionTitle(title = "Género")
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+        ){
+            genderOptions.forEachIndexed {index, s ->
+                OptionButton(
+                    modifier = Modifier.weight(1.0f),
+                    text = s,
+                    onClick = { selectedGenderIndex = index },
+                    isSelected = selectedGenderIndex == index)
+            }
+        }
+
+        SectionTitle(title = "Me interesan")
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+        ){
+            orientationOptions.forEachIndexed {index, s ->
+                OptionButton(
+                    modifier = Modifier.weight(1.0f),
+                    text = s,
+                    onClick = { selectedOrientationIndex = index },
+                    isSelected = selectedOrientationIndex == index)
+            }
+        }
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp))
+        OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 8.dp), horizontalArrangement = Arrangement.Center){
+                Image(
+                    painter = painterResource(id = R.drawable.google_logo_48),
+                    contentDescription = stringResource(id = R.string.app_name)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text("Sign Up with Google", color = Color.Gray)
+            }
+        }
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp))
+    }
+}
+
+@Composable
+fun PictureGridItem(modifier: Modifier = Modifier, onClick: () -> Unit){
+    Box(modifier = modifier.clickable(onClick = onClick)) {
+        Card(
+            shape = RoundedCornerShape(6.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(0.6f)
+                .padding(all = 8.dp),
+            backgroundColor = LightLightGray, content = {
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    drawRoundRect(color = SystemGray4,style = Stroke(width = 4.dp.toPx(),
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(5.dp.toPx(), 5.dp.toPx()), 0f))
+                    )
+                }
+            }
+        )
+
+        Icon(
+            Icons.Filled.Add,
+            tint = Color.White,
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Pink,
+                            Orange,
+                        )
+                    ), CircleShape
+                )
+                .padding(2.dp)
+                .align(Alignment.BottomEnd),
+            contentDescription = null
+        )
+    }
+
+}
+
+@Composable
+fun OptionButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit, isSelected: Boolean){
+    TextButton(
+        modifier = modifier.border(BorderStroke(1.dp, Color.LightGray)),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if(isSelected) Color.White else BasicWhite),
+        onClick = onClick,
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            top = 20.dp,
+            end = 20.dp,
+            bottom = 20.dp
+        )
+    ) {
+        Text(text, color = Color.Black)
+    }
+}
+
+@Composable
+fun SectionTitle(title: String){
+    Text(
+        title.uppercase(),
+        modifier = Modifier.padding(all = 8.dp),
+        color = Color.DarkGray,
+        fontWeight = FontWeight.Bold
+    )
+}
