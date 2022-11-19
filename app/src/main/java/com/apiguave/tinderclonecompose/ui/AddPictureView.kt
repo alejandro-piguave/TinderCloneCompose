@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose
+package com.apiguave.tinderclonecompose.ui
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.fileprovider.ComposeFileProvider
 import com.apiguave.tinderclonecompose.ui.theme.LightPurple
 import com.apiguave.tinderclonecompose.ui.theme.Orange
@@ -32,23 +33,25 @@ import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.Purple
 
 @Composable
-fun AddPictureView(onCloseClicked: () -> Unit){
+fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val context = LocalContext.current
+
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            // process eith the received image uri
+            uri?.let(onReceiveUri)
         }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
-
+            if(success){
+                imageUri?.let(onReceiveUri)
+            }
         }
     )
-
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-    val context = LocalContext.current
 
     Column(
         Modifier

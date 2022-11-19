@@ -26,6 +26,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled =  true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -64,4 +65,10 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation "com.google.accompanist:accompanist-navigation-animation:0.27.1"
+
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
 }
