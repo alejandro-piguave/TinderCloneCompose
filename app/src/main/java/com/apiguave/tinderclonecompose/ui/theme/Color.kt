@@ -10,3 +10,6 @@ val Pink = Color(0xffe83984)
 
 val Purple = Color(0xff831bfc)
 val LightPurple = Color(0xff9c59ea)
+
+val Green1 = Color(0xff6ceac5)
+val Green2 = Color(0xff16dba1)

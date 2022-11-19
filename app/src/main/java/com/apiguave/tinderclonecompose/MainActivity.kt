@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                         EditProfileView(
                             imageUris = imageUris,
                             onAddPicture = {
-                                navController.navigate(Routes.SignUp)
+                                navController.navigate(Routes.AddPicture)
                             }
                         )
                     }
