@@ -20,7 +20,7 @@ import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.R
 
 @Composable
-fun LoginView(onNavigateToSignUp: () -> Unit) {
+fun LoginView(onNavigateToSignUp: () -> Unit, onNavigateTohHome: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +43,7 @@ fun LoginView(onNavigateToSignUp: () -> Unit) {
             modifier = Modifier.padding(all = 28.dp)
         )
         Button(
-            onClick = { /* ... */ },
+            onClick = onNavigateTohHome,
             contentPadding = PaddingValues(
                 start = 20.dp,
                 top = 12.dp,

@@ -1,7 +1,6 @@
 package com.apiguave.tinderclonecompose.ui
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,6 +34,9 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+
+const val ColumnCount = 3
+const val GridItemCount = 9
 
 @Composable
 fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
@@ -121,14 +123,13 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
         }
 
         item {
-            FormView(onSelectBirthdateClick = {
+            CreateProfileFormView(onSelectBirthdateClick = {
                 dateDialogState.show()
             }, birthdate = birthdate)
         }
     }
 }
-const val ColumnCount = 3
-const val GridItemCount = 9
+
 
 @Composable
 fun DeleteConfirmationDialog(onDismissRequest: () -> Unit,
@@ -158,7 +159,7 @@ fun DeleteConfirmationDialog(onDismissRequest: () -> Unit,
 }
 
 @Composable
-fun FormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDate){
+fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDate){
     var nameText by remember { mutableStateOf(TextFieldValue("")) }
     var bioText by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -257,7 +258,7 @@ fun FormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDate){
         OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 8.dp), horizontalArrangement = Arrangement.Center){
+                .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
                 Image(
                     painter = painterResource(id = R.drawable.google_logo_48),
                     contentDescription = stringResource(id = R.string.app_name)
@@ -352,10 +353,10 @@ fun OptionButton(text: String, modifier: Modifier = Modifier, onClick: () -> Uni
         colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if(isSelected) Color.White else BasicWhite),
         onClick = onClick,
         contentPadding = PaddingValues(
-            start = 20.dp,
-            top = 20.dp,
-            end = 20.dp,
-            bottom = 20.dp
+            start = 16.dp,
+            top = 16.dp,
+            end = 16.dp,
+            bottom = 16.dp
         )
     ) {
         Text(text, color = Color.Black)

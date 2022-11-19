@@ -4,8 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,9 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
-import com.apiguave.tinderclonecompose.ui.AddPictureView
-import com.apiguave.tinderclonecompose.ui.LoginView
-import com.apiguave.tinderclonecompose.ui.SignUpView
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavGraphBuilder
+import com.apiguave.tinderclonecompose.ui.*
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
@@ -25,6 +26,18 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 const val TRANSITION_DURATION = 400
+
+class Routes{
+    companion object{
+        const val Login = "login"
+        const val SignUp = "signup"
+        const val AddPicture = "add_picture"
+        const val Home = "home"
+        const val EditProfile = "edit_profile"
+        const val MatchList = "match_list"
+        const val Chat = "chat"
+    }
+}
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
@@ -36,60 +49,26 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberAnimatedNavController()
                 val imageUris = remember { mutableStateListOf<Uri>() }
 
-                AnimatedNavHost(navController = navController, startDestination = "login") {
-                    composable("login",
-                        enterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popEnterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popExitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        }
-                    ) {
+                AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
+                    animatedComposable(Routes.Login) {
                         LoginView(
                             onNavigateToSignUp = {
-                                navController.navigate("signup")
+                                navController.navigate(Routes.SignUp)
+                            },
+                            onNavigateTohHome = {
+                                navController.navigate(Routes.Home)
                             }
                         )
                     }
-                    composable("signup",
-                        enterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popEnterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popExitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        }) {
+                    animatedComposable(Routes.SignUp) {
                         SignUpView(
                             imageUris = imageUris,
                             onAddPicture = {
-                                navController.navigate("add_picture")
+                                navController.navigate(Routes.SignUp)
                             }
                         )
                     }
-                    composable("add_picture",
-                        enterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popEnterTransition = {
-                            slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        },
-                        popExitTransition = {
-                            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
-                        }){
+                    animatedComposable(Routes.AddPicture){
                         AddPictureView(
                             onCloseClicked = {
                             navController.popBackStack()
@@ -100,6 +79,31 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+
+                    animatedComposable(Routes.Home) {
+                        HomeView(
+                            onNavigateToEditProfile = {
+                                navController.navigate(Routes.EditProfile)
+                            },
+                            onNavigateToMatchList = {
+                                navController.navigate(Routes.MatchList)
+                            }
+                        )
+                    }
+                    animatedComposable(Routes.EditProfile){
+                        EditProfileView(
+                            imageUris = imageUris,
+                            onAddPicture = {
+                                navController.navigate(Routes.SignUp)
+                            }
+                        )
+                    }
+                    animatedComposable(Routes.MatchList){
+                        MatchListView()
+                    }
+                    animatedComposable(Routes.Chat){
+                        ChatView()
+                    }
                 }
 
             }
@@ -107,24 +111,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TinderCloneComposeTheme {
-        Surface {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                Orange,
-                                Pink
-                            )
-                        )
-                    ),
-            ) {
-            }
-        }
-    }
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.animatedComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(route, arguments, deepLinks,
+        enterTransition = {
+        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
+                          },
+        exitTransition = {
+            slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(TRANSITION_DURATION))
+        },
+        popEnterTransition = {
+            slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
+        },
+        popExitTransition = {
+            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(TRANSITION_DURATION))
+        }, content = content )
 }
