@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
@@ -25,15 +26,23 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.ui.custom.RoundGradientButton
+import com.apiguave.tinderclonecompose.ui.custom.rememberSwipeableCardState
+import com.apiguave.tinderclonecompose.ui.custom.swipableCard
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
+import kotlin.random.Random
 
 @Composable
 fun HomeView(onNavigateToEditProfile: () -> Unit, onNavigateToMatchList: () -> Unit){
+    val colorArray = remember{ (0 until 10).map { (0 until 6).map { randomColor() } }.toMutableStateList() }
+
     Column(Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
@@ -49,19 +58,34 @@ fun HomeView(onNavigateToEditProfile: () -> Unit, onNavigateToMatchList: () -> U
         }
 
         Spacer(Modifier.weight(1f))
-        ProfileCardView(Modifier.padding(horizontal = 20.dp))
+        Box(Modifier.padding(horizontal = 20.dp)){
+            colorArray.forEach { colors  ->
+                val state = rememberSwipeableCardState()
+                ProfileCardView(colors, Modifier.swipableCard(
+                        state = state,
+                        onSwiped = { direction ->
+                            println("The card was swiped to $direction")
+                            colorArray.removeLast()
+                        }
+                    )
+                )
+            }
+        }
+
         Spacer(Modifier.weight(1f))
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Spacer(Modifier.weight(1f))
-            ActionButton(Icons.Filled.Close, Pink, Orange) { }
+            RoundGradientButton(Icons.Filled.Close, Pink, Orange) { }
             Spacer(Modifier.weight(.5f))
-            ActionButton(R.drawable.ic_baseline_favorite_border_44, Green1, Green2) { }
+            RoundGradientButton(R.drawable.ic_baseline_favorite_border_44, Green1, Green2) { }
             Spacer(Modifier.weight(1f))
         }
         Spacer(Modifier.height(24.dp))
     }
 }
+
+private fun randomColor() = Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
 
 @Composable
 fun TopBarIcon(painter: Painter, modifier: Modifier, onClick: (() -> Unit )? = null){
@@ -75,40 +99,7 @@ fun TopBarIcon(painter: Painter, modifier: Modifier, onClick: (() -> Unit )? = n
 }
 
 @Composable
-fun ActionButton(@DrawableRes resId: Int, color1: Color, color2: Color, onClick: (() -> Unit)){
-    ActionButton(painter = painterResource(resId), color1 = color1, color2 = color2, onClick = onClick)
-}
-
-@Composable
-fun ActionButton(imageVector: ImageVector, color1: Color, color2: Color, onClick: (() -> Unit)){
-    ActionButton(painter = rememberVectorPainter(image = imageVector), color1 = color1, color2 = color2, onClick = onClick)
-}
-
-@Composable
-fun ActionButton(painter: Painter, color1: Color, color2: Color, onClick: (() -> Unit)){
-    Icon(
-        painter = painter,
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .border(
-                4.dp,
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        color1,
-                        color2
-                    )
-                ), shape = CircleShape
-            )
-            .padding(12.dp)
-            .size(44.dp)
-            .withLinearGradient(color1, color2)
-        , contentDescription = null
-    )
-}
-
-@Composable
-fun ProfileCardView(modifier: Modifier = Modifier){
-    val colors = listOf(Color.Gray, Color.Red, Color.Blue, Color.Green, Color.Magenta, Color.Yellow)
+fun ProfileCardView(colors: List<Color>, modifier: Modifier = Modifier){
     var currentIndex by remember{ mutableStateOf(0) }
 
     Card(modifier = modifier
@@ -134,6 +125,14 @@ fun ProfileCardView(modifier: Modifier = Modifier){
                             .background(if (index == currentIndex) Color.White else Color.LightGray))
                 }
             }
+            Row(
+                Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth().padding(12.dp)) {
+                Text(text = "John Doe", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 30.sp)
+                Spacer(Modifier.width(8.dp))
+                Text(text = "20", color = Color.White, fontSize = 30.sp)
+            }
             Row(Modifier.fillMaxSize()) {
                 Box(modifier = Modifier
                     .fillMaxHeight()
@@ -145,6 +144,7 @@ fun ProfileCardView(modifier: Modifier = Modifier){
                     .clickable { if (currentIndex < colors.size - 1) currentIndex++ }
                 )
             }
+
         }
 
     }
