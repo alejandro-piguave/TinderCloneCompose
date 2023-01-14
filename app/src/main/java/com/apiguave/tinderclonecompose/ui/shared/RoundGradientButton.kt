@@ -1,8 +1,7 @@
-package com.apiguave.tinderclonecompose.ui.custom
+package com.apiguave.tinderclonecompose.ui.shared
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape

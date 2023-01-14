@@ -13,3 +13,6 @@ val LightPurple = Color(0xff9c59ea)
 
 val Green1 = Color(0xff6ceac5)
 val Green2 = Color(0xff16dba1)
+
+val UltramarineBlue = Color(0xff3578F6)
+val AntiFlashWhite = Color(0xffF0F0F0)

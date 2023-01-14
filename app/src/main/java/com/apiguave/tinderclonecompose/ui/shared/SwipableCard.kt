@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.custom
+package com.apiguave.tinderclonecompose.ui.shared
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.ui.Modifier

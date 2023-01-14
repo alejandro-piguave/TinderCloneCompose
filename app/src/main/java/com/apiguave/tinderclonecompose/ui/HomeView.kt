@@ -2,10 +2,8 @@ package com.apiguave.tinderclonecompose.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -30,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.custom.RoundGradientButton
-import com.apiguave.tinderclonecompose.ui.custom.rememberSwipeableCardState
-import com.apiguave.tinderclonecompose.ui.custom.swipableCard
+import com.apiguave.tinderclonecompose.ui.shared.RoundGradientButton
+import com.apiguave.tinderclonecompose.ui.shared.rememberSwipeableCardState
+import com.apiguave.tinderclonecompose.ui.shared.swipableCard
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange

@@ -2,10 +2,12 @@ package com.apiguave.tinderclonecompose.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,44 +22,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.ui.shared.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MatchListView() {
-    LazyColumn(Modifier.fillMaxSize()) {
-        stickyHeader { MatchListHeader() }
-        items(10) {
-            MatchView()
+fun MatchListView(onNavigateToChatView: () -> Unit, onArrowBackPressed: () -> Unit) {
+    Scaffold(Modifier.fillMaxSize(), topBar = {
+        BlankAppBar(text = "Messages", onArrowBackPressed = onArrowBackPressed)
+    }) { padding ->
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)) {
+            items(10) {
+                MatchView(onNavigateToChatView)
+            }
         }
     }
-}
 
-@OptIn(ExperimentalTextApi::class)
-@Composable
-fun MatchListHeader() {
-    Text(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-        text = "Messages",
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp,
-        color = Pink,
-        style = TextStyle(
-            brush = Brush.linearGradient(
-                colors = listOf(Pink, Orange)
-            )
-        ),
-        textAlign = TextAlign.Center
-    )
 }
 
 @Composable
-fun MatchView() {
+fun MatchView(onClick: () -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp)
+            .clickable(onClick = onClick)
     ) {
         Row(
             Modifier
