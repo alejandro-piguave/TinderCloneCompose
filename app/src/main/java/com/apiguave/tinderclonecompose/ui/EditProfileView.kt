@@ -1,15 +1,10 @@
 package com.apiguave.tinderclonecompose.ui
 
 import android.net.Uri
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -19,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apiguave.tinderclonecompose.ui.theme.BasicWhite
+import com.apiguave.tinderclonecompose.ui.shared.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -59,16 +54,18 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
         }
     }
 
-    LazyColumn( modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .background(BasicWhite),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(MaterialTheme.colors.surface),
     ) {
 
         val rows = 1 + (GridItemCount -1) / ColumnCount
         item {
             Text(
                 text = "Edit Profile",
+                color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -128,20 +125,9 @@ fun EditProfileFormView(){
 
     Column(Modifier.fillMaxWidth()) {
         SectionTitle(title = "About me" )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(128.dp),
-            value = bioText,
-            placeholder = { Text("Pon algo interesante...") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
-                unfocusedBorderColor = Color.LightGray,
-            ),
-            onValueChange = { newText ->
-                bioText = newText
-            }
-        )
+        FormTextField(value = bioText, placeholder = "Pon algo interesante...", onValueChange = {
+            bioText = it
+        })
 
         SectionTitle(title = "Género")
 
@@ -174,8 +160,11 @@ fun EditProfileFormView(){
         }
 
         SectionTitle(title = "Personal Information")
+        FormDivider()
         TextRow(title = "Name", text = "Alejandro")
+        FormDivider()
         TextRow(title = "Birthdate", text = "Ago 10 2001")
+        FormDivider()
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
@@ -194,22 +183,3 @@ fun EditProfileFormView(){
     }
 }
 
-
-@Composable
-fun TextRow(title: String, text: String){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .border(BorderStroke(1.dp, Color.LightGray))
-            .padding(horizontal = 12.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(title, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.weight(1.0f))
-        Text(
-            text = text,
-            color = Color.Black
-        )
-    }
-}

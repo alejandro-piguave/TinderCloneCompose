@@ -4,29 +4,20 @@ import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.ui.shared.*
 import com.apiguave.tinderclonecompose.ui.theme.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
@@ -75,7 +66,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
     LazyColumn( modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
-        .background(BasicWhite),
+        .background(MaterialTheme.colors.surface),
         ) {
 
         val rows = 1 + (GridItemCount -1) / ColumnCount
@@ -86,6 +77,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
                     .fillMaxWidth()
                     .padding(16.dp),
                 fontSize = 30.sp,
+                color = MaterialTheme.colors.onSurface,
                 fontWeight = FontWeight.Bold)
         }
 
@@ -130,34 +122,6 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
     }
 }
 
-
-@Composable
-fun DeleteConfirmationDialog(onDismissRequest: () -> Unit,
-                                    onConfirm: () -> Unit,
-                                    onDismiss: () -> Unit ){
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = {
-            Text(text = "Delete confirmation")
-        },
-        text = {
-            Text("Are you sure you want to delete this picture?")
-        },
-        confirmButton = {
-            TextButton(
-                onClick = onConfirm) {
-                Text("Delete")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
-}
-
 @Composable
 fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDate){
     var nameText by remember { mutableStateOf(TextFieldValue("")) }
@@ -178,8 +142,8 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
             value = nameText,
             placeholder = { Text("Introduce tu nombre") },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
-                unfocusedBorderColor = Color.LightGray,
+                backgroundColor = if (isSystemInDarkTheme()) Nero else Color.White,
+                unfocusedBorderColor =  if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
             ),
             onValueChange = { newText ->
                 nameText = newText
@@ -188,40 +152,33 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .border(BorderStroke(1.dp, Color.LightGray)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Fecha de nacimiento", modifier = Modifier.padding(start = 8.dp))
-            Spacer(modifier = Modifier.weight(1.0f))
-            TextButton(
-                onClick = onSelectBirthdateClick,
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    top = 20.dp,
-                    end = 20.dp,
-                    bottom = 20.dp
-                )
-            ) {
-                Text(birthdate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)), color = Color.Black)
-            }
-        }
+                .background(if (isSystemInDarkTheme()) Nero else Color.White)
+                .border(
+                    BorderStroke(1.dp, if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Fecha de nacimiento", modifier = Modifier.padding(start = 8.dp), color = MaterialTheme.colors.onSurface)
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    TextButton(
+                        onClick = onSelectBirthdateClick,
+                        contentPadding = PaddingValues(
+                            start = 20.dp,
+                            top = 20.dp,
+                            end = 20.dp,
+                            bottom = 20.dp
+                        )
+                    ) {
+                        Text(
+                            birthdate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)),
+                            color = MaterialTheme.colors.onSurface
+                        )
+                    }
+                }
 
         SectionTitle(title = "Sobre mí" )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(128.dp),
-            value = bioText,
-            placeholder = { Text("Pon algo interesante...") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
-                unfocusedBorderColor = Color.LightGray,
-            ),
-            onValueChange = { newText ->
-                bioText = newText
-            }
-        )
+        FormTextField(value = bioText, placeholder = "Pon algo interesante...", onValueChange = {
+            bioText = it
+        })
 
         SectionTitle(title = "Género")
 
@@ -272,103 +229,4 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
             .height(32.dp))
 
     }
-}
-
-@Composable
-fun EmptyPictureItem(modifier: Modifier = Modifier, onClick: () -> Unit){
-    Box(modifier = modifier.clickable(onClick = onClick)) {
-        Card(
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.6f)
-                .padding(all = 8.dp),
-            backgroundColor = LightLightGray, content = {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    drawRoundRect(color = SystemGray4,style = Stroke(width = 4.dp.toPx(),
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(5.dp.toPx(), 5.dp.toPx()), 0f))
-                    )
-                }
-            }
-        )
-
-        Icon(
-            Icons.Filled.Add,
-            tint = Color.White,
-            modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            Pink,
-                            Orange,
-                        )
-                    ), CircleShape
-                )
-                .padding(2.dp)
-                .align(Alignment.BottomEnd),
-            contentDescription = null
-        )
-    }
-
-}
-
-@Composable
-fun SelectedPictureItem(imageUri: Uri,
-                        modifier: Modifier = Modifier,
-                        onClick: () -> Unit){
-    Box(modifier = modifier.clickable(onClick = onClick)) {
-        Card(
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.6f)
-                .padding(all = 8.dp),
-            content = {
-                AsyncImage(
-                    model = imageUri,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillBounds,
-                    contentDescription = null
-                )
-            }
-        )
-
-        Icon(
-            Icons.Filled.Close,
-            tint = Orange,
-            modifier = Modifier
-                .background(color = Color.White, shape = CircleShape)
-                .padding(2.dp)
-                .align(Alignment.BottomEnd),
-            contentDescription = null
-        )
-    }
-
-}
-
-@Composable
-fun OptionButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit, isSelected: Boolean){
-    TextButton(
-        modifier = modifier.border(BorderStroke(1.dp, Color.LightGray)),
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if(isSelected) Color.White else BasicWhite),
-        onClick = onClick,
-        contentPadding = PaddingValues(
-            start = 16.dp,
-            top = 16.dp,
-            end = 16.dp,
-            bottom = 16.dp
-        )
-    ) {
-        Text(text, color = Color.Black)
-    }
-}
-
-@Composable
-fun SectionTitle(title: String){
-    Text(
-        title.uppercase(),
-        modifier = Modifier.padding(all = 8.dp),
-        color = Color.DarkGray,
-        fontWeight = FontWeight.Bold
-    )
 }

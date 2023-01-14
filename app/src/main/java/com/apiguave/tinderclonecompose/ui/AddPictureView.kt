@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -53,48 +54,51 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
         }
     )
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 16.dp)) {
+    Surface {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 16.dp)) {
 
 
-        Icon(
-            Icons.Filled.Close,
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.Start)
-                .clickable(onClick = onCloseClicked),
-            tint = Color.Gray,
-            contentDescription = null)
+            Icon(
+                Icons.Filled.Close,
+                modifier = Modifier
+                    .size(48.dp)
+                    .align(Alignment.Start)
+                    .clickable(onClick = onCloseClicked),
+                tint = Color.Gray,
+                contentDescription = null)
 
-        Spacer(Modifier.height(28.dp))
-        Text("Crear nuevo", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-        Text("Selecciona el tipo de contenido")
+            Spacer(Modifier.height(28.dp))
+            Text("Crear nuevo", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+            Text("Selecciona el tipo de contenido")
 
-        Spacer(Modifier.weight(1f))
-        SourceTypeCard(
-            text1 = "Subir",
-            text2 = "Foto",
-            color1 = Pink,
-            color2 = Orange,
-            iconRes = R.drawable.ic_baseline_image_90,
-            onClick = {galleryLauncher.launch("image/*")}
-        )
+            Spacer(Modifier.weight(1f))
+            SourceTypeCard(
+                text1 = "Subir",
+                text2 = "Foto",
+                color1 = Pink,
+                color2 = Orange,
+                iconRes = R.drawable.ic_baseline_image_90,
+                onClick = {galleryLauncher.launch("image/*")}
+            )
 
-        Spacer(Modifier.height(16.dp))
-        SourceTypeCard(
-            text1 = "Capturar desde",
-            text2 = "Cámara",
-            color1 = Purple,
-            color2 = LightPurple,
-            iconRes = R.drawable.ic_baseline_photo_camera_90,
-            onClick = {
-                val uri = ComposeFileProvider.getImageUri(context)
-                imageUri = uri
-                cameraLauncher.launch(uri)}
-        )
-        Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(16.dp))
+            SourceTypeCard(
+                text1 = "Capturar desde",
+                text2 = "Cámara",
+                color1 = Purple,
+                color2 = LightPurple,
+                iconRes = R.drawable.ic_baseline_photo_camera_90,
+                onClick = {
+                    val uri = ComposeFileProvider.getImageUri(context)
+                    imageUri = uri
+                    cameraLauncher.launch(uri)}
+            )
+            Spacer(Modifier.weight(1f))
+        }
+
     }
 }
 

@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
@@ -44,60 +42,66 @@ fun HomeView(onNavigateToEditProfile: () -> Unit, onNavigateToMatchList: () -> U
     val colorArray = remember{ (0 until 10).map { (0 until 6).map { randomColor() } }.toMutableStateList() }
     val swipeStates = colorArray.map { rememberSwipeableCardState() }.toMutableList()
     val scope = rememberCoroutineScope()
-    Column(Modifier.fillMaxSize()) {
-        Row(
+    Surface {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
         ) {
-            TopBarIcon(imageVector = Icons.Filled.AccountCircle, onClick = onNavigateToEditProfile)
-            Spacer(Modifier.weight(1f))
-            TopBarIcon(resId = R.drawable.tinder_logo, modifier = Modifier.size(32.dp))
-            Spacer(Modifier.weight(1f))
-            TopBarIcon(resId = R.drawable.ic_baseline_message_24, onClick = onNavigateToMatchList)
-        }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TopBarIcon(imageVector = Icons.Filled.AccountCircle, onClick = onNavigateToEditProfile)
+                Spacer(Modifier.weight(1f))
+                TopBarIcon(resId = R.drawable.tinder_logo, modifier = Modifier.size(32.dp))
+                Spacer(Modifier.weight(1f))
+                TopBarIcon(resId = R.drawable.ic_baseline_message_24, onClick = onNavigateToMatchList)
+            }
 
-        Spacer(Modifier.weight(1f))
-        Box(Modifier.padding(horizontal = 20.dp)){
-            colorArray.forEachIndexed { index, colors  ->
-                ProfileCardView(colors, Modifier.swipableCard(
+            Spacer(Modifier.weight(1f))
+            Box(Modifier.padding(horizontal = 20.dp)){
+                colorArray.forEachIndexed { index, colors  ->
+                    ProfileCardView(colors, Modifier.swipableCard(
                         state = swipeStates[index],
                         onSwiped = { direction ->
                             println("The card was swiped to $direction")
                             colorArray.removeLast()
                         }
                     )
-                )
-            }
-        }
-
-        Spacer(Modifier.weight(1f))
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Spacer(Modifier.weight(1f))
-            RoundGradientButton(Icons.Filled.Close, Pink, Orange) {
-                if(swipeStates.isNotEmpty()){
-                    scope.launch {
-                        swipeStates.last().swipe(Direction.Left)
-                        colorArray.removeLast()
-                        swipeStates.removeLast()
-                    }
+                    )
                 }
             }
-            Spacer(Modifier.weight(.5f))
-            RoundGradientButton(R.drawable.ic_baseline_favorite_border_44, Green1, Green2) {
-                if(swipeStates.isNotEmpty()){
-                    scope.launch {
-                        swipeStates.last().swipe(Direction.Right)
-                        colorArray.removeLast()
-                        swipeStates.removeLast()
+
+            Spacer(Modifier.weight(1f))
+
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Spacer(Modifier.weight(1f))
+                RoundGradientButton(Icons.Filled.Close, Pink, Orange) {
+                    if(swipeStates.isNotEmpty()){
+                        scope.launch {
+                            swipeStates.last().swipe(Direction.Left)
+                            colorArray.removeLast()
+                            swipeStates.removeLast()
+                        }
                     }
                 }
+                Spacer(Modifier.weight(.5f))
+                RoundGradientButton(R.drawable.ic_baseline_favorite_border_44, Green1, Green2) {
+                    if(swipeStates.isNotEmpty()){
+                        scope.launch {
+                            swipeStates.last().swipe(Direction.Right)
+                            colorArray.removeLast()
+                            swipeStates.removeLast()
+                        }
+                    }
+                }
+                Spacer(Modifier.weight(1f))
             }
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(24.dp))
         }
-        Spacer(Modifier.height(24.dp))
+
     }
 }
 
