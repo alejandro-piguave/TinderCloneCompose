@@ -18,9 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.shared.*
-import com.apiguave.tinderclonecompose.ui.theme.*
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.apiguave.tinderclonecompose.ui.theme.Nero
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -45,23 +43,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
                 imageUris.removeAt(deleteConfirmationPictureIndex) },
             onDismiss = { deleteConfirmationDialog = false})
     }
-    MaterialDialog(
-        dialogState = dateDialogState,
-        buttons = {
-            positiveButton(text = "Ok")
-            negativeButton(text = "Cancel")
-        }
-    ) {
-        datepicker(
-            initialDate = LocalDate.now(),
-            title = "Pick a date",
-            allowedDateValidator = {
-                it.dayOfMonth % 2 == 1
-            }
-        ) {
-            birthdate = it
-        }
-    }
+    FormDatePickerDialog(dateDialogState,onDateChange = { birthdate = it })
 
     LazyColumn( modifier = Modifier
         .fillMaxWidth()
@@ -72,7 +54,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
         val rows = 1 + (GridItemCount -1) / ColumnCount
         item {
             Text(
-                text = "Crear Perfil",
+                text = stringResource(id = R.string.create_profile),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -82,31 +64,15 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
         }
 
         items(rows){ rowIndex ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp)){
-                repeat(ColumnCount) { columnIndex ->
-                    val cellIndex = rowIndex * ColumnCount + columnIndex
-
-                    if(cellIndex < imageUris.size){
-                        SelectedPictureItem(
-                            imageUri = imageUris[cellIndex],
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(.6f),
-                            onClick = {
-                                deleteConfirmationDialog = true
-                                deleteConfirmationPictureIndex = cellIndex
-                            }
-                        )
-                    } else {
-                        EmptyPictureItem(modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(.6f), onClick = onAddPicture )
-                    }
+            PictureGridRow(
+                rowIndex = rowIndex,
+                imageUris = imageUris,
+                onAddPicture = onAddPicture,
+                onAddedPictureClicked = {
+                    deleteConfirmationDialog = true
+                    deleteConfirmationPictureIndex = it
                 }
-            }
+            )
         }
         item{
             Spacer(modifier = Modifier
@@ -127,20 +93,15 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
     var nameText by remember { mutableStateOf(TextFieldValue("")) }
     var bioText by remember { mutableStateOf(TextFieldValue("")) }
 
-
-    val genderOptions = listOf("Hombre", "Mujer")
     var selectedGenderIndex by remember { mutableStateOf(0) }
-
-    val orientationOptions = listOf("Hombres", "Mujeres", "Ambos")
     var selectedOrientationIndex by remember { mutableStateOf(0) }
 
-
     Column(Modifier.fillMaxWidth()) {
-        SectionTitle(title = "Personal Information")
+        SectionTitle(title = stringResource(id = R.string.personal_information))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = nameText,
-            placeholder = { Text("Introduce tu nombre") },
+            placeholder = { Text(stringResource(id = R.string.enter_your_name)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = if (isSystemInDarkTheme()) Nero else Color.White,
                 unfocusedBorderColor =  if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
@@ -154,10 +115,14 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
                 .fillMaxWidth()
                 .background(if (isSystemInDarkTheme()) Nero else Color.White)
                 .border(
-                    BorderStroke(1.dp, if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray)),
+                    BorderStroke(
+                        1.dp,
+                        if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
+                    )
+                ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Fecha de nacimiento", modifier = Modifier.padding(start = 8.dp), color = MaterialTheme.colors.onSurface)
+                    Text(stringResource(id = R.string.birth_date), modifier = Modifier.padding(start = 8.dp), color = MaterialTheme.colors.onSurface)
                     Spacer(modifier = Modifier.weight(1.0f))
                     TextButton(
                         onClick = onSelectBirthdateClick,
@@ -175,40 +140,21 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
                     }
                 }
 
-        SectionTitle(title = "Sobre mí" )
-        FormTextField(value = bioText, placeholder = "Pon algo interesante...", onValueChange = {
+        SectionTitle(title = stringResource(id = R.string.about_me) )
+        FormTextField(value = bioText, placeholder = stringResource(id = R.string.write_something_interesting), onValueChange = {
             bioText = it
         })
 
-        SectionTitle(title = "Género")
+        SectionTitle(title = stringResource(id = R.string.gender))
+        GenderOptions(
+            selectedIndex = selectedGenderIndex,
+            onOptionClick = { selectedGenderIndex = it })
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-        ){
-            genderOptions.forEachIndexed {index, s ->
-                OptionButton(
-                    modifier = Modifier.weight(1.0f),
-                    text = s,
-                    onClick = { selectedGenderIndex = index },
-                    isSelected = selectedGenderIndex == index)
-            }
-        }
+        SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
+        OrientationOptions(
+            selectedIndex = selectedOrientationIndex,
+            onOptionClick = { selectedOrientationIndex = it })
 
-        SectionTitle(title = "Me interesan")
-
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-        ){
-            orientationOptions.forEachIndexed {index, s ->
-                OptionButton(
-                    modifier = Modifier.weight(1.0f),
-                    text = s,
-                    onClick = { selectedOrientationIndex = index },
-                    isSelected = selectedOrientationIndex == index)
-            }
-        }
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .height(32.dp))
@@ -218,10 +164,10 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
                 .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
                 Image(
                     painter = painterResource(id = R.drawable.google_logo_48),
-                    contentDescription = stringResource(id = R.string.app_name)
+                    contentDescription = null
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Sign Up with Google", color = Color.Gray)
+                Text(stringResource(id = R.string.sign_up_with_google), color = Color.Gray)
             }
         }
         Spacer(modifier = Modifier

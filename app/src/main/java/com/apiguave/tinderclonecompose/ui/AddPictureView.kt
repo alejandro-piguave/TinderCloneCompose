@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,8 +60,6 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
             Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 16.dp)) {
-
-
             Icon(
                 Icons.Filled.Close,
                 modifier = Modifier
@@ -71,13 +70,13 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
                 contentDescription = null)
 
             Spacer(Modifier.height(28.dp))
-            Text("Crear nuevo", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-            Text("Selecciona el tipo de contenido")
+            Text(stringResource(id = R.string.create_new), fontSize = 30.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(id = R.string.select_content_type))
 
             Spacer(Modifier.weight(1f))
             SourceTypeCard(
-                text1 = "Subir",
-                text2 = "Foto",
+                text1 = stringResource(id = R.string.upload),
+                text2 = stringResource(id = R.string.photo),
                 color1 = Pink,
                 color2 = Orange,
                 iconRes = R.drawable.ic_baseline_image_90,
@@ -86,8 +85,8 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
 
             Spacer(Modifier.height(16.dp))
             SourceTypeCard(
-                text1 = "Capturar desde",
-                text2 = "Cámara",
+                text1 = stringResource(id = R.string.capture_from),
+                text2 = stringResource(id = R.string.camera),
                 color1 = Purple,
                 color2 = LightPurple,
                 iconRes = R.drawable.ic_baseline_photo_camera_90,

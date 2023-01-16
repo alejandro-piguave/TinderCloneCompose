@@ -4,29 +4,25 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.shared.*
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import java.time.LocalDate
 
 @Composable
 fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
-
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
-    var birthdate by remember { mutableStateOf(LocalDate.now()) }
-    val dateDialogState = rememberMaterialDialogState()
 
     if (deleteConfirmationDialog) {
         DeleteConfirmationDialog(
@@ -35,23 +31,6 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
                 deleteConfirmationDialog = false
                 imageUris.removeAt(deleteConfirmationPictureIndex) },
             onDismiss = { deleteConfirmationDialog = false})
-    }
-    MaterialDialog(
-        dialogState = dateDialogState,
-        buttons = {
-            positiveButton(text = "Ok")
-            negativeButton(text = "Cancel")
-        }
-    ) {
-        datepicker(
-            initialDate = LocalDate.now(),
-            title = "Pick a date",
-            allowedDateValidator = {
-                it.dayOfMonth % 2 == 1
-            }
-        ) {
-            birthdate = it
-        }
     }
 
     LazyColumn(
@@ -64,7 +43,7 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
         val rows = 1 + (GridItemCount -1) / ColumnCount
         item {
             Text(
-                text = "Edit Profile",
+                text = stringResource(id = R.string.edit_profile),
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -74,31 +53,15 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
         }
 
         items(rows){ rowIndex ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp)){
-                repeat(ColumnCount) { columnIndex ->
-                    val cellIndex = rowIndex * ColumnCount + columnIndex
-
-                    if(cellIndex < imageUris.size){
-                        SelectedPictureItem(
-                            imageUri = imageUris[cellIndex],
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(.6f),
-                            onClick = {
-                                deleteConfirmationDialog = true
-                                deleteConfirmationPictureIndex = cellIndex
-                            }
-                        )
-                    } else {
-                        EmptyPictureItem(modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(.6f), onClick = onAddPicture )
-                    }
+            PictureGridRow(
+                rowIndex = rowIndex,
+                imageUris = imageUris,
+                onAddPicture = onAddPicture,
+                onAddedPictureClicked = {
+                    deleteConfirmationDialog = true
+                    deleteConfirmationPictureIndex = it
                 }
-            }
+            )
         }
         item{
             Spacer(modifier = Modifier
@@ -116,54 +79,32 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
 fun EditProfileFormView(){
     var bioText by remember { mutableStateOf(TextFieldValue("")) }
 
-    val genderOptions = listOf("Hombre", "Mujer")
     var selectedGenderIndex by remember { mutableStateOf(0) }
-
-    val orientationOptions = listOf("Hombres", "Mujeres", "Ambos")
     var selectedOrientationIndex by remember { mutableStateOf(0) }
 
-
     Column(Modifier.fillMaxWidth()) {
-        SectionTitle(title = "About me" )
-        FormTextField(value = bioText, placeholder = "Pon algo interesante...", onValueChange = {
+        SectionTitle(title = stringResource(id = R.string.about_me))
+        FormTextField(value = bioText, placeholder = stringResource(id = R.string.write_something_interesting), onValueChange = {
             bioText = it
         })
 
-        SectionTitle(title = "Género")
+        SectionTitle(title = stringResource(id = R.string.gender))
+        GenderOptions(
+            selectedIndex = selectedGenderIndex,
+            onOptionClick = { selectedGenderIndex = it })
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-        ){
-            genderOptions.forEachIndexed {index, s ->
-                OptionButton(
-                    modifier = Modifier.weight(1.0f),
-                    text = s,
-                    onClick = { selectedGenderIndex = index },
-                    isSelected = selectedGenderIndex == index)
-            }
-        }
+        SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
 
-        SectionTitle(title = "Me interesan")
+        OrientationOptions(
+            selectedIndex = selectedOrientationIndex,
+            onOptionClick = { selectedOrientationIndex = it })
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-        ){
-            orientationOptions.forEachIndexed {index, s ->
-                OptionButton(
-                    modifier = Modifier.weight(1.0f),
-                    text = s,
-                    onClick = { selectedOrientationIndex = index },
-                    isSelected = selectedOrientationIndex == index)
-            }
-        }
 
-        SectionTitle(title = "Personal Information")
+        SectionTitle(title = stringResource(id = R.string.personal_information))
         FormDivider()
-        TextRow(title = "Name", text = "Alejandro")
+        TextRow(title = stringResource(id = R.string.name), text = "Alejandro")
         FormDivider()
-        TextRow(title = "Birthdate", text = "Ago 10 2001")
+        TextRow(title = stringResource(id = R.string.birth_date), text = "Ago 10 2001")
         FormDivider()
 
         Spacer(modifier = Modifier
@@ -173,7 +114,7 @@ fun EditProfileFormView(){
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
-                Text("Sign Out", fontWeight = FontWeight.Bold)
+                Text(stringResource(id = R.string.sign_out), fontWeight = FontWeight.Bold)
             }
         }
         Spacer(modifier = Modifier

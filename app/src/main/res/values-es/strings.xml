@@ -2,4 +2,25 @@
 <resources>
     <string name="app_name">TinderCloneCompose</string>
     <string name="send">Enviar</string>
+    <string name="sign_in_with_google">Acceder con Google</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="create_profile">Crear Perfil</string>
+    <string name="personal_information">Información Personal</string>
+    <string name="enter_your_name">Introduce tu nombre</string>
+    <string name="birth_date">Fecha de Nacimiento</string>
+    <string name="about_me">Sobre Mí</string>
+    <string name="write_something_interesting">Escribe algo interesante…</string>
+    <string name="gender">Género</string>
+    <string name="i_am_interested_in">Me interesan</string>
+    <string name="sign_up_with_google">Registrarse con Google</string>
+    <string name="pick_a_date">Selecciona una fecha</string>
+    <string name="name">Nombre</string>
+    <string name="sign_out">Cerrar Sesión</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="select_content_type">Selecciona el tipo de contenido</string>
+    <string name="create_new">Crear nuevo</string>
+    <string name="photo">Foto</string>
+    <string name="camera">Cámara</string>
+    <string name="upload">Subir</string>
+    <string name="capture_from">Capturar desdde</string>
 </resources>

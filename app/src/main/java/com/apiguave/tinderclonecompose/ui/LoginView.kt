@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
@@ -59,13 +60,13 @@ fun LoginView(onNavigateToSignUp: () -> Unit, onNavigateTohHome: () -> Unit) {
                     contentDescription = null
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Sign In with Google", color = Color.Gray)
+                Text(stringResource(id = R.string.sign_in_with_google), color = Color.Gray)
             }
 
         }
         Spacer(modifier = Modifier.weight(1.0f))
         TextButton(onClick = onNavigateToSignUp) {
-            Text("Create account", color = Color.White)
+            Text(stringResource(id = R.string.create_account), color = Color.White)
         }
     }
 }
