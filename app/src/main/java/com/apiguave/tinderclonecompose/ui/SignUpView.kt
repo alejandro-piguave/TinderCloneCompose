@@ -24,16 +24,17 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-const val ColumnCount = 3
-const val GridItemCount = 9
-
 @Composable
 fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
-
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
     var birthdate by remember { mutableStateOf(LocalDate.now()) }
     val dateDialogState = rememberMaterialDialogState()
+    var nameText by remember { mutableStateOf(TextFieldValue("")) }
+    var bioText by remember { mutableStateOf(TextFieldValue("")) }
+
+    var selectedGenderIndex by remember { mutableStateOf(0) }
+    var selectedOrientationIndex by remember { mutableStateOf(0) }
 
     if (deleteConfirmationDialog) {
         DeleteConfirmationDialog(
@@ -51,7 +52,6 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
         .background(MaterialTheme.colors.surface),
         ) {
 
-        val rows = 1 + (GridItemCount -1) / ColumnCount
         item {
             Text(
                 text = stringResource(id = R.string.create_profile),
@@ -63,7 +63,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
                 fontWeight = FontWeight.Bold)
         }
 
-        items(rows){ rowIndex ->
+        items(RowCount){ rowIndex ->
             PictureGridRow(
                 rowIndex = rowIndex,
                 imageUris = imageUris,
@@ -74,58 +74,39 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
                 }
             )
         }
-        item{
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(32.dp))
-        }
 
         item {
-            CreateProfileFormView(onSelectBirthdateClick = {
-                dateDialogState.show()
-            }, birthdate = birthdate)
-        }
-    }
-}
-
-@Composable
-fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDate){
-    var nameText by remember { mutableStateOf(TextFieldValue("")) }
-    var bioText by remember { mutableStateOf(TextFieldValue("")) }
-
-    var selectedGenderIndex by remember { mutableStateOf(0) }
-    var selectedOrientationIndex by remember { mutableStateOf(0) }
-
-    Column(Modifier.fillMaxWidth()) {
-        SectionTitle(title = stringResource(id = R.string.personal_information))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = nameText,
-            placeholder = { Text(stringResource(id = R.string.enter_your_name)) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = if (isSystemInDarkTheme()) Nero else Color.White,
-                unfocusedBorderColor =  if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
-            ),
-            onValueChange = { newText ->
-                nameText = newText
-            }
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(if (isSystemInDarkTheme()) Nero else Color.White)
-                .border(
-                    BorderStroke(
-                        1.dp,
-                        if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
-                    )
-                ),
+            Spacer(Modifier.fillMaxWidth().height(32.dp))
+            Column(Modifier.fillMaxWidth()) {
+                SectionTitle(title = stringResource(id = R.string.personal_information))
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = nameText,
+                    placeholder = { Text(stringResource(id = R.string.enter_your_name)) },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = if (isSystemInDarkTheme()) Nero else Color.White,
+                        unfocusedBorderColor =  if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
+                    ),
+                    onValueChange = { newText ->
+                        nameText = newText
+                    }
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(if (isSystemInDarkTheme()) Nero else Color.White)
+                        .border(
+                            BorderStroke(
+                                1.dp,
+                                if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
+                            )
+                        ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(stringResource(id = R.string.birth_date), modifier = Modifier.padding(start = 8.dp), color = MaterialTheme.colors.onSurface)
                     Spacer(modifier = Modifier.weight(1.0f))
                     TextButton(
-                        onClick = onSelectBirthdateClick,
+                        onClick = { dateDialogState.show() },
                         contentPadding = PaddingValues(
                             start = 20.dp,
                             top = 20.dp,
@@ -140,39 +121,38 @@ fun CreateProfileFormView(onSelectBirthdateClick: () -> Unit, birthdate: LocalDa
                     }
                 }
 
-        SectionTitle(title = stringResource(id = R.string.about_me) )
-        FormTextField(value = bioText, placeholder = stringResource(id = R.string.write_something_interesting), onValueChange = {
-            bioText = it
-        })
+                SectionTitle(title = stringResource(id = R.string.about_me) )
+                FormTextField(value = bioText, placeholder = stringResource(id = R.string.write_something_interesting), onValueChange = {
+                    bioText = it
+                })
 
-        SectionTitle(title = stringResource(id = R.string.gender))
-        GenderOptions(
-            selectedIndex = selectedGenderIndex,
-            onOptionClick = { selectedGenderIndex = it })
+                SectionTitle(title = stringResource(id = R.string.gender))
+                GenderOptions(
+                    selectedIndex = selectedGenderIndex,
+                    onOptionClick = { selectedGenderIndex = it })
 
-        SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
-        OrientationOptions(
-            selectedIndex = selectedOrientationIndex,
-            onOptionClick = { selectedOrientationIndex = it })
+                SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
+                OrientationOptions(
+                    selectedIndex = selectedOrientationIndex,
+                    onOptionClick = { selectedOrientationIndex = it })
 
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(32.dp))
-        OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
-                Image(
-                    painter = painterResource(id = R.drawable.google_logo_48),
-                    contentDescription = null
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(id = R.string.sign_up_with_google), color = Color.Gray)
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp))
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
+                        Image(
+                            painter = painterResource(id = R.drawable.google_logo_48),
+                            contentDescription = null
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(stringResource(id = R.string.sign_up_with_google), color = Color.Gray)
+                    }
+                }
+                Spacer(Modifier.fillMaxWidth().height(32.dp))
             }
         }
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(32.dp))
-
     }
 }

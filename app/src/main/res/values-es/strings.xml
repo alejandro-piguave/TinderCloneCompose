@@ -23,4 +23,8 @@
     <string name="camera">Cámara</string>
     <string name="upload">Subir</string>
     <string name="capture_from">Capturar desdde</string>
+    <string name="delete_confirmation_title">Confirmación</string>
+    <string name="delete_confirmation_body">¿Estás seguro/a de que quieres eliminar esta foto?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
 </resources>

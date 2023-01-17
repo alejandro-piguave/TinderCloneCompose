@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.shared
 
-import android.R
 import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -25,15 +24,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.apiguave.tinderclonecompose.ui.ColumnCount
 import com.apiguave.tinderclonecompose.ui.theme.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import com.apiguave.tinderclonecompose.R
 import java.time.LocalDate
+import android.R.string
 
 //Picture Grid components
+
+const val ColumnCount = 3
+const val GridItemCount = 9
+const val RowCount = 1 + (GridItemCount -1) / ColumnCount
 
 @Composable
 fun PictureGridRow(rowIndex: Int, imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
@@ -245,21 +248,21 @@ fun DeleteConfirmationDialog(onDismissRequest: () -> Unit,
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
-            Text(text = "Delete confirmation")
+            Text(stringResource(id = R.string.delete_confirmation_title))
         },
         text = {
-            Text("Are you sure you want to delete this picture?")
+            Text(stringResource(id = R.string.delete_confirmation_body))
         },
         confirmButton = {
             TextButton(
                 onClick = onConfirm) {
-                Text("Delete")
+                Text(stringResource(id = R.string.delete))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(id = R.string.cancel))
             }
         }
     )
@@ -270,8 +273,8 @@ fun FormDatePickerDialog(state: MaterialDialogState, onDateChange: (LocalDate) -
     MaterialDialog(
         dialogState = state,
         buttons = {
-            positiveButton(text = stringResource(id = R.string.ok))
-            negativeButton(text = stringResource(id = R.string.cancel))
+            positiveButton(text = stringResource(id = string.ok))
+            negativeButton(text = stringResource(id = string.cancel))
         }
     ) {
         datepicker(
