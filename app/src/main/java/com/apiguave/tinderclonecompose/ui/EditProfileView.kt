@@ -20,7 +20,7 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.shared.*
 
 @Composable
-fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
+fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onSignedOut: () -> Unit) {
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
@@ -95,7 +95,7 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit)
                 FormDivider()
 
                 Spacer(Modifier.fillMaxWidth().height(32.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = onSignedOut){
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){

@@ -32,7 +32,6 @@ class Routes{
     }
 }
 
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainContent(){
@@ -47,7 +46,11 @@ fun MainContent(){
                         navController.navigate(Routes.SignUp)
                     },
                     onNavigateTohHome = {
-                        navController.navigate(Routes.Home)
+                        navController.navigate(Routes.Home){
+                            popUpTo(Routes.Login){
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -86,6 +89,13 @@ fun MainContent(){
                     imageUris = imageUris,
                     onAddPicture = {
                         navController.navigate(Routes.AddPicture)
+                    },
+                    onSignedOut = {
+                        navController.navigate(Routes.Login){
+                            popUpTo(Routes.Home){
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -104,13 +114,9 @@ fun MainContent(){
                     navController.popBackStack()
                 })
             }
-
         }
-
     }
 }
-
-
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.animatedComposable(
