@@ -12,6 +12,8 @@ Tinder clone application written using Jetpack Compose. As for now the applicati
 
 <p float="left">
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/login_screen.png" width="250">
+  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/create_profile_screen.png" width="250">
+  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/add_picture_screen.png" width="250">
 </p>
 
 Only Google Sign in is allowed. Either of these two actions should be performed:
