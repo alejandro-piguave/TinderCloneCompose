@@ -39,7 +39,7 @@ import kotlin.random.Random
 
 @Composable
 fun HomeView(onNavigateToEditProfile: () -> Unit, onNavigateToMatchList: () -> Unit){
-    val colorArray = remember{ (0 until 10).map { (0 until 6).map { randomColor() } }.toMutableStateList() }
+    val colorArray = remember{ (0 until 10).map { (0 until 3).map { randomColor() } }.toMutableStateList() }
     val swipeStates = colorArray.map { rememberSwipeableCardState() }.toMutableList()
     val scope = rememberCoroutineScope()
     Surface {
@@ -105,7 +105,7 @@ fun HomeView(onNavigateToEditProfile: () -> Unit, onNavigateToMatchList: () -> U
     }
 }
 
-private fun randomColor() = Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+fun randomColor() = Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
 
 @Composable
 fun TopBarIcon(painter: Painter, modifier: Modifier, onClick: (() -> Unit )? = null){
@@ -150,7 +150,7 @@ fun ProfileCardView(colors: List<Color>, modifier: Modifier = Modifier){
                     .align(Alignment.BottomStart)
                     .fillMaxWidth()
                     .padding(12.dp)) {
-                Text(text = "John Doe", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 30.sp)
+                Text(text = "Jane Doe", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 30.sp)
                 Spacer(Modifier.width(8.dp))
                 Text(text = "20", color = Color.White, fontSize = 30.sp)
             }
