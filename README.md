@@ -6,7 +6,7 @@
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
 </p>
 
-Tinder clone application written using Jetpack Compose. As for now the application is under construction and only the UI part is available. I will be updating it to integrate it with Firebase with the goal of making it fully functional as I did with its [SwiftUI conterpart](https://github.com/alejandro-piguave/TinderCloneSwiftUI).
+Tinder clone application written using Jetpack Compose. As for now the application is under construction and only the UI part is available. I will be updating it to integrate it with Firebase with the goal of making it fully functional as I did with its [SwiftUI counterpart](https://github.com/alejandro-piguave/TinderCloneSwiftUI).
 
 ## Login and Create Profile
 
