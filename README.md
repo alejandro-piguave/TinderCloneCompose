@@ -8,6 +8,8 @@
 
 Tinder clone application written using Jetpack Compose. As for now the application is under construction and only the UI part is available. I will be updating it to integrate it with Firebase with the goal of making it fully functional as I did with its [SwiftUI counterpart](https://github.com/alejandro-piguave/TinderCloneSwiftUI).
 
+Note: The file "google-services.json" inside the app folder that is required for the project to work is missing. You will need to connect it to your own Firebase project.
+
 ## Login and Create Profile
 
 <p float="left">
