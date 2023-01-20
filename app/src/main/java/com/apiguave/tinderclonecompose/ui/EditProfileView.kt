@@ -76,13 +76,15 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit,
                 })
 
                 SectionTitle(title = stringResource(id = R.string.gender))
-                GenderOptions(
+                HorizontalPicker(
+                    id = R.array.genders,
                     selectedIndex = selectedGenderIndex,
                     onOptionClick = { selectedGenderIndex = it })
 
                 SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
 
-                OrientationOptions(
+                HorizontalPicker(
+                    id = R.array.interests,
                     selectedIndex = selectedOrientationIndex,
                     onOptionClick = { selectedOrientationIndex = it })
 
