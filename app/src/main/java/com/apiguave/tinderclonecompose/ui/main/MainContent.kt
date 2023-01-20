@@ -13,10 +13,12 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import com.apiguave.tinderclonecompose.ui.*
+import com.apiguave.tinderclonecompose.ui.login.LoginView
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 const val TRANSITION_DURATION = 400
 
@@ -34,7 +36,7 @@ class Routes{
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainContent(){
+fun MainContent(signInClient: GoogleSignInClient){
     TinderCloneComposeTheme {
         val navController = rememberAnimatedNavController()
         val imageUris = remember { mutableStateListOf<Uri>() }
@@ -42,10 +44,11 @@ fun MainContent(){
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
             animatedComposable(Routes.Login) {
                 LoginView(
+                    signInClient = signInClient,
                     onNavigateToSignUp = {
                         navController.navigate(Routes.SignUp)
                     },
-                    onNavigateTohHome = {
+                    onNavigateToHome = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.Login){
                                 inclusive = true

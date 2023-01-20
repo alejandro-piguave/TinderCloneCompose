@@ -1,5 +1,8 @@
-package com.apiguave.tinderclonecompose.ui
+package com.apiguave.tinderclonecompose.ui.login
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,20 +11,47 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.ui.shared.conditional
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 @Composable
-fun LoginView(onNavigateToSignUp: () -> Unit, onNavigateTohHome: () -> Unit) {
+fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, onNavigateToHome: () -> Unit, loginViewModel: LoginViewModel = viewModel()) {
+    val startForResult = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            loginViewModel.handleGoogleSignInActivityResult(it)
+        }
+    )
+
+    val uiState by loginViewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = uiState, block = {
+        if(uiState.isUserSignedIn){
+            onNavigateToHome()
+        }
+    })
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val animatedLogoScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.25f,
+        animationSpec = infiniteRepeatable(animation = tween(1000), repeatMode = RepeatMode.Reverse)
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,10 +71,19 @@ fun LoginView(onNavigateToSignUp: () -> Unit, onNavigateTohHome: () -> Unit) {
         Image(
             painter = painterResource(id = R.drawable.tinder_logo),
             contentDescription = null,
-            modifier = Modifier.padding(all = 28.dp)
+            modifier = Modifier
+                .padding(all = 28.dp)
+                .width(400.dp)
+                .height(IntrinsicSize.Max)
+                .conditional(uiState.isLoading) {
+                    graphicsLayer(scaleX = animatedLogoScale, scaleY = animatedLogoScale)
+                }
         )
         Button(
-            onClick = onNavigateTohHome,
+            modifier = Modifier.alpha(if (uiState.isLoading) 0f else 1f),
+            onClick = {
+                startForResult.launch(signInClient.signInIntent)
+            },
             contentPadding = PaddingValues(
                 start = 20.dp,
                 top = 12.dp,
@@ -65,7 +104,10 @@ fun LoginView(onNavigateToSignUp: () -> Unit, onNavigateTohHome: () -> Unit) {
 
         }
         Spacer(modifier = Modifier.weight(1.0f))
-        TextButton(onClick = onNavigateToSignUp) {
+        TextButton(
+            modifier = Modifier.alpha(if (uiState.isLoading) 0f else 1f),
+            onClick = onNavigateToSignUp
+        ) {
             Text(stringResource(id = R.string.create_account), color = Color.White)
         }
     }

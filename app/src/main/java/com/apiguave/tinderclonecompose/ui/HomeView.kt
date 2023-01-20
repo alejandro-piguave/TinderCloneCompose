@@ -26,14 +26,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.shared.Direction
-import com.apiguave.tinderclonecompose.ui.shared.RoundGradientButton
-import com.apiguave.tinderclonecompose.ui.shared.rememberSwipeableCardState
-import com.apiguave.tinderclonecompose.ui.shared.swipableCard
+import com.apiguave.tinderclonecompose.ui.shared.*
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
+import com.apiguave.tinderclonecompose.ui.shared.Direction
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -178,14 +176,6 @@ fun TopBarIcon(@DrawableRes resId: Int, modifier: Modifier = Modifier, onClick: 
 @Composable
 fun TopBarIcon(imageVector: ImageVector, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null){
     TopBarIcon(painter = rememberVectorPainter(image = imageVector), modifier = modifier, onClick = onClick)
-}
-
-fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
-    return if (condition) {
-        then(modifier(Modifier))
-    } else {
-        this
-    }
 }
 
 fun Modifier.withLinearGradient(color1: Color, color2: Color): Modifier{
