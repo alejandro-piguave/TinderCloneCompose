@@ -27,7 +27,12 @@ class LoginViewModel: ViewModel() {
 
     private fun checkLoginState() {
         _uiState.update {
-            it.copy(isUserSignedIn = FirebaseAuth.getInstance().currentUser != null)
+            val isUserSignedIn = FirebaseAuth.getInstance().currentUser != null
+            if(isUserSignedIn){
+                it.copy(isUserSignedIn = true)
+            } else {
+                it.copy(isLoading = false)
+            }
         }
     }
 

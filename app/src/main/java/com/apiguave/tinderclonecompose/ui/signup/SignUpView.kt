@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui
+package com.apiguave.tinderclonecompose.ui.signup
 
 import android.net.Uri
 import androidx.compose.foundation.*
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.shared.*
 import com.apiguave.tinderclonecompose.ui.theme.Nero
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
+fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, signUpViewModel: SignUpViewModel = viewModel()) {
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
     var birthdate by remember { mutableStateOf(LocalDate.now()) }
@@ -35,6 +36,8 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
 
     var selectedGenderIndex by remember { mutableStateOf(0) }
     var selectedOrientationIndex by remember { mutableStateOf(0) }
+
+    val isInformationValid = nameText.text.length in 3..30 && nameText.text.all { it.isLetter() } && imageUris.size > 1
 
     if (deleteConfirmationDialog) {
         DeleteConfirmationDialog(
@@ -139,7 +142,10 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit) {
                 Spacer(modifier = Modifier
                     .fillMaxWidth()
                     .height(32.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = {}){
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = isInformationValid,
+                    onClick = {}){
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
