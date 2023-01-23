@@ -1,6 +1,8 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,6 +18,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -23,14 +26,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.shared.*
+import com.apiguave.tinderclonecompose.domain.Orientation
+import com.apiguave.tinderclonecompose.extensions.isValidUsername
+import com.apiguave.tinderclonecompose.extensions.toBitmap
+import com.apiguave.tinderclonecompose.ui.components.*
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, signUpViewModel: SignUpViewModel = viewModel()) {
-    var deleteConfirmationDialog by remember { mutableStateOf(false) }
+fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit,signUpViewModel: SignUpViewModel = viewModel()) {
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(0) }
     var birthdate by rememberSaveable { mutableStateOf(eighteenYearsAgo) }
     val dateDialogState = rememberMaterialDialogState()
@@ -40,18 +51,56 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, sign
     var selectedGenderIndex by rememberSaveable { mutableStateOf(0) }
     var selectedOrientationIndex by rememberSaveable { mutableStateOf(0) }
 
-    val isInformationValid = nameText.text.length in 3..30 && nameText.text.all { it.isLetter() } && imageUris.size > 1
+    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && imageUris.size > 1 } }
 
-    if (deleteConfirmationDialog) {
+    //Update UI state
+    val uiState by signUpViewModel.uiState.collectAsState()
+    LaunchedEffect(key1 = uiState, block = {
+        if(uiState.isUserSignedIn){
+            onNavigateToHome()
+        }
+        if(uiState.errorMessage != null){
+            showErrorDialog = true
+        }
+    })
+
+    val contentResolver = LocalContext.current.contentResolver
+    val coroutineScope = rememberCoroutineScope()
+    val startForResult = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            signUpViewModel.setLoading(true)
+            coroutineScope.launch {
+                //Transforms the Uris to Bitmaps
+                val pictures = imageUris.map { async { it.toBitmap(contentResolver) } }.awaitAll()
+                val isMale = selectedGenderIndex == 0
+                val orientation = Orientation.values()[selectedOrientationIndex]
+                //Signs up with the information provided
+                signUpViewModel.signUp(it.data, nameText.text, birthdate, bioText.text, isMale, orientation, pictures)
+            }
+        }
+    )
+
+    //Dialogs
+    if (showDeleteConfirmationDialog) {
         DeleteConfirmationDialog(
-            onDismissRequest = { deleteConfirmationDialog = false },
+            onDismissRequest = { showDeleteConfirmationDialog = false },
             onConfirm = {
-                deleteConfirmationDialog = false
+                showDeleteConfirmationDialog = false
                 imageUris.removeAt(deleteConfirmationPictureIndex) },
-            onDismiss = { deleteConfirmationDialog = false})
+            onDismiss = { showDeleteConfirmationDialog = false})
     }
-    FormDatePickerDialog(dateDialogState, onDateChange = { birthdate = it })
 
+    if(showErrorDialog){
+        ErrorDialog(
+            errorDescription = uiState.errorMessage,
+            onDismissRequest = { showErrorDialog = false },
+            onConfirm = { showErrorDialog = false}
+        )
+    }
+
+    FormDatePickerDialog(dateDialogState, onDateChange = { birthdate = it })
+    
     Surface {
         LazyColumn( modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +124,7 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, sign
                     imageUris = imageUris,
                     onAddPicture = onAddPicture,
                     onAddedPictureClicked = {
-                        deleteConfirmationDialog = true
+                        showDeleteConfirmationDialog = true
                         deleteConfirmationPictureIndex = it
                     }
                 )
@@ -144,12 +193,15 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, sign
                         selectedIndex = selectedOrientationIndex,
                         onOptionClick = { selectedOrientationIndex = it })
 
-                    Spacer(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp))
+                    Spacer(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(32.dp))
 
-                    GradientGoogleButton(enabled = isInformationValid) {
-
+                    GradientGoogleButton(enabled = isSignUpEnabled.value) {
+                        coroutineScope.launch {
+                            startForResult.launch(signInClient.signInIntent)
+                        }
                     }
                     Spacer(
                         Modifier
@@ -158,5 +210,10 @@ fun SignUpView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, sign
                 }
             }
         }
+    }
+
+
+    if(uiState.isLoading){
+        LoadingView()
     }
 }

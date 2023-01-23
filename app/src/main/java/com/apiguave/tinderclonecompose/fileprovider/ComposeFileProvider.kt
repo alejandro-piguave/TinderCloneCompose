@@ -6,7 +6,6 @@ import androidx.core.content.FileProvider
 import com.apiguave.tinderclonecompose.R
 import java.io.File
 
-
 class ComposeFileProvider : FileProvider(
     R.xml.filepaths
 ) {

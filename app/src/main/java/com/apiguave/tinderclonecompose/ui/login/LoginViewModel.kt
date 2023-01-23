@@ -3,11 +3,8 @@ package com.apiguave.tinderclonecompose.ui.login
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.delay
+import com.apiguave.tinderclonecompose.repository.AuthRepository
+import com.apiguave.tinderclonecompose.repository.SignInCheck
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,8 +24,7 @@ class LoginViewModel: ViewModel() {
 
     private fun checkLoginState() {
         _uiState.update {
-            val isUserSignedIn = FirebaseAuth.getInstance().currentUser != null
-            if(isUserSignedIn){
+            if(AuthRepository.isUserSignedIn){
                 it.copy(isUserSignedIn = true)
             } else {
                 it.copy(isLoading = false)
@@ -36,36 +32,18 @@ class LoginViewModel: ViewModel() {
         }
     }
 
-    fun handleGoogleSignInActivityResult(activityResult: ActivityResult){
-        _uiState.update {
-            it.copy(isLoading = true)
-        }
-        val task = GoogleSignIn.getSignedInAccountFromIntent(activityResult.data)
-        try {
-            // Google Sign In was successful, authenticate with Firebase
-            val account = task.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account.idToken!!)
-        } catch (e: ApiException) {
-            _uiState.update {
-                it.copy(isLoading = false, errorMessage = e.message)
-            }
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        FirebaseAuth.getInstance().signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _uiState.update {
-                        it.copy(isUserSignedIn = true)
-                    }
-                } else {
-                    _uiState.update {
-                        it.copy(isLoading = false, errorMessage = task.exception?.message)
-                    }
+    fun signIn(activityResult: ActivityResult){
+        _uiState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            try {
+                AuthRepository.signInWithGoogle(activityResult.data, signInCheck = SignInCheck.ENFORCE_EXISTING_USER)
+                _uiState.update { it.copy(isUserSignedIn = true) }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(isLoading = false, errorMessage = e.message)
                 }
             }
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.shared
+package com.apiguave.tinderclonecompose.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.apiguave.tinderclonecompose.ui.withLinearGradient
+import com.apiguave.tinderclonecompose.extensions.withLinearGradient
 
 @Composable
 fun RoundGradientButton(@DrawableRes resId: Int, color1: Color, color2: Color, onClick: (() -> Unit)){

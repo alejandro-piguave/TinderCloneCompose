@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.shared.conditional
+import com.apiguave.tinderclonecompose.extensions.conditional
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -36,7 +36,7 @@ fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, 
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
-            loginViewModel.handleGoogleSignInActivityResult(it)
+            loginViewModel.signIn(it)
         }
     )
 

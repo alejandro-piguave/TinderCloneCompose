@@ -26,5 +26,6 @@
     <string name="delete_confirmation_body">Are you sure you want to delete this item?</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="error">Error</string>
 
 </resources>

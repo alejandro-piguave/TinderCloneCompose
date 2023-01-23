@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.shared
+package com.apiguave.tinderclonecompose.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec

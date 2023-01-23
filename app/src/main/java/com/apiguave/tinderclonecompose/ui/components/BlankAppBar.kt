@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.shared
+package com.apiguave.tinderclonecompose.ui.components
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,9 +10,9 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.apiguave.tinderclonecompose.extensions.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
-import com.apiguave.tinderclonecompose.ui.withLinearGradient
 
 @OptIn(ExperimentalTextApi::class)
 @Composable

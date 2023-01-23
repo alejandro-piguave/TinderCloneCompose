@@ -5,7 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
@@ -13,11 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -26,12 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.shared.*
+import com.apiguave.tinderclonecompose.extensions.conditional
+import com.apiguave.tinderclonecompose.extensions.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.components.Direction
+import com.apiguave.tinderclonecompose.ui.components.RoundGradientButton
+import com.apiguave.tinderclonecompose.ui.components.rememberSwipeableCardState
+import com.apiguave.tinderclonecompose.ui.components.swipableCard
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
-import com.apiguave.tinderclonecompose.ui.shared.Direction
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -178,20 +181,3 @@ fun TopBarIcon(imageVector: ImageVector, modifier: Modifier = Modifier, onClick:
     TopBarIcon(painter = rememberVectorPainter(image = imageVector), modifier = modifier, onClick = onClick)
 }
 
-fun Modifier.withLinearGradient(color1: Color, color2: Color): Modifier{
-    return this
-        .graphicsLayer(alpha = 0.99f)
-        .drawWithCache {
-            onDrawWithContent {
-                drawContent()
-                drawRect(
-                    Brush.linearGradient(
-                        colors = listOf(
-                            color1,
-                            color2,
-                        )
-                    ), blendMode = BlendMode.SrcAtop
-                )
-            }
-        }
-}

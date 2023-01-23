@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui
+package com.apiguave.tinderclonecompose.ui.editprofile
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -16,11 +16,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.shared.*
+import com.apiguave.tinderclonecompose.ui.components.*
 
 @Composable
-fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onSignedOut: () -> Unit) {
+fun EditProfileView(
+    imageUris: SnapshotStateList<Uri>,
+    onAddPicture: () -> Unit,
+    onSignedOut: () -> Unit,
+    editProfileViewModel: EditProfileViewModel = viewModel()
+) {
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
@@ -29,13 +35,21 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit,
     var selectedGenderIndex by remember { mutableStateOf(0) }
     var selectedOrientationIndex by remember { mutableStateOf(0) }
 
+    val uiState by editProfileViewModel.uiState.collectAsState()
+    LaunchedEffect(key1 = uiState, block = {
+        if(uiState.isUserSignedOut){
+            onSignedOut()
+        }
+    })
+
     if (deleteConfirmationDialog) {
         DeleteConfirmationDialog(
             onDismissRequest = { deleteConfirmationDialog = false },
             onConfirm = {
                 deleteConfirmationDialog = false
-                imageUris.removeAt(deleteConfirmationPictureIndex) },
-            onDismiss = { deleteConfirmationDialog = false})
+                imageUris.removeAt(deleteConfirmationPictureIndex)
+            },
+            onDismiss = { deleteConfirmationDialog = false })
     }
 
     LazyColumn(
@@ -52,10 +66,11 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit,
                     .fillMaxWidth()
                     .padding(16.dp),
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         }
 
-        items(RowCount){ rowIndex ->
+        items(RowCount) { rowIndex ->
             PictureGridRow(
                 rowIndex = rowIndex,
                 imageUris = imageUris,
@@ -68,12 +83,19 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit,
         }
 
         item {
-            Spacer(Modifier.fillMaxWidth().height(32.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(32.dp)
+            )
             Column(Modifier.fillMaxWidth()) {
                 SectionTitle(title = stringResource(id = R.string.about_me))
-                FormTextField(value = bioText, placeholder = stringResource(id = R.string.write_something_interesting), onValueChange = {
-                    bioText = it
-                })
+                FormTextField(
+                    value = bioText,
+                    placeholder = stringResource(id = R.string.write_something_interesting),
+                    onValueChange = {
+                        bioText = it
+                    })
 
                 SectionTitle(title = stringResource(id = R.string.gender))
                 HorizontalPicker(
@@ -96,15 +118,27 @@ fun EditProfileView(imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit,
                 TextRow(title = stringResource(id = R.string.birth_date), text = "Ago 10 2001")
                 FormDivider()
 
-                Spacer(Modifier.fillMaxWidth().height(32.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = onSignedOut){
-                    Row(modifier = Modifier
+                Spacer(
+                    Modifier
                         .fillMaxWidth()
-                        .padding(all = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
+                        .height(32.dp)
+                )
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { editProfileViewModel.signOut() }) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(stringResource(id = R.string.sign_out), fontWeight = FontWeight.Bold)
                     }
                 }
-                Spacer(Modifier.fillMaxWidth().height(32.dp))
+                Spacer(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                )
 
             }
         }

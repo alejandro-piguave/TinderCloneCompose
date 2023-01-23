@@ -13,6 +13,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import com.apiguave.tinderclonecompose.ui.*
+import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
 import com.apiguave.tinderclonecompose.ui.login.LoginView
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
@@ -60,9 +61,17 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
             animatedComposable(Routes.SignUp) {
                 SignUpView(
+                    signInClient = signInClient,
                     imageUris = imageUris,
                     onAddPicture = {
                         navController.navigate(Routes.AddPicture)
+                    },
+                    onNavigateToHome = {
+                        navController.navigate(Routes.Home){
+                            popUpTo(Routes.SignUp){
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }

@@ -27,4 +27,5 @@
     <string name="delete_confirmation_body">¿Estás seguro/a de que quieres eliminar esta foto?</string>
     <string name="cancel">Cancelar</string>
     <string name="delete">Eliminar</string>
+    <string name="error">Error</string>
 </resources>
