@@ -50,4 +50,3 @@ enum class SignInCheck{
     ALL_USERS
 }
 
-class AuthException(message: String): Exception(message)

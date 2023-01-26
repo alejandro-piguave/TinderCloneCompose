@@ -30,4 +30,5 @@
     <string name="error">Error</string>
     <string name="retry">Reintentar</string>
     <string name="no_more_profiles">¡No hay nadie más a tu alrededor!</string>
+    <string name="generate_profiles">Generar perfiles</string>
 </resources>

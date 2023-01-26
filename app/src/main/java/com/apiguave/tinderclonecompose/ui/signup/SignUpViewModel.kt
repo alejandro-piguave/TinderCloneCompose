@@ -1,19 +1,16 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
 import android.content.Intent
-import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.Orientation
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
-import com.apiguave.tinderclonecompose.data.repository.FirestoreRepository
+import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import com.apiguave.tinderclonecompose.data.repository.SignInCheck
-import com.apiguave.tinderclonecompose.data.repository.StorageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -28,21 +25,11 @@ class SignUpViewModel : ViewModel() {
         _uiState.update { it.copy(isLoading = isLoading, errorMessage = null) }
     }
 
-    fun signUp(
-        data: Intent?,
-        name: String,
-        birthdate: LocalDate,
-        bio: String,
-        isMale: Boolean,
-        orientation: Orientation,
-        pictures: List<Bitmap>
-    ) {
+    fun signUp(data: Intent?, profile: CreateUserProfile) {
         viewModelScope.launch {
             try {
                 AuthRepository.signInWithGoogle(data, signInCheck = SignInCheck.ENFORCE_NEW_USER)
-                val filenames = StorageRepository.uploadUserPictures(pictures)
-                FirestoreRepository.createUserProfile(name, birthdate, bio, isMale, orientation, filenames)
-
+                FirebaseRepository.createUserProfile(profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
                 _uiState.update {
@@ -51,6 +38,8 @@ class SignUpViewModel : ViewModel() {
             }
         }
     }
+
+
 }
 
 data class SignUpUiState(

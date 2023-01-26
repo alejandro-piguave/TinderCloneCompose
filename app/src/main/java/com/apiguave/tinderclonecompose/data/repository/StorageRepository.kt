@@ -8,18 +8,20 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.*
 import java.util.*
 
-object StorageRepository {
-    private const val USERS = "users"
+class StorageRepository {
+    companion object{
+        private const val USERS = "users"
+    }
 
-    suspend fun uploadUserPictures(pictures: List<Bitmap>): List<String>{
+    suspend fun uploadUserPictures(userId: String, pictures: List<Bitmap>): List<String>{
         return coroutineScope {
-            pictures.map { async { uploadUserPicture(it) } }.awaitAll()
+            pictures.map { async { uploadUserPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun uploadUserPicture(bitmap: Bitmap): String {
+    private suspend fun uploadUserPicture(userId: String, bitmap: Bitmap): String {
         val filename = UUID.randomUUID().toString()+".jpg"
-        val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(AuthRepository.userId!!).child(filename)
+        val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(filename)
 
         val task = pictureRef.putBytes(bitmap.toByteArray())
         task.getTaskResult()

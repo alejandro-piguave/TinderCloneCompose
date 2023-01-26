@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.Orientation
+import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.extensions.isValidUsername
 import com.apiguave.tinderclonecompose.extensions.toBitmap
 import com.apiguave.tinderclonecompose.ui.components.*
@@ -40,8 +41,11 @@ import java.time.format.FormatStyle
 
 @Composable
 fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit,signUpViewModel: SignUpViewModel = viewModel()) {
+    val context = LocalContext.current
+
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
+
     var deleteConfirmationPictureIndex by remember { mutableStateOf(0) }
     var birthdate by rememberSaveable { mutableStateOf(eighteenYearsAgo) }
     val dateDialogState = rememberMaterialDialogState()
@@ -52,6 +56,7 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
     var selectedOrientationIndex by rememberSaveable { mutableStateOf(0) }
 
     val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && imageUris.size > 1 } }
+    val coroutineScope = rememberCoroutineScope()
 
     //Update UI state
     val uiState by signUpViewModel.uiState.collectAsState()
@@ -64,24 +69,25 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
         }
     })
 
-    val contentResolver = LocalContext.current.contentResolver
-    val coroutineScope = rememberCoroutineScope()
+
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
             signUpViewModel.setLoading(true)
             coroutineScope.launch {
                 //Transforms the Uris to Bitmaps
-                val pictures = imageUris.map { async { it.toBitmap(contentResolver) } }.awaitAll()
+                val pictures = imageUris.map { async { it.toBitmap(context.contentResolver) } }.awaitAll()
                 val isMale = selectedGenderIndex == 0
                 val orientation = Orientation.values()[selectedOrientationIndex]
+                val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, pictures)
                 //Signs up with the information provided
-                signUpViewModel.signUp(it.data, nameText.text, birthdate, bioText.text, isMale, orientation, pictures)
+                signUpViewModel.signUp(it.data, profile)
             }
         }
     )
 
     //Dialogs
+
     if (showDeleteConfirmationDialog) {
         DeleteConfirmationDialog(
             onDismissRequest = { showDeleteConfirmationDialog = false },
@@ -110,12 +116,11 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
             item {
                 Text(
                     text = stringResource(id = R.string.create_profile),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.padding(16.dp),
                     fontSize = 30.sp,
                     color = MaterialTheme.colors.onSurface,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             items(RowCount){ rowIndex ->
@@ -212,8 +217,8 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
         }
     }
 
-
     if(uiState.isLoading){
         LoadingView()
     }
 }
+

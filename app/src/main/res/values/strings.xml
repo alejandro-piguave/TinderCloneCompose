@@ -29,5 +29,6 @@
     <string name="error">Error</string>
     <string name="retry">Retry</string>
     <string name="no_more_profiles">There\'s no one new around you!</string>
+    <string name="generate_profiles">Generate profiles</string>
 
 </resources>
