@@ -14,6 +14,7 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import com.apiguave.tinderclonecompose.ui.*
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
+import com.apiguave.tinderclonecompose.ui.home.HomeView
 import com.apiguave.tinderclonecompose.ui.login.LoginView
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme

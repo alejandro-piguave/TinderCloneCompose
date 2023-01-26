@@ -1,12 +1,11 @@
-package com.apiguave.tinderclonecompose.repository
+package com.apiguave.tinderclonecompose.data.repository
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toByteArray
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import java.util.*
 
 object StorageRepository {
@@ -26,5 +25,16 @@ object StorageRepository {
         task.getTaskResult()
 
         return filename
+    }
+
+    suspend fun getUrisFromUser(userId: String, fileNames: List<String>): List<Uri>{
+        return coroutineScope {
+            fileNames.map { async { getUriFromUser(userId, it) } }.awaitAll()
+        }
+    }
+
+    private suspend fun getUriFromUser(userId: String, fileName: String): Uri {
+        val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(fileName)
+        return fileRef.downloadUrl.getTaskResult()
     }
 }

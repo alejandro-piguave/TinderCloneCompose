@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.domain.Message
+import com.apiguave.tinderclonecompose.data.Message
 import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue

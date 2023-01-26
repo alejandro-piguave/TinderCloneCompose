@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.editprofile
 
 import androidx.lifecycle.ViewModel
-import com.apiguave.tinderclonecompose.repository.AuthRepository
+import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

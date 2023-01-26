@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.fileprovider
+package com.apiguave.tinderclonecompose.ui.fileprovider
 
 import android.content.Context
 import android.net.Uri

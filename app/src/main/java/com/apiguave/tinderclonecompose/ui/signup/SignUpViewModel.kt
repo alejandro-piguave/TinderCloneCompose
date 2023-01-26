@@ -4,11 +4,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.Orientation
-import com.apiguave.tinderclonecompose.repository.AuthRepository
-import com.apiguave.tinderclonecompose.repository.FirestoreRepository
-import com.apiguave.tinderclonecompose.repository.SignInCheck
-import com.apiguave.tinderclonecompose.repository.StorageRepository
+import com.apiguave.tinderclonecompose.data.Orientation
+import com.apiguave.tinderclonecompose.data.repository.AuthRepository
+import com.apiguave.tinderclonecompose.data.repository.FirestoreRepository
+import com.apiguave.tinderclonecompose.data.repository.SignInCheck
+import com.apiguave.tinderclonecompose.data.repository.StorageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

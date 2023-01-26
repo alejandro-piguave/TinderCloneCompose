@@ -28,4 +28,6 @@
     <string name="cancel">Cancelar</string>
     <string name="delete">Eliminar</string>
     <string name="error">Error</string>
+    <string name="retry">Reintentar</string>
+    <string name="no_more_profiles">¡No hay nadie más a tu alrededor!</string>
 </resources>

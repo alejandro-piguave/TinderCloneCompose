@@ -2,7 +2,6 @@ package com.apiguave.tinderclonecompose.ui.login
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,13 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.extensions.conditional
+import com.apiguave.tinderclonecompose.ui.components.AnimatedLogo
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -48,13 +46,6 @@ fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, 
         }
     })
 
-    val infiniteTransition = rememberInfiniteTransition()
-    val animatedLogoScale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.25f,
-        animationSpec = infiniteRepeatable(animation = tween(1000), repeatMode = RepeatMode.Reverse)
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,17 +62,7 @@ fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, 
 
     ) {
         Spacer(modifier = Modifier.weight(1.0f))
-        Image(
-            painter = painterResource(id = R.drawable.tinder_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(all = 28.dp)
-                .width(400.dp)
-                .height(IntrinsicSize.Max)
-                .conditional(uiState.isLoading) {
-                    graphicsLayer(scaleX = animatedLogoScale, scaleY = animatedLogoScale)
-                }
-        )
+        AnimatedLogo(isAnimating = uiState.isLoading)
         Button(
             modifier = Modifier.alpha(if (uiState.isLoading) 0f else 1f),
             onClick = {

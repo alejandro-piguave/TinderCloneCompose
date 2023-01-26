@@ -14,15 +14,15 @@ import kotlin.math.abs
  * Enables Tinder like swiping gestures.
  *
  * @param state The current state of the swipeable card. Use [rememberSwipeableCardState] to create.
- * @param onSwiped will be called once a swipe gesture is completed. The given [Direction] will indicate which side the gesture was performed on.
+ * @param onSwiped will be called once a swipe gesture is completed. The given [SwipingDirection] will indicate which side the gesture was performed on.
  * @param onSwipeCancel will be called when the gesture is stopped before reaching the minimum threshold to be treated as a full swipe
  * @param blockedDirections the directions which will not trigger a swipe. By default only horizontal swipes are allowed.
  */
 fun Modifier.swipableCard(
     state: SwipeableCardState,
-    onSwiped: (Direction) -> Unit,
+    onSwiped: (SwipingDirection) -> Unit,
     onSwipeCancel: () -> Unit = {},
-    blockedDirections: List<Direction> = listOf(Direction.Up, Direction.Down),
+    blockedDirections: List<SwipingDirection> = listOf(SwipingDirection.Up, SwipingDirection.Down),
 ) = pointerInput(Unit) {
     coroutineScope {
         detectDragGestures(
@@ -60,19 +60,19 @@ fun Modifier.swipableCard(
 
                         if (horizontalTravel > verticalTravel) {
                             if (state.offset.targetValue.x > 0) {
-                                state.swipe(Direction.Right)
-                                onSwiped(Direction.Right)
+                                state.swipe(SwipingDirection.Right)
+                                onSwiped(SwipingDirection.Right)
                             } else {
-                                state.swipe(Direction.Left)
-                                onSwiped(Direction.Left)
+                                state.swipe(SwipingDirection.Left)
+                                onSwiped(SwipingDirection.Left)
                             }
                         } else {
                             if (state.offset.targetValue.y < 0) {
-                                state.swipe(Direction.Up)
-                                onSwiped(Direction.Up)
+                                state.swipe(SwipingDirection.Up)
+                                onSwiped(SwipingDirection.Up)
                             } else {
-                                state.swipe(Direction.Down)
-                                onSwiped(Direction.Down)
+                                state.swipe(SwipingDirection.Down)
+                                onSwiped(SwipingDirection.Down)
                             }
                         }
                     }
@@ -87,29 +87,29 @@ fun Modifier.swipableCard(
 }
 
 private fun Offset.coerceIn(
-    blockedDirections: List<Direction>,
+    blockedDirections: List<SwipingDirection>,
     maxHeight: Float,
     maxWidth: Float,
 ): Offset {
     return copy(
         x = x.coerceIn(
-            if (blockedDirections.contains(Direction.Left)) {
+            if (blockedDirections.contains(SwipingDirection.Left)) {
                 0f
             } else {
                 -maxWidth
             },
-            if (blockedDirections.contains(Direction.Right)) {
+            if (blockedDirections.contains(SwipingDirection.Right)) {
                 0f
             } else {
                 maxWidth
             }
         ),
-        y = y.coerceIn(if (blockedDirections.contains(Direction.Up)) {
+        y = y.coerceIn(if (blockedDirections.contains(SwipingDirection.Up)) {
             0f
         } else {
             -maxHeight
         },
-            if (blockedDirections.contains(Direction.Down)) {
+            if (blockedDirections.contains(SwipingDirection.Down)) {
                 0f
             } else {
                 maxHeight

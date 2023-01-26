@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.repository
+package com.apiguave.tinderclonecompose.data.repository
 
 import android.content.Intent
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
@@ -36,7 +36,6 @@ object AuthRepository {
     fun signOut(){
         FirebaseAuth.getInstance().signOut()
     }
-
 
     private suspend fun isNewUser(email: String): Boolean{
         val methods = FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).getTaskResult()

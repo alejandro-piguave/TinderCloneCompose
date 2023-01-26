@@ -27,5 +27,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="no_more_profiles">There\'s no one new around you!</string>
 
 </resources>
