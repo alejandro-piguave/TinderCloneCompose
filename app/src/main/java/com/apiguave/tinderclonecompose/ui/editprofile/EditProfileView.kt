@@ -19,9 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.components.*
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 @Composable
 fun EditProfileView(
+    signInClient: GoogleSignInClient,
     imageUris: SnapshotStateList<Uri>,
     onAddPicture: () -> Unit,
     onSignedOut: () -> Unit,
@@ -123,7 +125,7 @@ fun EditProfileView(
                         .fillMaxWidth()
                         .height(32.dp)
                 )
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { editProfileViewModel.signOut() }) {
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { editProfileViewModel.signOut(signInClient) }) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

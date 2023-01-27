@@ -24,7 +24,7 @@ fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier){
 
     Card(modifier = modifier
         .fillMaxWidth()
-        .aspectRatio(.7f),
+        .aspectRatio(.6f),
         shape = RoundedCornerShape(8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {

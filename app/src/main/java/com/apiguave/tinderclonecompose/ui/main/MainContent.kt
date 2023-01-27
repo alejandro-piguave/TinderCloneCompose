@@ -101,6 +101,7 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
             animatedComposable(Routes.EditProfile){
                 EditProfileView(
+                    signInClient = signInClient,
                     imageUris = imageUris,
                     onAddPicture = {
                         navController.navigate(Routes.AddPicture)

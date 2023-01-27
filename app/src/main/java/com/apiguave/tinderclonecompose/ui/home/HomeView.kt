@@ -1,11 +1,15 @@
 package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,15 +22,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.allowProfileGeneration
 import com.apiguave.tinderclonecompose.data.getRandomProfile
+import com.apiguave.tinderclonecompose.extensions.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 @Composable
 fun HomeView(onNavigateToEditProfile: () -> Unit,
@@ -68,7 +70,7 @@ fun HomeView(onNavigateToEditProfile: () -> Unit,
                 .padding(padding), horizontalAlignment = Alignment.CenterHorizontally) {
             if(uiState.isLoading){
                 Spacer(Modifier.weight(1f))
-                AnimatedGradientLogo(Modifier.fillMaxWidth())
+                AnimatedGradientLogo(Modifier.fillMaxWidth(.4f))
                 Spacer(Modifier.weight(1f))
             } else if(uiState.errorMessage != null){
                 Spacer(Modifier.weight(1f))
@@ -102,24 +104,35 @@ fun HomeView(onNavigateToEditProfile: () -> Unit,
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Spacer(Modifier.weight(1f))
-                    RoundGradientButton(
+                    FloatingActionButton(
+                        backgroundColor = Color.White,
                         onClick = {
                             scope.launch {
                                 swipeStates.last().swipe(SwipingDirection.Left)
                                 homeViewModel.removeLastProfile()
                             }
-                        },
-                        enabled = swipeStates.isNotEmpty(),
-                        imageVector = Icons.Filled.Close, color1 = Pink, color2 = Orange)
+                        }) {
+                        Icon(
+                            modifier = Modifier.size(32.dp).withLinearGradient(Pink, Orange),
+                            imageVector = Icons.Rounded.Close,
+                            contentDescription = null)
+                    }
+
                     Spacer(Modifier.weight(.5f))
-                    RoundGradientButton(onClick = {
-                        scope.launch {
-                            swipeStates.last().swipe(SwipingDirection.Right)
-                            homeViewModel.removeLastProfile()
-                        }
-                    },
-                        enabled = swipeStates.isNotEmpty(),
-                        resId = R.drawable.ic_baseline_favorite_border_44, color1 =  Green1, color2 = Green2)
+                    FloatingActionButton(
+                        backgroundColor = Color.White,
+                        onClick = {
+                            scope.launch {
+                                swipeStates.last().swipe(SwipingDirection.Right)
+                                homeViewModel.removeLastProfile()
+                            }
+                        }) {
+                        Icon(
+                            modifier = Modifier.size(32.dp).withLinearGradient(Green1, Green2),
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null)
+                    }
+
                     Spacer(Modifier.weight(1f))
                 }
                 Spacer(Modifier.height(24.dp))
@@ -132,8 +145,9 @@ fun HomeView(onNavigateToEditProfile: () -> Unit,
                 onDismissRequest = { showGenerateProfilesDialog = false },
                 onGenerate = { profileCount ->
                     showGenerateProfilesDialog = false
-                    scope.launch {
-                        val profiles = (0 until profileCount).map { async{ getRandomProfile(context) } }.awaitAll()
+                    scope.launch(Dispatchers.Main){
+                        homeViewModel.setLoading(true)
+                        val profiles = withContext(Dispatchers.IO){(0 until profileCount).map { async{ getRandomProfile(context) } }.awaitAll()}
                         homeViewModel.createProfiles(profiles)
                     }
                 }

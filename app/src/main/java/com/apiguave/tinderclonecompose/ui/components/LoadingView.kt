@@ -55,7 +55,7 @@ fun AnimatedGradientLogo(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun AnimatedLogo(isAnimating: Boolean){
+fun AnimatedLogo(modifier: Modifier = Modifier, isAnimating: Boolean){
     val infiniteTransition = rememberInfiniteTransition()
     val animatedLogoScale by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -65,10 +65,7 @@ fun AnimatedLogo(isAnimating: Boolean){
     Image(
         painter = painterResource(id = R.drawable.tinder_logo),
         contentDescription = null,
-        modifier = Modifier
-            .padding(all = 28.dp)
-            .width(400.dp)
-            .height(IntrinsicSize.Max)
+        modifier = modifier
             .conditional(isAnimating) {
                 graphicsLayer(scaleX = animatedLogoScale, scaleY = animatedLogoScale)
             }

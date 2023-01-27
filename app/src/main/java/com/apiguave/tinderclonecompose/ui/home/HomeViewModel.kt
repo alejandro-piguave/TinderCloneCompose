@@ -23,6 +23,9 @@ class HomeViewModel: ViewModel() {
         _uiState.update { it.copy(profileList = it.profileList.dropLast(1)) }
     }
 
+    fun setLoading(isLoading: Boolean){
+        _uiState.update { it.copy(isLoading = isLoading, errorMessage = null) }
+    }
     fun createProfiles(profiles: List<CreateUserProfile>){
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }

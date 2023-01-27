@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.matchlist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,21 +30,29 @@ import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.components.GradientButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @Composable
-fun MatchListView(onNavigateToChatView: () -> Unit, onArrowBackPressed: () -> Unit, viewModel: MatchListViewModel = viewModel()) {
+fun MatchListView(
+    onNavigateToChatView: () -> Unit,
+    onArrowBackPressed: () -> Unit,
+    viewModel: MatchListViewModel = viewModel()
+) {
     Scaffold(
-        topBar = { BlankAppBar(text = stringResource(id = R.string.matches), onArrowBackPressed = onArrowBackPressed) }
+        topBar = {
+            BlankAppBar(
+                text = stringResource(id = R.string.matches),
+                onArrowBackPressed = onArrowBackPressed
+            )
+        }
     ) { padding ->
         val uiState by viewModel.uiState.collectAsState()
-        if(uiState.isLoading){
-            Column{
+        if (uiState.isLoading) {
+            Column {
                 Spacer(Modifier.weight(1f))
                 AnimatedGradientLogo(Modifier.fillMaxWidth())
                 Spacer(Modifier.weight(1f))
             }
-        } else if(uiState.errorMessage != null) {
+        } else if (uiState.errorMessage != null) {
             Column {
                 Spacer(Modifier.weight(1f))
                 Text(text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp)
@@ -61,13 +69,21 @@ fun MatchListView(onNavigateToChatView: () -> Unit, onArrowBackPressed: () -> Un
                 Spacer(Modifier.weight(1f))
             }
 
-        }else if(uiState.matchList.isEmpty()){
-            Text(modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center,text = stringResource(id = R.string.no_matches), color = Color.Gray, fontSize = 20.sp )
+        } else if (uiState.matchList.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.no_matches),
+                    color = Color.Gray,
+                    fontSize = 20.sp
+                )
+            }
         } else {
             LazyColumn(
                 Modifier
                     .fillMaxSize()
-                    .padding(padding)) {
+                    .padding(padding)
+            ) {
                 items(uiState.matchList.size) {
                     MatchView(uiState.matchList[it], onNavigateToChatView)
                 }
@@ -98,7 +114,6 @@ fun MatchView(match: Match, onClick: () -> Unit) {
                     .padding(horizontal = 16.dp)
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(randomColor())
             )
 
             Column(Modifier.fillMaxWidth()) {
@@ -107,10 +122,11 @@ fun MatchView(match: Match, onClick: () -> Unit) {
                     Spacer(Modifier.width(10.dp))
                     Text(match.age.toString(), fontSize = 20.sp)
                 }
-                Text(match.lastMessage ?: stringResource(id = R.string.say_something_nice), fontWeight = FontWeight.Light)
+                Text(
+                    match.lastMessage ?: stringResource(id = R.string.say_something_nice),
+                    fontWeight = FontWeight.Light
+                )
             }
         }
     }
 }
-
-fun randomColor() = Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())

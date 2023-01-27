@@ -5,9 +5,10 @@ import androidx.compose.ui.graphics.Color
 val LightLightGray = Color(0xffe5e5e9)
 val SystemGray4 = Color(0xffd4d4d9)
 val AntiFlashWhite = Color(0xffF0F0F0)
+val White4 = Color(0xfff7f7f7)
 
-val Orange = Color(0xfff47d55)
-val Pink = Color(0xffe83984)
+val Orange = Color(0xffec6767)
+val Pink = Color(0xffea5270)
 
 val Purple = Color(0xff831bfc)
 val LightPurple = Color(0xff9c59ea)
