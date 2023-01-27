@@ -40,7 +40,7 @@ fun RoundGradientButton(onClick: () -> Unit, enabled: Boolean = true, painter: P
                     ), shape = CircleShape
                 )
                 .padding(12.dp)
-                .size(38.dp)
+                .size(32.dp)
                 .withLinearGradient(color1, color2)
 
             , contentDescription = null
