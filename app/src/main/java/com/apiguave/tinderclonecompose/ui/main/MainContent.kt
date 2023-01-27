@@ -16,6 +16,7 @@ import com.apiguave.tinderclonecompose.ui.*
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
 import com.apiguave.tinderclonecompose.ui.home.HomeView
 import com.apiguave.tinderclonecompose.ui.login.LoginView
+import com.apiguave.tinderclonecompose.ui.matchlist.MatchListView
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost

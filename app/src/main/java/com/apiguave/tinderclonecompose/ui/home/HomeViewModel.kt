@@ -14,13 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(
-        HomeUiState(
-            isLoading = true,
-            profileList = emptyList(),
-            errorMessage = null
-        )
-    )
+    private val _uiState = MutableStateFlow(HomeUiState(true, emptyList(), null))
     val uiState = _uiState.asStateFlow()
 
     init{ fetchProfiles() }

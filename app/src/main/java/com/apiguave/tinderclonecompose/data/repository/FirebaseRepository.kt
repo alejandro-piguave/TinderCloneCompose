@@ -1,9 +1,6 @@
 package com.apiguave.tinderclonecompose.data.repository
 
-import com.apiguave.tinderclonecompose.data.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.FirestoreUserModel
-import com.apiguave.tinderclonecompose.data.Match
-import com.apiguave.tinderclonecompose.data.Profile
+import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.extensions.toAge
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -25,15 +22,9 @@ object FirebaseRepository {
         val firestoreUserModels = firestoreRepository.getCompatibleUsers()
         //Fetch profiles
         val profiles = coroutineScope {
-            firestoreUserModels.map {
-                async{
-                    getProfile(it)
-                }
-
-            }.awaitAll()
-        }.filterNotNull()
-
-        return profiles
+            firestoreUserModels.map { async{ getProfile(it) } }.awaitAll()
+        }
+        return profiles.filterNotNull()
     }
 
     private suspend fun getProfile(userModel: FirestoreUserModel): Profile?{
@@ -46,18 +37,14 @@ object FirebaseRepository {
     suspend fun getMatches(): List<Match>{
         val matchModels = firestoreRepository.getFirestoreMatchModels()
         val matches = coroutineScope {
-            matchModels.mapNotNull { matchModel ->
-                val matchId = matchModel.id ?: return@mapNotNull null
-                async {
-                    val userId = matchModel.usersMatched.first { it != AuthRepository.userId }
-                    getMatch(matchId, userId)
-                }
-            }.awaitAll()
+            matchModels.map { async { getMatch(it) } }.awaitAll()
         }
-        return matches
+        return matches.filterNotNull()
     }
 
-    private suspend fun getMatch(matchId: String, userId: String): Match{
+    private suspend fun getMatch(matchModel: FirestoreMatchModel): Match?{
+        val matchId = matchModel.id ?: return null
+        val userId = matchModel.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
         return Match(matchId, user.birthDate?.toAge() ?: 99, userId, user.name?: "", uri,  null)

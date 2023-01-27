@@ -30,5 +30,8 @@
     <string name="retry">Retry</string>
     <string name="no_more_profiles">There\'s no one new around you!</string>
     <string name="generate_profiles">Generate profiles</string>
+    <string name="matches">Matches</string>
+    <string name="say_something_nice">Say something nice!</string>
+    <string name="no_matches">You don\'t have any matches yet :(</string>
 
 </resources>

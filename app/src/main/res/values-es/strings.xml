@@ -31,4 +31,7 @@
     <string name="retry">Reintentar</string>
     <string name="no_more_profiles">¡No hay nadie más a tu alrededor!</string>
     <string name="generate_profiles">Generar perfiles</string>
+    <string name="matches">Matches</string>
+    <string name="say_something_nice">¡Di algo bonito!</string>
+    <string name="no_matches">Todavía no tienes ningún match :(</string>
 </resources>
