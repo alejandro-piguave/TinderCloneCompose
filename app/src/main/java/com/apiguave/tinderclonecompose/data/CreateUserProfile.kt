@@ -1,7 +1,6 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.data
 
 import android.graphics.Bitmap
-import com.apiguave.tinderclonecompose.data.Orientation
 import java.time.LocalDate
 
 data class CreateUserProfile(val name: String,

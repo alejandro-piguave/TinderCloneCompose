@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.Orientation
-import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.CreateUserProfile
 import com.apiguave.tinderclonecompose.extensions.isValidUsername
 import com.apiguave.tinderclonecompose.extensions.toBitmap
 import com.apiguave.tinderclonecompose.ui.components.*

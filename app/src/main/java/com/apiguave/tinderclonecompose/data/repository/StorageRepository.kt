@@ -35,7 +35,7 @@ class StorageRepository {
         }
     }
 
-    private suspend fun getUriFromUser(userId: String, fileName: String): Uri {
+    suspend fun getUriFromUser(userId: String, fileName: String): Uri {
         val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(fileName)
         return fileRef.downloadUrl.getTaskResult()
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.Profile
 import com.apiguave.tinderclonecompose.data.getRandomUserId
-import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

@@ -12,8 +12,8 @@ object AuthRepository {
     val isUserSignedIn: Boolean
         get() = FirebaseAuth.getInstance().currentUser != null
 
-    val userId: String?
-        get() = FirebaseAuth.getInstance().currentUser?.uid
+    val userId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
 
     suspend fun signInWithGoogle(data: Intent?, signInCheck: SignInCheck = SignInCheck.ALL_USERS): FirebaseUser {
         val task = GoogleSignIn.getSignedInAccountFromIntent(data ?: throw AuthException("No intent data found"))
@@ -39,7 +39,7 @@ object AuthRepository {
 
     private suspend fun isNewUser(email: String): Boolean{
         val methods = FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).getTaskResult()
-        val signInMethods = methods.signInMethods ?: throw AuthException("No sign in methods field found")
+        val signInMethods = methods.signInMethods ?: throw AuthException("No sign in methods found")
         return signInMethods.isEmpty()
     }
 }

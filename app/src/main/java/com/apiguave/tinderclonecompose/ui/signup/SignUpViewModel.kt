@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
-import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import com.apiguave.tinderclonecompose.data.repository.SignInCheck
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -7,7 +7,6 @@ import com.apiguave.tinderclonecompose.ui.components.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.CreateUserProfile
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -19,7 +18,7 @@ const val maxPictureCount = 7
 const val minPictureCount = 2
 val maxBirthdate: LocalDate = LocalDate.of(1970, 1, 1)
 
-suspend fun getRandomProfile(context: Context): CreateUserProfile{
+suspend fun getRandomProfile(context: Context): CreateUserProfile {
         val isMale = Random.nextBoolean()
         val pictureCount = getRandomPictureCount()
         val pictures = coroutineScope { (0 until pictureCount).map { async{ getRandomPicture(context, isMale) } }.awaitAll()  }
