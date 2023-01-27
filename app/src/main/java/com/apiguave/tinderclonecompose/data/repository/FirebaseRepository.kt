@@ -9,6 +9,9 @@ import kotlinx.coroutines.coroutineScope
 object FirebaseRepository {
     private val storageRepository = StorageRepository()
     private val firestoreRepository = FirestoreRepository()
+
+    suspend fun swipeUser(userId: String, isLike: Boolean): Boolean = firestoreRepository.swipeUser(userId, isLike)
+
     suspend fun createUserProfile(profile: CreateUserProfile) {
         createUserProfile(AuthRepository.userId, profile)
     }
@@ -27,11 +30,10 @@ object FirebaseRepository {
         return profiles.filterNotNull()
     }
 
-    private suspend fun getProfile(userModel: FirestoreUserModel): Profile?{
-        val userId = userModel.id ?: return null
+    private suspend fun getProfile(userModel: FirestoreUser): Profile?{
         if(userModel.pictures.isEmpty()) return null
-        val uris = storageRepository.getUrisFromUser(userId, userModel.pictures)
-        return Profile(userId, userModel.name ?: "", userModel.birthDate?.toAge() ?: 99, uris)
+        val uris = storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
+        return Profile(userModel.id, userModel.name, userModel.birthDate?.toAge() ?: 99, uris)
     }
 
     suspend fun getMatches(): List<Match>{
@@ -42,11 +44,10 @@ object FirebaseRepository {
         return matches.filterNotNull()
     }
 
-    private suspend fun getMatch(matchModel: FirestoreMatchModel): Match?{
-        val matchId = matchModel.id ?: return null
+    private suspend fun getMatch(matchModel: FirestoreMatch): Match?{
         val userId = matchModel.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
-        return Match(matchId, user.birthDate?.toAge() ?: 99, userId, user.name?: "", uri,  null)
+        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri,  null)
     }
 }

@@ -53,11 +53,11 @@ fun MatchListView(
                 Spacer(Modifier.weight(1f))
             }
         } else if (uiState.errorMessage != null) {
-            Column {
-                Spacer(Modifier.weight(1f))
-                Text(text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp)
-                Spacer(Modifier.height(12.dp))
+            Column(modifier = Modifier.padding(horizontal = 8.dp),horizontalAlignment = Alignment.CenterHorizontally) {
                 val coroutineScope = rememberCoroutineScope()
+                Spacer(Modifier.weight(1f))
+                Text(text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(12.dp))
                 GradientButton(onClick = {
                     coroutineScope.launch {
                         delay(200)

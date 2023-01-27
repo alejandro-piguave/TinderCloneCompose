@@ -45,10 +45,7 @@ fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModi
                 contentScale = ContentScale.Crop,
                 contentDescription = null)
             //Gradient
-            Spacer(
-                Modifier
-                    .fillMaxSize()
-                    .background(gradient))
+            Spacer(Modifier.fillMaxSize().background(gradient))
             Box(contentModifier.fillMaxSize()){
                 //Upper picture index indicator
                 Row(

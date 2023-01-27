@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -88,7 +89,7 @@ fun HomeView(
                 Spacer(Modifier.weight(1f))
             } else if (uiState.errorMessage != null) {
                 Spacer(Modifier.weight(1f))
-                Text(text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp)
+                Text(modifier = Modifier.padding(horizontal = 8.dp),text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(12.dp))
                 GradientButton(onClick = {
                     scope.launch {
@@ -113,9 +114,10 @@ fun HomeView(
                         ProfileCardView(profile, modifier = Modifier.swipableCard(
                             state = swipeStates[index],
                             onSwiped = {
+                                homeViewModel.swipeUser(profile.id, it == SwipingDirection.Right)
                                 homeViewModel.removeLastProfile()
                             }
-                        ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp)
+                        ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
                         )
                     }
 

@@ -19,6 +19,16 @@ class HomeViewModel: ViewModel() {
 
     init{ fetchProfiles() }
 
+    fun swipeUser(userId: String, isLike: Boolean){
+        viewModelScope.launch {
+            try {
+                val isMatch = FirebaseRepository.swipeUser(userId, isLike)
+            }catch (e: Exception){
+                //Bringing the profile card back to the profile deck?
+            }
+        }
+    }
+
     fun removeLastProfile(){
         _uiState.update { it.copy(profileList = it.profileList.dropLast(1)) }
     }
