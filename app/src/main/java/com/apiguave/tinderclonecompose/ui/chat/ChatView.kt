@@ -1,10 +1,12 @@
 package com.apiguave.tinderclonecompose.ui.chat
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -27,10 +29,7 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.Match
 import com.apiguave.tinderclonecompose.data.Message
 import com.apiguave.tinderclonecompose.extensions.withLinearGradient
-import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
-import com.apiguave.tinderclonecompose.ui.theme.Orange
-import com.apiguave.tinderclonecompose.ui.theme.Pink
-import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
+import com.apiguave.tinderclonecompose.ui.theme.*
 
 @Composable
 fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewModel()) {
@@ -134,24 +133,29 @@ fun MessageView(match: Match, message: Message) {
 @Composable
 fun ChatFooter() {
     var inputValue by remember { mutableStateOf("") } // 2
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        OutlinedTextField(
-            // 4
-            modifier = Modifier
-                .weight(1f)
-                .padding(8.dp),
-            value = inputValue,
-            onValueChange = { inputValue = it },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-            keyboardActions = KeyboardActions {  },
-        )
-        TextButton(
-            // 5
-            modifier = Modifier.height(56.dp),
-            onClick = {  },
-            enabled = inputValue.isNotBlank(),
-        ) {
-            Text(stringResource(id = R.string.send))
+    Box(Modifier.padding(8.dp)){
+        Row(
+            modifier = Modifier.border(1.dp, LightLightGray, CircleShape),
+            verticalAlignment = Alignment.CenterVertically) {
+            BasicTextField(
+                // 4
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 20.dp),
+                value = inputValue,
+                onValueChange = { inputValue = it },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                keyboardActions = KeyboardActions {  },
+            )
+            TextButton(
+                // 5
+                onClick = {  },
+                enabled = inputValue.isNotBlank(),
+                colors = ButtonDefaults.textButtonColors(contentColor = UltramarineBlue)
+            ) {
+                Text(stringResource(id = R.string.send))
+            }
         }
+
     }
 }
