@@ -13,6 +13,7 @@ As for now the application is under construction. I will be updating it to integ
 * Edit profile Firebase functionalities
 
 Note: The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project.
+Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
 
 ## Login and Create Profile
 
@@ -41,6 +42,8 @@ Once the information has been filled in and the user clicks on the "Sign Up with
 Here the user will be able to browse through profiles and swipe left or right on them in a Tinder-like fashion. Both swipe and button click to perform these actions are supported. If a user likes a user that has liked them before, a match will be created. Once a profile has been liked or disliked it will not be shown again to that user. From here the user can access to:
 * The Edit Profile screen
 * The Messages Screen
+
+Additionally, if you turn on the "allowProfileGeneration" flag from the "GenerateProfilesData.kt" file, a button will appear that will let you generate random profiles for testing purposes.
 
 <p float="left">
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/home_screen.png" width="250" />
