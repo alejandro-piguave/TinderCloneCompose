@@ -8,11 +8,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import com.apiguave.tinderclonecompose.ui.*
+import com.apiguave.tinderclonecompose.ui.chat.ChatView
+import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
 import com.apiguave.tinderclonecompose.ui.home.HomeView
 import com.apiguave.tinderclonecompose.ui.login.LoginView
@@ -45,6 +48,7 @@ fun MainContent(signInClient: GoogleSignInClient){
         val navController = rememberAnimatedNavController()
         val imageUris = remember { mutableStateListOf<Uri>() }
 
+        val chatViewModel: ChatViewModel = viewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
             animatedComposable(Routes.Login) {
                 LoginView(
@@ -115,6 +119,7 @@ fun MainContent(signInClient: GoogleSignInClient){
                     }
                 )
             }
+
             animatedComposable(Routes.MatchList){
                 MatchListView(
                     onNavigateToChatView = {
@@ -122,13 +127,15 @@ fun MainContent(signInClient: GoogleSignInClient){
                     },
                     onArrowBackPressed = {
                         navController.popBackStack()
-                    }
+                    },
+                    chatViewModel = chatViewModel
                 )
             }
             animatedComposable(Routes.Chat){
-                ChatView(onArrowBackPressed = {
-                    navController.popBackStack()
-                })
+                ChatView(
+                    onArrowBackPressed = { navController.popBackStack() },
+                    viewModel = chatViewModel
+                )
             }
         }
     }

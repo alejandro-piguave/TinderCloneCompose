@@ -36,11 +36,11 @@ import kotlinx.coroutines.*
 fun HomeView(
     onNavigateToEditProfile: () -> Unit,
     onNavigateToMatchList: () -> Unit,
-    homeViewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel()
 ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val uiState by homeViewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
     Scaffold(
         topBar = {
@@ -94,7 +94,7 @@ fun HomeView(
                 GradientButton(onClick = {
                     scope.launch {
                         delay(200)
-                        homeViewModel.fetchProfiles()
+                        viewModel.fetchProfiles()
                     }
                 }) {
                     Text(stringResource(id = R.string.retry))
@@ -114,8 +114,8 @@ fun HomeView(
                         ProfileCardView(profile, modifier = Modifier.swipableCard(
                             state = swipeStates[index],
                             onSwiped = {
-                                homeViewModel.swipeUser(profile.id, it == SwipingDirection.Right)
-                                homeViewModel.removeLastProfile()
+                                viewModel.swipeUser(profile.id, it == SwipingDirection.Right)
+                                viewModel.removeLastProfile()
                             }
                         ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
                         )
@@ -137,7 +137,7 @@ fun HomeView(
                             onClick = {
                                 scope.launch {
                                     swipeStates.last().swipe(SwipingDirection.Left)
-                                    homeViewModel.removeLastProfile()
+                                    viewModel.removeLastProfile()
                                 }
                             },
                             enabled = swipeStates.isNotEmpty(),
@@ -148,7 +148,7 @@ fun HomeView(
                             onClick = {
                                 scope.launch {
                                     swipeStates.last().swipe(SwipingDirection.Right)
-                                    homeViewModel.removeLastProfile()
+                                    viewModel.removeLastProfile()
                                 }
                             },
                             enabled = swipeStates.isNotEmpty(),
@@ -169,7 +169,7 @@ fun HomeView(
                 onGenerate = { profileCount ->
                     showGenerateProfilesDialog = false
                     scope.launch(Dispatchers.Main) {
-                        homeViewModel.setLoading(true)
+                        viewModel.setLoading(true)
                         val profiles = withContext(Dispatchers.IO) {
                             (0 until profileCount).map {
                                 async {
@@ -177,7 +177,7 @@ fun HomeView(
                                 }
                             }.awaitAll()
                         }
-                        homeViewModel.createProfiles(profiles)
+                        viewModel.createProfiles(profiles)
                     }
                 }
             )

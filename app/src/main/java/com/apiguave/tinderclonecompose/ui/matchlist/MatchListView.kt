@@ -1,10 +1,10 @@
 package com.apiguave.tinderclonecompose.ui.matchlist
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,9 +25,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.Match
+import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.components.GradientButton
+import com.apiguave.tinderclonecompose.ui.theme.LightLightGray
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -35,7 +37,8 @@ import kotlinx.coroutines.launch
 fun MatchListView(
     onNavigateToChatView: () -> Unit,
     onArrowBackPressed: () -> Unit,
-    viewModel: MatchListViewModel = viewModel()
+    viewModel: MatchListViewModel = viewModel(),
+    chatViewModel: ChatViewModel = viewModel()
 ) {
     Scaffold(
         topBar = {
@@ -85,7 +88,10 @@ fun MatchListView(
                     .padding(padding)
             ) {
                 items(uiState.matchList.size) {
-                    MatchView(uiState.matchList[it], onNavigateToChatView)
+                    MatchItem(uiState.matchList[it]) {
+                        chatViewModel.setMatch(uiState.matchList[it])
+                        onNavigateToChatView()
+                    }
                 }
             }
         }
@@ -94,39 +100,41 @@ fun MatchListView(
 }
 
 @Composable
-fun MatchView(match: Match, onClick: () -> Unit) {
-    Card(
+fun MatchItem(match: Match, onClick: () -> Unit) {
+    Row(
         Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            AsyncImage(
-                model = match.picture,
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
+        AsyncImage(
+            model = match.picture,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .size(72.dp)
+                .clip(CircleShape)
+        )
 
-            Column(Modifier.fillMaxWidth()) {
-                Row(Modifier.fillMaxWidth()) {
-                    Text(match.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.width(10.dp))
-                    Text(match.age.toString(), fontSize = 20.sp)
-                }
-                Text(
-                    match.lastMessage ?: stringResource(id = R.string.say_something_nice),
-                    fontWeight = FontWeight.Light
-                )
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(start = 8.dp)) {
+            Spacer(Modifier.height(20.dp))
+            Row(Modifier.fillMaxWidth()) {
+                Text(match.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.width(10.dp))
+                Text(match.age.toString(), fontSize = 20.sp)
             }
+            Text(
+                match.lastMessage ?: stringResource(id = R.string.say_something_nice),
+                fontWeight = FontWeight.Light
+            )
+            Spacer(Modifier.height(20.dp))
+            Spacer(modifier = Modifier.fillMaxWidth().height(1.dp).background(LightLightGray))
         }
+
     }
+
 }

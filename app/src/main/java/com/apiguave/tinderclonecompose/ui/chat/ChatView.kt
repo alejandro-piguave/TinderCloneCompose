@@ -1,30 +1,39 @@
-package com.apiguave.tinderclonecompose.ui
+package com.apiguave.tinderclonecompose.ui.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.Match
 import com.apiguave.tinderclonecompose.data.Message
-import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
+import com.apiguave.tinderclonecompose.extensions.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
+import com.apiguave.tinderclonecompose.ui.theme.Orange
+import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
 
 @Composable
-fun ChatView(onArrowBackPressed: () -> Unit) {
+fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewModel()) {
     val messages = listOf(
         Message("Text string 1", true),
         Message("Text string 2", false),
@@ -34,10 +43,11 @@ fun ChatView(onArrowBackPressed: () -> Unit) {
         Message("Text string 6", false),
 
     )
+    val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BlankAppBar(text = "Jane Doe", onArrowBackPressed = onArrowBackPressed)
+                 ChatAppBar(match = uiState.match!!, onArrowBackPressed = onArrowBackPressed)
         },
         bottomBar = { ChatFooter() }
     ) { padding ->
@@ -48,21 +58,72 @@ fun ChatView(onArrowBackPressed: () -> Unit) {
             reverseLayout = true
         ) {
             items(messages.size){ index ->
-                MessageView(message = messages[index])
+                MessageView(match = uiState.match!!,message = messages[index])
             }
         }
     }
 }
 
+@Composable
+fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
+    Surface(elevation = AppBarDefaults.TopAppBarElevation){
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
+            Box(Modifier.weight(1f)){
+                IconButton(modifier = Modifier.height(IntrinsicSize.Max),onClick = onArrowBackPressed) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_chevron_left_24),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .withLinearGradient(Pink, Orange)
+                            .align(Alignment.TopCenter)
+                    )
+                }
+            }
+
+            Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
+                AsyncImage(
+                    model = match.picture,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .size(40.dp)
+                        .clip(CircleShape)
+                )
+                Text(text = match.name, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
+            }
+            Spacer(Modifier.weight(1f))
+        }
+    }
+}
 
 @Composable
-fun MessageView(message: Message) {
+fun MessageView(match: Match, message: Message) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         horizontalArrangement = if(message.isSender) Arrangement.End else Arrangement.Start) {
+
+        if(!message.isSender){
+            AsyncImage(
+                model = match.picture,
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+            )
+        }
+
         Text(
             modifier = Modifier
-                .background(if (message.isSender) UltramarineBlue else AntiFlashWhite, RoundedCornerShape(4.dp))
+                .background(
+                    if (message.isSender) UltramarineBlue else AntiFlashWhite,
+                    RoundedCornerShape(4.dp)
+                )
                 .padding(6.dp),
             text = message.text,
             color = if(message.isSender) Color.White else Color.Black,
@@ -82,19 +143,15 @@ fun ChatFooter() {
             value = inputValue,
             onValueChange = { inputValue = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-            keyboardActions = KeyboardActions { sendMessage() },
+            keyboardActions = KeyboardActions {  },
         )
         TextButton(
             // 5
             modifier = Modifier.height(56.dp),
-            onClick = { sendMessage() },
+            onClick = {  },
             enabled = inputValue.isNotBlank(),
         ) {
             Text(stringResource(id = R.string.send))
         }
     }
-}
-
-fun sendMessage() {
-
 }
