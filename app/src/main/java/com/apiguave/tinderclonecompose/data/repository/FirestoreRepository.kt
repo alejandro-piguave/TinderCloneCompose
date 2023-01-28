@@ -7,12 +7,38 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import java.time.LocalDate
 
 class FirestoreRepository {
     companion object {
         private const val USERS = "users"
         private const val MATCHES = "matches"
+        private const val MESSAGES = "messages"
+    }
+
+    suspend fun sendMessage(matchId: String, text: String){
+        val data = FirestoreMessageProperties.toData(AuthRepository.userId, text)
+        coroutineScope {
+            val newMessageResult = async {
+                FirebaseFirestore.getInstance()
+                    .collection(MATCHES)
+                    .document(matchId)
+                    .collection(MESSAGES)
+                    .add(data)
+                    .getTaskResult()
+            }
+            val lastMessageResult = async {
+                FirebaseFirestore.getInstance()
+                    .collection(MATCHES)
+                    .document(matchId)
+                    .update(mapOf(FirestoreMatchProperties.lastMessage to text))
+                    .getTaskResult()
+            }
+            newMessageResult.await()
+            lastMessageResult.await()
+        }
     }
 
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): Boolean {
@@ -33,10 +59,7 @@ class FirestoreRepository {
         if(hasUserLikedBack){
             val matchId = getMatchId(AuthRepository.userId, swipedUserId)
             FieldValue.serverTimestamp()
-            val data = mapOf(
-                FirestoreMatchProperties.usersMatched to listOf(swipedUserId, AuthRepository.userId),
-                FirestoreMatchProperties.timestamp to FieldValue.serverTimestamp()
-            )
+            val data = FirestoreMatchProperties.toData(swipedUserId, AuthRepository.userId)
             FirebaseFirestore.getInstance()
                 .collection(MATCHES)
                 .document(matchId)

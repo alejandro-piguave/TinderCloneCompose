@@ -48,7 +48,11 @@ fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewMode
         topBar = {
                  ChatAppBar(match = uiState.match!!, onArrowBackPressed = onArrowBackPressed)
         },
-        bottomBar = { ChatFooter() }
+        bottomBar = { ChatFooter(
+            onSendClicked = {
+                viewModel.sendMessage(it)
+            }
+        ) }
     ) { padding ->
         LazyColumn(
             Modifier
@@ -57,7 +61,7 @@ fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewMode
             reverseLayout = true
         ) {
             items(messages.size){ index ->
-                MessageView(match = uiState.match!!,message = messages[index])
+                MessageItem(match = uiState.match!!,message = messages[index])
             }
         }
     }
@@ -98,7 +102,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
 }
 
 @Composable
-fun MessageView(match: Match, message: Message) {
+fun MessageItem(match: Match, message: Message) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -131,7 +135,7 @@ fun MessageView(match: Match, message: Message) {
 }
 
 @Composable
-fun ChatFooter() {
+fun ChatFooter(onSendClicked: (String) -> Unit) {
     var inputValue by remember { mutableStateOf("") } // 2
     Box(Modifier.padding(8.dp)){
         Row(
@@ -149,7 +153,10 @@ fun ChatFooter() {
             )
             TextButton(
                 // 5
-                onClick = {  },
+                onClick = {
+                    onSendClicked(inputValue)
+                    inputValue = ""
+                },
                 enabled = inputValue.isNotBlank(),
                 colors = ButtonDefaults.textButtonColors(contentColor = UltramarineBlue)
             ) {

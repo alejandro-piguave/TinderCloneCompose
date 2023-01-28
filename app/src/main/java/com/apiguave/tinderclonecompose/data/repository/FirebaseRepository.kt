@@ -10,6 +10,10 @@ object FirebaseRepository {
     private val storageRepository = StorageRepository()
     private val firestoreRepository = FirestoreRepository()
 
+    suspend fun sendMessage(matchId: String, text: String){
+        firestoreRepository.sendMessage(matchId, text)
+    }
+
     suspend fun swipeUser(userId: String, isLike: Boolean): Boolean = firestoreRepository.swipeUser(userId, isLike)
 
     suspend fun createUserProfile(profile: CreateUserProfile) {
@@ -48,6 +52,6 @@ object FirebaseRepository {
         val userId = matchModel.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
-        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri,  null)
+        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri,  matchModel.lastMessage)
     }
 }
