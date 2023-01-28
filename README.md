@@ -6,7 +6,11 @@
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
 </p>
 
-Tinder clone application written using Jetpack Compose and Firebase. As for now the application is under construction and only the UI part is available. I will be updating it to integrate it with Firebase with the goal of making it fully functional as I did with its [SwiftUI counterpart](https://github.com/alejandro-piguave/TinderCloneSwiftUI).
+Tinder clone application written using Jetpack Compose and Firebase. 
+As for now the application is under construction. I will be updating it to integrate it with Firebase with the goal of making it fully functional as I did with its [SwiftUI counterpart](https://github.com/alejandro-piguave/TinderCloneSwiftUI). The following features are missing:
+* Listening to messages in real time
+* Implementing a "new match" screen
+* Edit profile Firebase functionalities
 
 Note: The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project.
 
