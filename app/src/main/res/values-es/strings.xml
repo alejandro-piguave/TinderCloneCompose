@@ -34,4 +34,6 @@
     <string name="matches">Matches</string>
     <string name="say_something_nice">¡Di algo bonito!</string>
     <string name="no_matches">Todavía no tienes ningún match :(</string>
+    <string name="you_matched_with_on">Hiciste match con %1$s el %2$s</string>
+    <string name="no_match_value_passed">No se pasó ningún valor para el match</string>
 </resources>

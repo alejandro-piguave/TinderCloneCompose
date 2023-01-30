@@ -2,6 +2,7 @@ package com.apiguave.tinderclonecompose.data.repository
 
 import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.extensions.toAge
+import com.apiguave.tinderclonecompose.extensions.toFormattedDate
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -9,6 +10,8 @@ import kotlinx.coroutines.coroutineScope
 object FirebaseRepository {
     private val storageRepository = StorageRepository()
     private val firestoreRepository = FirestoreRepository()
+
+    fun getMessages(matchId: String) = firestoreRepository.getMessages(matchId)
 
     suspend fun sendMessage(matchId: String, text: String){
         firestoreRepository.sendMessage(matchId, text)
@@ -52,6 +55,6 @@ object FirebaseRepository {
         val userId = matchModel.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
-        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri,  matchModel.lastMessage)
+        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri, matchModel.timestamp?.toFormattedDate() ?: "", matchModel.lastMessage)
     }
 }

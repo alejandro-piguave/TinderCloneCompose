@@ -6,16 +6,16 @@ import com.apiguave.tinderclonecompose.data.Match
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(ChatUiState(null))
-    val uiState = _uiState.asStateFlow()
+    private val _match = MutableStateFlow<Match?>(null)
+    val match = _match.asStateFlow()
 
+    fun getMessages(matchId: String) = FirebaseRepository.getMessages(matchId)
 
     fun sendMessage(text: String){
-        val matchId = _uiState.value.match!!.id
+        val matchId = _match.value?.id ?: return
         viewModelScope.launch {
             try {
                 FirebaseRepository.sendMessage(matchId, text)
@@ -26,8 +26,6 @@ class ChatViewModel: ViewModel() {
     }
 
     fun setMatch(match: Match){
-        _uiState.update { it.copy(match = match) }
+        _match.value = match
     }
 }
-
-data class ChatUiState(val match: Match?)

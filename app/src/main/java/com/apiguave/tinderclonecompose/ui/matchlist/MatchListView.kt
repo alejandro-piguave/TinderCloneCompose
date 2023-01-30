@@ -108,7 +108,7 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = match.picture,
+            model = match.userPicture,
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier
@@ -123,9 +123,9 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
                 .padding(start = 8.dp)) {
             Spacer(Modifier.height(20.dp))
             Row(Modifier.fillMaxWidth()) {
-                Text(match.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Text(match.userName, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(10.dp))
-                Text(match.age.toString(), fontSize = 20.sp)
+                Text(match.userAge.toString(), fontSize = 20.sp)
             }
             Text(
                 match.lastMessage ?: stringResource(id = R.string.say_something_nice),

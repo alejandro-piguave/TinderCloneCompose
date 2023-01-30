@@ -4,9 +4,10 @@ import android.net.Uri
 
 data class Match(
     val id: String,
-    val age: Int,
+    val userAge: Int,
     val userId: String,
-    val name: String,
-    val picture: Uri,
+    val userName: String,
+    val userPicture: Uri,
+    val formattedDate: String,
     val lastMessage: String?
 )

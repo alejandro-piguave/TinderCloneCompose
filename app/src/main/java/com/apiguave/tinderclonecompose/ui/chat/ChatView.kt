@@ -33,38 +33,45 @@ import com.apiguave.tinderclonecompose.ui.theme.*
 
 @Composable
 fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewModel()) {
-    val messages = listOf(
-        Message("Text string 1", true),
-        Message("Text string 2", false),
-        Message("Text string 3", true),
-        Message("Text string 4", false),
-        Message("Text string 5", true),
-        Message("Text string 6", false),
-
-    )
-    val uiState by viewModel.uiState.collectAsState()
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-                 ChatAppBar(match = uiState.match!!, onArrowBackPressed = onArrowBackPressed)
-        },
-        bottomBar = { ChatFooter(
-            onSendClicked = {
-                viewModel.sendMessage(it)
-            }
-        ) }
-    ) { padding ->
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .padding(padding),
-            reverseLayout = true
-        ) {
-            items(messages.size){ index ->
-                MessageItem(match = uiState.match!!,message = messages[index])
+    val match by viewModel.match.collectAsState()
+    match?.let { match: Match ->
+        val messages by viewModel.getMessages(match.id).collectAsState(listOf())
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                ChatAppBar(match = match, onArrowBackPressed = onArrowBackPressed)
+            },
+            bottomBar = { ChatFooter(
+                onSendClicked = {text ->
+                    viewModel.sendMessage(text)
+                }
+            ) }
+        ) { padding ->
+            LazyColumn(
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            ) {
+                item {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        textAlign = TextAlign.Center,
+                        color = Color.Gray,
+                        fontSize = 12.sp,
+                        text = stringResource(id = R.string.you_matched_with_on, match.userName, match.formattedDate).uppercase())
+                }
+                items(messages.size){ index ->
+                    MessageItem(match = match,message = messages[index])
+                }
             }
         }
+
+    } ?: run{
+        Text(modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = stringResource(id = R.string.no_match_value_passed))
     }
+
 }
 
 @Composable
@@ -86,7 +93,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
 
             Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
                 AsyncImage(
-                    model = match.picture,
+                    model = match.userPicture,
                     contentScale = ContentScale.Crop,
                     contentDescription = null,
                     modifier = Modifier
@@ -94,7 +101,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
                         .size(40.dp)
                         .clip(CircleShape)
                 )
-                Text(text = match.name, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
+                Text(text = match.userName, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
             }
             Spacer(Modifier.weight(1f))
         }
@@ -107,11 +114,13 @@ fun MessageItem(match: Match, message: Message) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = if(message.isSender) Arrangement.End else Arrangement.Start) {
+        horizontalArrangement = if(message.isFromSender) Arrangement.End else Arrangement.Start) {
 
-        if(!message.isSender){
+        if(message.isFromSender){
+            Spacer(Modifier.fillMaxWidth(.25f))
+        } else {
             AsyncImage(
-                model = match.picture,
+                model = match.userPicture,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -124,13 +133,24 @@ fun MessageItem(match: Match, message: Message) {
         Text(
             modifier = Modifier
                 .background(
-                    if (message.isSender) UltramarineBlue else AntiFlashWhite,
+                    if (message.isFromSender) UltramarineBlue else AntiFlashWhite,
                     RoundedCornerShape(4.dp)
                 )
-                .padding(6.dp),
+                .padding(6.dp)
+                .weight(4f, false)
+            ,
             text = message.text,
-            color = if(message.isSender) Color.White else Color.Black,
-            )
+            color = if(message.isFromSender) Color.White else Color.Black,
+        )
+
+        if(!message.isFromSender){
+            Spacer(
+                Modifier
+                    .height(4.dp)
+                    .weight(1f, false)
+                    .background(Color.Red))
+        }
+
     }
 }
 
@@ -149,7 +169,9 @@ fun ChatFooter(onSendClicked: (String) -> Unit) {
                 value = inputValue,
                 onValueChange = { inputValue = it },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                keyboardActions = KeyboardActions {  },
+                keyboardActions = KeyboardActions {
+                    onSendClicked(inputValue)
+                    inputValue = ""  },
             )
             TextButton(
                 // 5
