@@ -80,7 +80,7 @@ class FirestoreRepository {
         }
     }
 
-    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): Boolean {
+    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
             .document(AuthRepository.userId)
@@ -104,8 +104,15 @@ class FirestoreRepository {
                 .document(matchId)
                 .set(data)
                 .getTaskResult()
+
+            val result = FirebaseFirestore.getInstance()
+                .collection(MATCHES)
+                .document(matchId)
+                .get()
+                .getTaskResult()
+            return result.toObject()
         }
-        return hasUserLikedBack
+        return null
     }
 
     private fun getMatchId(userId1: String, userId2: String): String{

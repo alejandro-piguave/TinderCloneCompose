@@ -1,10 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.main
 
 import android.net.Uri
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -20,26 +17,14 @@ import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
 import com.apiguave.tinderclonecompose.ui.home.HomeView
 import com.apiguave.tinderclonecompose.ui.login.LoginView
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListView
+import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchView
+import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-
-const val TRANSITION_DURATION = 400
-
-class Routes{
-    companion object{
-        const val Login = "login"
-        const val SignUp = "signup"
-        const val AddPicture = "add_picture"
-        const val Home = "home"
-        const val EditProfile = "edit_profile"
-        const val MatchList = "match_list"
-        const val Chat = "chat"
-    }
-}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -49,7 +34,9 @@ fun MainContent(signInClient: GoogleSignInClient){
         val imageUris = remember { mutableStateListOf<Uri>() }
 
         val chatViewModel: ChatViewModel = viewModel()
+        val newMatchViewModel: NewMatchViewModel = viewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
+
             animatedComposable(Routes.Login) {
                 LoginView(
                     signInClient = signInClient,
@@ -65,6 +52,7 @@ fun MainContent(signInClient: GoogleSignInClient){
                     }
                 )
             }
+
             animatedComposable(Routes.SignUp) {
                 SignUpView(
                     signInClient = signInClient,
@@ -81,6 +69,7 @@ fun MainContent(signInClient: GoogleSignInClient){
                     }
                 )
             }
+
             animatedComposable(Routes.AddPicture){
                 AddPictureView(
                     onCloseClicked = {
@@ -93,16 +82,25 @@ fun MainContent(signInClient: GoogleSignInClient){
                 )
             }
 
-            animatedComposable(Routes.Home) {
+            animatedComposable(Routes.Home, animationType = AnimationType.HOME) {
                 HomeView(
+                    newMatchViewModel = newMatchViewModel,
                     onNavigateToEditProfile = {
                         navController.navigate(Routes.EditProfile)
                     },
                     onNavigateToMatchList = {
                         navController.navigate(Routes.MatchList)
+                    },
+                    onNavigateToNewMatch = {
+                        navController.navigate(Routes.NewMatch)
                     }
                 )
             }
+
+            animatedComposable(Routes.NewMatch, animationType = AnimationType.FADE){
+                NewMatchView(newMatchViewModel)
+            }
+
             animatedComposable(Routes.EditProfile){
                 EditProfileView(
                     signInClient = signInClient,
@@ -131,6 +129,7 @@ fun MainContent(signInClient: GoogleSignInClient){
                     chatViewModel = chatViewModel
                 )
             }
+
             animatedComposable(Routes.Chat){
                 ChatView(
                     onArrowBackPressed = { navController.popBackStack() },
@@ -144,37 +143,16 @@ fun MainContent(signInClient: GoogleSignInClient){
 @ExperimentalAnimationApi
 fun NavGraphBuilder.animatedComposable(
     route: String,
+    animationType: AnimationType = AnimationType.SLIDE,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
 ) {
     composable(route, arguments, deepLinks,
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Left, animationSpec = tween(
-                TRANSITION_DURATION
-            )
-            )
-        },
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Left, animationSpec = tween(
-                TRANSITION_DURATION
-            )
-            )
-        },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Right, animationSpec = tween(
-                TRANSITION_DURATION
-            )
-            )
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Right, animationSpec = tween(
-                TRANSITION_DURATION
-            )
-            )
-        }, content = content )
+        enterTransition = animationType.enterTransition,
+        exitTransition = animationType.exitTransition,
+        popEnterTransition = animationType.popEnterTransition,
+        popExitTransition = animationType.popExitTransition,
+        content = content
+    )
 }

@@ -2,9 +2,7 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.Profile
-import com.apiguave.tinderclonecompose.data.getRandomUserId
-import com.apiguave.tinderclonecompose.data.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -14,15 +12,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState(true, emptyList(), null))
+    private val _uiState = MutableStateFlow(HomeUiState(true, emptyList(), null, null))
     val uiState = _uiState.asStateFlow()
 
     init{ fetchProfiles() }
 
-    fun swipeUser(userId: String, isLike: Boolean){
+    fun swipeUser(profile: Profile, isLike: Boolean){
+        _uiState.update { it.copy(newMatch = null) }
         viewModelScope.launch {
             try {
-                val isMatch = FirebaseRepository.swipeUser(userId, isLike)
+                val match = FirebaseRepository.swipeUser(profile, isLike)
+                if(match != null){
+                    _uiState.update { it.copy(newMatch = match) }
+                }
             }catch (e: Exception){
                 //Bringing the profile card back to the profile deck?
             }
@@ -65,4 +67,6 @@ class HomeViewModel: ViewModel() {
 data class HomeUiState(
     val isLoading: Boolean,
     val profileList: List<Profile>,
-    val errorMessage: String?)
+    val errorMessage: String?,
+    val newMatch: NewMatch?
+    )

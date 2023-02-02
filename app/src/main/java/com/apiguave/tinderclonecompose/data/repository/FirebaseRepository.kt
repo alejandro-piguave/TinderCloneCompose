@@ -17,7 +17,12 @@ object FirebaseRepository {
         firestoreRepository.sendMessage(matchId, text)
     }
 
-    suspend fun swipeUser(userId: String, isLike: Boolean): Boolean = firestoreRepository.swipeUser(userId, isLike)
+    suspend fun swipeUser(profile: Profile, isLike: Boolean): NewMatch? {
+        val matchModel = firestoreRepository.swipeUser(profile.id, isLike)
+        return matchModel?.let { model ->
+            NewMatch(model.id, profile.id, profile.name, profile.pictures)
+        }
+    }
 
     suspend fun createUserProfile(profile: CreateUserProfile) {
         createUserProfile(AuthRepository.userId, profile)
@@ -46,15 +51,15 @@ object FirebaseRepository {
     suspend fun getMatches(): List<Match>{
         val matchModels = firestoreRepository.getFirestoreMatchModels()
         val matches = coroutineScope {
-            matchModels.map { async { getMatch(it) } }.awaitAll()
+            matchModels.map { async { it.toMatch()} }.awaitAll()
         }
         return matches.filterNotNull()
     }
 
-    private suspend fun getMatch(matchModel: FirestoreMatch): Match?{
-        val userId = matchModel.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
+    private suspend fun FirestoreMatch.toMatch(): Match?{
+        val userId = this.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
-        return Match(matchModel.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri, matchModel.timestamp?.toFormattedDate() ?: "", matchModel.lastMessage)
+        return Match(this.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri, this.timestamp?.toFormattedDate() ?: "", this.lastMessage)
     }
 }

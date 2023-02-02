@@ -26,6 +26,7 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.allowProfileGeneration
 import com.apiguave.tinderclonecompose.data.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
+import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
@@ -36,12 +37,20 @@ import kotlinx.coroutines.*
 fun HomeView(
     onNavigateToEditProfile: () -> Unit,
     onNavigateToMatchList: () -> Unit,
-    viewModel: HomeViewModel = viewModel()
-) {
+    onNavigateToNewMatch: () -> Unit,
+    homeViewModel: HomeViewModel = viewModel(),
+    newMatchViewModel: NewMatchViewModel = viewModel()
+    ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by homeViewModel.uiState.collectAsState()
     val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
+    LaunchedEffect(key1 = uiState, block = {
+        uiState.newMatch?.let {
+            newMatchViewModel.setMatch(it)
+            onNavigateToNewMatch()
+        }
+    })
     Scaffold(
         topBar = {
             Row(
@@ -94,7 +103,7 @@ fun HomeView(
                 GradientButton(onClick = {
                     scope.launch {
                         delay(200)
-                        viewModel.fetchProfiles()
+                        homeViewModel.fetchProfiles()
                     }
                 }) {
                     Text(stringResource(id = R.string.retry))
@@ -114,8 +123,8 @@ fun HomeView(
                         ProfileCardView(profile, modifier = Modifier.swipableCard(
                             state = swipeStates[index],
                             onSwiped = {
-                                viewModel.swipeUser(profile.id, it == SwipingDirection.Right)
-                                viewModel.removeLastProfile()
+                                homeViewModel.swipeUser(profile, it == SwipingDirection.Right)
+                                homeViewModel.removeLastProfile()
                             }
                         ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
                         )
@@ -127,7 +136,8 @@ fun HomeView(
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 10.dp)
                             .onGloballyPositioned { coordinates ->
-                                buttonRowHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+                                buttonRowHeightDp =
+                                    with(localDensity) { coordinates.size.height.toDp() }
                             }
                        ,
                         horizontalArrangement = Arrangement.Center
@@ -137,7 +147,7 @@ fun HomeView(
                             onClick = {
                                 scope.launch {
                                     swipeStates.last().swipe(SwipingDirection.Left)
-                                    viewModel.removeLastProfile()
+                                    homeViewModel.removeLastProfile()
                                 }
                             },
                             enabled = swipeStates.isNotEmpty(),
@@ -148,7 +158,7 @@ fun HomeView(
                             onClick = {
                                 scope.launch {
                                     swipeStates.last().swipe(SwipingDirection.Right)
-                                    viewModel.removeLastProfile()
+                                    homeViewModel.removeLastProfile()
                                 }
                             },
                             enabled = swipeStates.isNotEmpty(),
@@ -169,7 +179,7 @@ fun HomeView(
                 onGenerate = { profileCount ->
                     showGenerateProfilesDialog = false
                     scope.launch(Dispatchers.Main) {
-                        viewModel.setLoading(true)
+                        homeViewModel.setLoading(true)
                         val profiles = withContext(Dispatchers.IO) {
                             (0 until profileCount).map {
                                 async {
@@ -177,7 +187,7 @@ fun HomeView(
                                 }
                             }.awaitAll()
                         }
-                        viewModel.createProfiles(profiles)
+                        homeViewModel.createProfiles(profiles)
                     }
                 }
             )
