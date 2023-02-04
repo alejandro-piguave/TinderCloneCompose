@@ -2,7 +2,10 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.*
+import com.apiguave.tinderclonecompose.data.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.NewMatch
+import com.apiguave.tinderclonecompose.data.Profile
+import com.apiguave.tinderclonecompose.data.getRandomUserId
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -29,6 +32,10 @@ class HomeViewModel: ViewModel() {
                 //Bringing the profile card back to the profile deck?
             }
         }
+    }
+
+    fun removeLastMatch(){
+        _uiState.update { it.copy(newMatch = null) }
     }
 
     fun removeLastProfile(){

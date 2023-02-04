@@ -45,9 +45,10 @@ fun HomeView(
     val scope = rememberCoroutineScope()
     val uiState by homeViewModel.uiState.collectAsState()
     val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
-    LaunchedEffect(key1 = uiState, block = {
+    LaunchedEffect(key1 = uiState.newMatch, block = {
         uiState.newMatch?.let {
             newMatchViewModel.setMatch(it)
+            homeViewModel.removeLastMatch()
             onNavigateToNewMatch()
         }
     })

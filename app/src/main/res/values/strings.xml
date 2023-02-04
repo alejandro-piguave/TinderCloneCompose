@@ -35,5 +35,7 @@
     <string name="no_matches">You don\'t have any matches yet :(</string>
     <string name="you_matched_with_on">You matched with %1$s on %2$s</string>
     <string name="no_match_value_passed">No match value passed</string>
+    <string name="its_a">It\'s a</string>
+    <string name="match">match!</string>
 
 </resources>

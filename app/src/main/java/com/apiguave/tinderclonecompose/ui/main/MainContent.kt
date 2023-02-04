@@ -98,7 +98,11 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.NewMatch, animationType = AnimationType.FADE){
-                NewMatchView(newMatchViewModel)
+                NewMatchView(newMatchViewModel,
+                    onCloseClicked = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             animatedComposable(Routes.EditProfile){

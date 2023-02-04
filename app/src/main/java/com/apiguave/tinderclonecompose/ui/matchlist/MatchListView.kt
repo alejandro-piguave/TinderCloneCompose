@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -128,7 +129,9 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
                 Text(match.userAge.toString(), fontSize = 20.sp)
             }
             Text(
-                match.lastMessage ?: stringResource(id = R.string.say_something_nice),
+                text = match.lastMessage ?: stringResource(id = R.string.say_something_nice),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Light
             )
             Spacer(Modifier.height(20.dp))
