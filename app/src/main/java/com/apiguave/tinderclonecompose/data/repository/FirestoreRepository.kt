@@ -146,7 +146,7 @@ class FirestoreRepository {
             birthDate = birthdate.toTimestamp(),
             bio = bio,
             male = isMale,
-            orientation = orientation.name,
+            orientation = orientation,
             pictures = pictures,
             liked = emptyList(),
             passed = emptyList()
@@ -154,11 +154,11 @@ class FirestoreRepository {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
-    suspend fun getCompatibleUsers(): List<FirestoreUser> {
+    suspend fun getUserList(): UserList{
         //Get current user information
         val currentUser = getFirestoreUserModel(AuthRepository.userId)
         currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")
-        val excludedUserIds = currentUser.liked + currentUser.passed
+        val excludedUserIds = currentUser.liked + currentUser.passed + AuthRepository.userId
 
         //Build query
         val searchQuery: Query = kotlin.run {
@@ -169,18 +169,18 @@ class FirestoreRepository {
                         Orientation.women.name
                     else Orientation.men.name
                 )
-            if (currentUser.orientation != Orientation.both.name) {
+            if (currentUser.orientation != Orientation.both) {
                 query.whereEqualTo(
                     FirestoreUserProperties.isMale,
-                    currentUser.orientation == Orientation.men.name
+                    currentUser.orientation == Orientation.men
                 )
             } else query
         }
 
         val result = searchQuery.get().getTaskResult()
         //Filter documents
-        val filteredDocumentList = result.filter { it.id != currentUser.id && !excludedUserIds.contains(it.id) }
-        return filteredDocumentList.mapNotNull { it.toObject() }
+        val compatibleUsers: List<FirestoreUser> = result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject() }
+        return UserList(currentUser, compatibleUsers)
     }
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {

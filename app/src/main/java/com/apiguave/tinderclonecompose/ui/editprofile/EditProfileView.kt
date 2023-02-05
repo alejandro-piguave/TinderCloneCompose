@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.editprofile
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,21 +22,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 @Composable
 fun EditProfileView(
     signInClient: GoogleSignInClient,
-    imageUris: SnapshotStateList<Uri>,
     onAddPicture: () -> Unit,
     onSignedOut: () -> Unit,
-    editProfileViewModel: EditProfileViewModel = viewModel()
+    viewModel: EditProfileViewModel = viewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     var deleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
-    var bioText by remember { mutableStateOf(TextFieldValue("")) }
+    var bioText by remember { mutableStateOf(TextFieldValue(uiState.currentProfile?.bio ?: "")) }
 
-    var selectedGenderIndex by remember { mutableStateOf(0) }
-    var selectedOrientationIndex by remember { mutableStateOf(0) }
+    var selectedGenderIndex by remember {
+        mutableStateOf(uiState.currentProfile?.isMale?.let { if(it) 0 else 1 } ?: -1)
+    }
+    var selectedOrientationIndex by remember { mutableStateOf(uiState.currentProfile?.orientation?.ordinal ?: -1) }
 
-    val uiState by editProfileViewModel.uiState.collectAsState()
-    LaunchedEffect(key1 = uiState, block = {
+    LaunchedEffect(key1 = uiState.isUserSignedOut, block = {
         if(uiState.isUserSignedOut){
             onSignedOut()
         }
@@ -49,7 +49,7 @@ fun EditProfileView(
             onDismissRequest = { deleteConfirmationDialog = false },
             onConfirm = {
                 deleteConfirmationDialog = false
-                imageUris.removeAt(deleteConfirmationPictureIndex)
+                viewModel.removePictureAt(deleteConfirmationPictureIndex)
             },
             onDismiss = { deleteConfirmationDialog = false })
     }
@@ -75,7 +75,7 @@ fun EditProfileView(
         items(RowCount) { rowIndex ->
             PictureGridRow(
                 rowIndex = rowIndex,
-                imageUris = imageUris,
+                imageUris = uiState.currentProfile?.pictures ?: emptyList(),
                 onAddPicture = onAddPicture,
                 onAddedPictureClicked = {
                     deleteConfirmationDialog = true
@@ -115,17 +115,13 @@ fun EditProfileView(
 
                 SectionTitle(title = stringResource(id = R.string.personal_information))
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.name), text = "Alejandro")
+                TextRow(title = stringResource(id = R.string.name), text = uiState.currentProfile?.name ?: "")
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.birth_date), text = "Ago 10 2001")
+                TextRow(title = stringResource(id = R.string.birth_date), text = uiState.currentProfile?.birthDate ?: "")
                 FormDivider()
 
-                Spacer(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                )
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { editProfileViewModel.signOut(signInClient) }) {
+                Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.signOut(signInClient) }) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -136,12 +132,7 @@ fun EditProfileView(
                         Text(stringResource(id = R.string.sign_out), fontWeight = FontWeight.Bold)
                     }
                 }
-                Spacer(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                )
-
+                Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -14,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.Orientation
 import com.apiguave.tinderclonecompose.data.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.Orientation
 import com.apiguave.tinderclonecompose.extensions.isValidUsername
 import com.apiguave.tinderclonecompose.extensions.toBitmap
 import com.apiguave.tinderclonecompose.ui.components.*
@@ -40,7 +38,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit,signUpViewModel: SignUpViewModel = viewModel()) {
+fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit, viewModel: SignUpViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
+
     val context = LocalContext.current
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
@@ -55,11 +55,11 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
     var selectedGenderIndex by rememberSaveable { mutableStateOf(-1) }
     var selectedOrientationIndex by rememberSaveable { mutableStateOf(-1) }
 
-    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && imageUris.size > 1 && selectedGenderIndex >= 0 && selectedOrientationIndex >= 0 } }
+    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && uiState.pictures.size > 1 && selectedGenderIndex >= 0 && selectedOrientationIndex >= 0 } }
     val coroutineScope = rememberCoroutineScope()
 
     //Update UI state
-    val uiState by signUpViewModel.uiState.collectAsState()
+
     LaunchedEffect(key1 = uiState, block = {
         if(uiState.isUserSignedIn){
             onNavigateToHome()
@@ -73,15 +73,15 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
-            signUpViewModel.setLoading(true)
+            viewModel.setLoading(true)
             coroutineScope.launch {
                 //Transforms the Uris to Bitmaps
-                val pictures = imageUris.map { async { it.toBitmap(context.contentResolver) } }.awaitAll()
+                val pictures = uiState.pictures.map { async { it.toBitmap(context.contentResolver) } }.awaitAll()
                 val isMale = selectedGenderIndex == 0
                 val orientation = Orientation.values()[selectedOrientationIndex]
                 val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, pictures)
                 //Signs up with the information provided
-                signUpViewModel.signUp(it.data, profile)
+                viewModel.signUp(it.data, profile)
             }
         }
     )
@@ -93,7 +93,7 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
             onDismissRequest = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 showDeleteConfirmationDialog = false
-                imageUris.removeAt(deleteConfirmationPictureIndex) },
+                viewModel.removePictureAt(deleteConfirmationPictureIndex) },
             onDismiss = { showDeleteConfirmationDialog = false})
     }
 
@@ -126,7 +126,7 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
             items(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    imageUris = imageUris,
+                    imageUris = uiState.pictures,
                     onAddPicture = onAddPicture,
                     onAddedPictureClicked = {
                         showDeleteConfirmationDialog = true

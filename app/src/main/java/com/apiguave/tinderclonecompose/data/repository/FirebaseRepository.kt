@@ -1,8 +1,7 @@
 package com.apiguave.tinderclonecompose.data.repository
 
 import com.apiguave.tinderclonecompose.data.*
-import com.apiguave.tinderclonecompose.extensions.toAge
-import com.apiguave.tinderclonecompose.extensions.toFormattedDate
+import com.apiguave.tinderclonecompose.extensions.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -13,7 +12,7 @@ object FirebaseRepository {
 
     fun getMessages(matchId: String) = firestoreRepository.getMessages(matchId)
 
-    suspend fun sendMessage(matchId: String, text: String){
+    suspend fun sendMessage(matchId: String, text: String) {
         firestoreRepository.sendMessage(matchId, text)
     }
 
@@ -30,36 +29,58 @@ object FirebaseRepository {
 
     suspend fun createUserProfile(userId: String, profile: CreateUserProfile) {
         val filenames = storageRepository.uploadUserPictures(userId, profile.pictures)
-        firestoreRepository.createUserProfile(userId, profile.name, profile.birthdate, profile.bio, profile.isMale, profile.orientation, filenames)
+        firestoreRepository.createUserProfile(
+            userId,
+            profile.name,
+            profile.birthdate,
+            profile.bio,
+            profile.isMale,
+            profile.orientation,
+            filenames
+        )
     }
 
-    suspend fun getProfiles(): List<Profile>{
-        val firestoreUserModels = firestoreRepository.getCompatibleUsers()
+    suspend fun getProfiles(): ProfileList {
+        val userList = firestoreRepository.getUserList()
         //Fetch profiles
-        val profiles = coroutineScope {
-            firestoreUserModels.map { async{ getProfile(it) } }.awaitAll()
+        val profileList = coroutineScope {
+            val profiles = userList.compatibleUsers.map { async { getProfile(it) } }
+            val currentProfile = async { getCurrentProfile(userList.currentUser) }
+            ProfileList(currentProfile.await(), profiles.awaitAll())
         }
-        return profiles.filterNotNull()
+        return profileList
     }
 
-    private suspend fun getProfile(userModel: FirestoreUser): Profile?{
-        if(userModel.pictures.isEmpty()) return null
-        val uris = storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
-        return Profile(userModel.id, userModel.name, userModel.birthDate?.toAge() ?: 99, uris)
+    private suspend fun getCurrentProfile(userModel: FirestoreUser): CurrentProfile {
+        val uris = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
+        return userModel.toCurrentProfile(uris)
     }
 
-    suspend fun getMatches(): List<Match>{
+    private suspend fun getProfile(userModel: FirestoreUser): Profile {
+        val uris = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
+        return userModel.toProfile(uris)
+    }
+
+    suspend fun getMatches(): List<Match> {
         val matchModels = firestoreRepository.getFirestoreMatchModels()
         val matches = coroutineScope {
-            matchModels.map { async { it.toMatch()} }.awaitAll()
+            matchModels.map { async { it.toMatch() } }.awaitAll()
         }
         return matches.filterNotNull()
     }
 
-    private suspend fun FirestoreMatch.toMatch(): Match?{
+    private suspend fun FirestoreMatch.toMatch(): Match? {
         val userId = this.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
         val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
-        return Match(this.id, user.birthDate?.toAge() ?: 99, userId, user.name, uri, this.timestamp?.toFormattedDate() ?: "", this.lastMessage)
+        return Match(
+            this.id,
+            user.birthDate?.toAge() ?: 99,
+            userId,
+            user.name,
+            uri,
+            this.timestamp?.toShortString() ?: "",
+            this.lastMessage
+        )
     }
 }

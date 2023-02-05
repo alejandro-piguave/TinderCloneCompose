@@ -11,7 +11,7 @@ data class FirestoreUser(
     val bio: String="",
     @field:JvmField
     val male: Boolean?=null,
-    val orientation: String?=null,
+    val orientation: Orientation?=null,
     val pictures: List<String> = emptyList(),
     val liked: List<String> = emptyList(),
     val passed: List<String> = emptyList()

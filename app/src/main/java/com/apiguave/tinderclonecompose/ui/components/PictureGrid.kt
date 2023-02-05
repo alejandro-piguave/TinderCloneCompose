@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -33,7 +32,7 @@ const val GridItemCount = 9
 const val RowCount = 1 + (GridItemCount -1) / ColumnCount
 
 @Composable
-fun PictureGridRow(rowIndex: Int, imageUris: SnapshotStateList<Uri>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
+fun PictureGridRow(rowIndex: Int, imageUris: List<Uri>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
     Row(
         Modifier
             .fillMaxWidth()

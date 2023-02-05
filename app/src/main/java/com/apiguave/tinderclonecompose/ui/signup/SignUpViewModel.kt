@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
 import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
@@ -16,6 +17,7 @@ class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         SignUpUiState(
             isLoading = false,
+            pictures = emptyList(),
             isUserSignedIn = false,
             errorMessage = null
         )
@@ -23,6 +25,13 @@ class SignUpViewModel : ViewModel() {
     val uiState = _uiState.asStateFlow()
     fun setLoading(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading, errorMessage = null) }
+    }
+
+    fun removePictureAt(index: Int){
+        _uiState.update { it.copy(pictures = it.pictures.filterIndexed{ itemIndex, _ -> itemIndex != index })}
+    }
+    fun addPicture(picture: Uri){
+        _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
     fun signUp(data: Intent?, profile: CreateUserProfile) {
@@ -44,6 +53,7 @@ class SignUpViewModel : ViewModel() {
 
 data class SignUpUiState(
     val isLoading: Boolean,
+    val pictures: List<Uri>,
     val isUserSignedIn: Boolean,
     val errorMessage: String?
 )

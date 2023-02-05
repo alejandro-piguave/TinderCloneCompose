@@ -26,6 +26,7 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.allowProfileGeneration
 import com.apiguave.tinderclonecompose.data.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
+import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
 import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
@@ -39,17 +40,21 @@ fun HomeView(
     onNavigateToMatchList: () -> Unit,
     onNavigateToNewMatch: () -> Unit,
     homeViewModel: HomeViewModel = viewModel(),
-    newMatchViewModel: NewMatchViewModel = viewModel()
+    newMatchViewModel: NewMatchViewModel = viewModel(),
+    editProfileViewModel: EditProfileViewModel = viewModel()
     ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val uiState by homeViewModel.uiState.collectAsState()
-    val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
-    LaunchedEffect(key1 = uiState.newMatch, block = {
-        uiState.newMatch?.let {
+    LaunchedEffect(key1 = Unit, block = {
+        homeViewModel.newMatch.collect{
             newMatchViewModel.setMatch(it)
-            homeViewModel.removeLastMatch()
             onNavigateToNewMatch()
+        }
+    })
+    LaunchedEffect(key1 = uiState is HomeUiState.Success, block = {
+        (uiState as? HomeUiState.Success)?.let {
+            editProfileViewModel.setCurrentProfile(it.currentProfile)
         }
     })
     Scaffold(
@@ -93,83 +98,89 @@ fun HomeView(
                 .fillMaxSize()
                 .padding(padding), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.isLoading) {
-                Spacer(Modifier.weight(1f))
-                AnimatedGradientLogo(Modifier.fillMaxWidth(.4f))
-                Spacer(Modifier.weight(1f))
-            } else if (uiState.errorMessage != null) {
-                Spacer(Modifier.weight(1f))
-                Text(modifier = Modifier.padding(horizontal = 8.dp),text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(12.dp))
-                GradientButton(onClick = {
-                    scope.launch {
-                        delay(200)
-                        homeViewModel.fetchProfiles()
+            when(val state = uiState){
+                is HomeUiState.Error-> {
+                    Spacer(Modifier.weight(1f))
+                    Text(modifier = Modifier.padding(horizontal = 8.dp),text = state.message ?: "", color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(12.dp))
+                    GradientButton(onClick = {
+                        scope.launch {
+                            delay(200)
+                            homeViewModel.fetchProfiles()
+                        }
+                    }) {
+                        Text(stringResource(id = R.string.retry))
                     }
-                }) {
-                    Text(stringResource(id = R.string.retry))
+                    Spacer(Modifier.weight(1f))
                 }
-                Spacer(Modifier.weight(1f))
-            } else {
-                Spacer(Modifier.weight(1f))
-                Box(Modifier.padding(horizontal = 12.dp)) {
-                    Text(
-                        text = stringResource(id = R.string.no_more_profiles),
-                        color = Color.Gray,
-                        fontSize = 20.sp
-                    )
-                    val localDensity = LocalDensity.current
-                    var buttonRowHeightDp by remember { mutableStateOf(0.dp) }
-                    uiState.profileList.forEachIndexed { index, profile ->
-                        ProfileCardView(profile, modifier = Modifier.swipableCard(
-                            state = swipeStates[index],
-                            onSwiped = {
-                                homeViewModel.swipeUser(profile, it == SwipingDirection.Right)
-                                homeViewModel.removeLastProfile()
-                            }
-                        ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
+                HomeUiState.Loading -> {
+                    Spacer(Modifier.weight(1f))
+                    AnimatedGradientLogo(Modifier.fillMaxWidth(.4f))
+                    Spacer(Modifier.weight(1f))
+                }
+                is HomeUiState.Success -> {
+                    Spacer(Modifier.weight(1f))
+                    Box(Modifier.padding(horizontal = 12.dp)) {
+                        Text(
+                            text = stringResource(id = R.string.no_more_profiles),
+                            color = Color.Gray,
+                            fontSize = 20.sp
                         )
-                    }
+                        val localDensity = LocalDensity.current
+                        var buttonRowHeightDp by remember { mutableStateOf(0.dp) }
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomCenter)
-                            .padding(vertical = 10.dp)
-                            .onGloballyPositioned { coordinates ->
-                                buttonRowHeightDp =
-                                    with(localDensity) { coordinates.size.height.toDp() }
-                            }
-                       ,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Spacer(Modifier.weight(1f))
-                        RoundGradientButton(
-                            onClick = {
-                                scope.launch {
-                                    swipeStates.last().swipe(SwipingDirection.Left)
+                        val swipeStates = state.profileList.map { rememberSwipeableCardState() }
+                        state.profileList.forEachIndexed { index, profile ->
+                            ProfileCardView(profile, modifier = Modifier.swipableCard(
+                                state = swipeStates[index],
+                                onSwiped = {
+                                    homeViewModel.swipeUser(profile, it == SwipingDirection.Right)
                                     homeViewModel.removeLastProfile()
                                 }
-                            },
-                            enabled = swipeStates.isNotEmpty(),
-                            imageVector = Icons.Filled.Close, color1 = Pink, color2 = Orange
-                        )
-                        Spacer(Modifier.weight(.5f))
-                        RoundGradientButton(
-                            onClick = {
-                                scope.launch {
-                                    swipeStates.last().swipe(SwipingDirection.Right)
-                                    homeViewModel.removeLastProfile()
-                                }
-                            },
-                            enabled = swipeStates.isNotEmpty(),
-                            imageVector = Icons.Filled.Favorite, color1 = Green1, color2 = Green2
-                        )
-                        Spacer(Modifier.weight(1f))
-                    }
-                }
+                            ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
+                            )
+                        }
 
-                Spacer(Modifier.weight(1f))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .padding(vertical = 10.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    buttonRowHeightDp =
+                                        with(localDensity) { coordinates.size.height.toDp() }
+                                }
+                            ,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Spacer(Modifier.weight(1f))
+                            RoundGradientButton(
+                                onClick = {
+                                    scope.launch {
+                                        swipeStates.last().swipe(SwipingDirection.Left)
+                                        homeViewModel.removeLastProfile()
+                                    }
+                                },
+                                enabled = swipeStates.isNotEmpty(),
+                                imageVector = Icons.Filled.Close, color1 = Pink, color2 = Orange
+                            )
+                            Spacer(Modifier.weight(.5f))
+                            RoundGradientButton(
+                                onClick = {
+                                    scope.launch {
+                                        swipeStates.last().swipe(SwipingDirection.Right)
+                                        homeViewModel.removeLastProfile()
+                                    }
+                                },
+                                enabled = swipeStates.isNotEmpty(),
+                                imageVector = Icons.Filled.Favorite, color1 = Green1, color2 = Green2
+                            )
+                            Spacer(Modifier.weight(1f))
+                        }
+                    }
+
+                    Spacer(Modifier.weight(1f))
+                }
             }
         }
 
@@ -180,7 +191,7 @@ fun HomeView(
                 onGenerate = { profileCount ->
                     showGenerateProfilesDialog = false
                     scope.launch(Dispatchers.Main) {
-                        homeViewModel.setLoading(true)
+                        homeViewModel.setLoading()
                         val profiles = withContext(Dispatchers.IO) {
                             (0 until profileCount).map {
                                 async {

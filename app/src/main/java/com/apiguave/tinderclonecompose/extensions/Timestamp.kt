@@ -12,8 +12,14 @@ fun Timestamp.toAge(): Int{
     return now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR)
 }
 
-val formatter = SimpleDateFormat("dd/MM/yy")
-
-fun Timestamp.toFormattedDate(): String{
-    return formatter.format(this.toDate())
+val shortFormatter = SimpleDateFormat("dd/MM/yy")
+val longFormatter = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
+fun Timestamp.toShortString(): String{
+    return shortFormatter.format(this.toDate())
 }
+
+fun Timestamp.toLongString(): String{
+    return longFormatter.format(this.toDate())
+}
+
+

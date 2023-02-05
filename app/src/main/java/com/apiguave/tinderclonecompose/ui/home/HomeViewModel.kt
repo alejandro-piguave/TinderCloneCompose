@@ -2,31 +2,28 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.NewMatch
-import com.apiguave.tinderclonecompose.data.Profile
-import com.apiguave.tinderclonecompose.data.getRandomUserId
+import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState(true, emptyList(), null, null))
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
+
+    private val _newMatch = MutableSharedFlow<NewMatch>()
+    val newMatch = _newMatch.asSharedFlow()
 
     init{ fetchProfiles() }
 
     fun swipeUser(profile: Profile, isLike: Boolean){
-        _uiState.update { it.copy(newMatch = null) }
         viewModelScope.launch {
             try {
                 val match = FirebaseRepository.swipeUser(profile, isLike)
                 if(match != null){
-                    _uiState.update { it.copy(newMatch = match) }
+                    _newMatch.emit(match)
                 }
             }catch (e: Exception){
                 //Bringing the profile card back to the profile deck?
@@ -34,46 +31,49 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    fun removeLastMatch(){
-        _uiState.update { it.copy(newMatch = null) }
-    }
-
     fun removeLastProfile(){
-        _uiState.update { it.copy(profileList = it.profileList.dropLast(1)) }
+        _uiState.update {
+            if(it is HomeUiState.Success){
+                it.copy(profileList = it.profileList.dropLast(1))
+            } else it
+        }
     }
 
-    fun setLoading(isLoading: Boolean){
-        _uiState.update { it.copy(isLoading = isLoading, errorMessage = null) }
+    fun setLoading(){
+        _uiState.update { HomeUiState.Loading}
     }
+
     fun createProfiles(profiles: List<CreateUserProfile>){
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _uiState.update { HomeUiState.Loading }
             try {
                 profiles.map { async { FirebaseRepository.createUserProfile(getRandomUserId(),  it) } }.awaitAll()
                 fetchProfiles()
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+                _uiState.update { HomeUiState.Error(e.message) }
             }
         }
     }
 
     fun fetchProfiles(){
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _uiState.update { HomeUiState.Loading }
             try {
                 val profileList = FirebaseRepository.getProfiles()
-                _uiState.update { it.copy(isLoading = false, profileList = profileList) }
+                _uiState.update { HomeUiState.Success(currentProfile = profileList.currentProfile, profileList = profileList.profiles) }
             }catch (e: Exception){
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+                _uiState.update { HomeUiState.Error(e.message)}
             }
         }
     }
 
 }
 
-data class HomeUiState(
-    val isLoading: Boolean,
-    val profileList: List<Profile>,
-    val errorMessage: String?,
-    val newMatch: NewMatch?
-    )
+sealed class HomeUiState{
+    object Loading: HomeUiState()
+    data class Success(
+        val currentProfile: CurrentProfile,
+        val profileList: List<Profile>
+    ): HomeUiState()
+    data class Error(val message: String?): HomeUiState()
+}
