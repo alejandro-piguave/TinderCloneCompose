@@ -49,8 +49,15 @@ fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int)
                     )
                 )
                 .onGloballyPositioned {
+                    val firstRender = itemWidth == 0f
                     itemWidth = density.run { (it.size.width / options.size).toDp().value }
                     itemHeight = density.run { it.size.height.toDp() }.value
+
+                    if (firstRender && selectedIndex > 0){
+                        coroutineScope.launch {
+                            offsetX.snapTo(itemWidth * selectedIndex)
+                        }
+                    }
                 }
         ) {
             options.forEachIndexed { index, s ->
@@ -59,34 +66,39 @@ fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int)
                     text = s,
                     onClick = {
                         coroutineScope.launch {
-                            offsetX.animateTo(targetValue = itemWidth * index)
+                            if(selectedIndex < 0){
+                                offsetX.snapTo(itemWidth * index)
+                            } else {
+                                offsetX.animateTo(itemWidth * index)
+                            }
                         }
                         onOptionClick(index)
                     })
             }
         }
 
-        Surface(
-            elevation = 2.dp, modifier = Modifier
-                .offset(x = offsetX.value.dp)
-                .size(width = itemWidth.dp, height = itemHeight.dp)
-                .padding(4.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Brush.horizontalGradient(listOf(Pink, Orange)))
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+        if(selectedIndex >= 0){
+            Surface(
+                elevation = 2.dp, modifier = Modifier
+                    .offset(x = offsetX.value.dp)
+                    .size(width = itemWidth.dp, height = itemHeight.dp)
+                    .padding(4.dp)
             ) {
-                Text(
-                    color = Color.White,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
-                    text = options[selectedIndex],
-                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Brush.horizontalGradient(listOf(Pink, Orange)))
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center,
+                        text = options[selectedIndex],
+                    )
+                }
             }
-
         }
     }
 }

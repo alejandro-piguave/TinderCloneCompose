@@ -52,10 +52,10 @@ fun SignUpView(signInClient: GoogleSignInClient, imageUris: SnapshotStateList<Ur
     var nameText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
     var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
 
-    var selectedGenderIndex by rememberSaveable { mutableStateOf(0) }
-    var selectedOrientationIndex by rememberSaveable { mutableStateOf(0) }
+    var selectedGenderIndex by rememberSaveable { mutableStateOf(-1) }
+    var selectedOrientationIndex by rememberSaveable { mutableStateOf(-1) }
 
-    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && imageUris.size > 1 } }
+    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && imageUris.size > 1 && selectedGenderIndex >= 0 && selectedOrientationIndex >= 0 } }
     val coroutineScope = rememberCoroutineScope()
 
     //Update UI state
