@@ -23,6 +23,7 @@ object FirestoreUserProperties {
     // of the property names from a single place.
     const val orientation = "orientation"
     const val isMale = "male"
+    const val pictures = "pictures"
     const val liked = "liked"
     const val passed = "passed"
     const val bio = "bio"

@@ -14,12 +14,16 @@ object FirebaseRepository {
         firestoreRepository.updateProfileData(data)
     }
 
-    suspend fun updateProfilePictures(pictures: List<UserPicture>){
-
+    suspend fun updateProfilePictures(outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>){
+        val filenames = storageRepository.updateProfilePictures(AuthRepository.userId, outdatedPictures, updatedPictures)
+        val updatedData = mapOf<String, Any>(FirestoreUserProperties.pictures to filenames)
+        firestoreRepository.updateProfileData(updatedData)
     }
 
-    suspend fun updateProfileDataAndPictures(data: Map<String, Any>, pictures: List<UserPicture>){
-
+    suspend fun updateProfileDataAndPictures(data: Map<String, Any>, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>){
+        val filenames = storageRepository.updateProfilePictures(AuthRepository.userId, outdatedPictures, updatedPictures)
+        val updatedData = data + mapOf<String, Any>(FirestoreUserProperties.pictures to filenames)
+        firestoreRepository.updateProfileData(updatedData)
     }
 
     fun getMessages(matchId: String) = firestoreRepository.getMessages(matchId)

@@ -1,16 +1,60 @@
 package com.apiguave.tinderclonecompose.data.repository
 
 import android.graphics.Bitmap
+import com.apiguave.tinderclonecompose.data.DevicePicture
 import com.apiguave.tinderclonecompose.data.FirebasePicture
+import com.apiguave.tinderclonecompose.data.UserPicture
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toByteArray
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import java.util.*
 
 class StorageRepository {
     companion object{
         private const val USERS = "users"
+    }
+
+    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>): List<String>{
+        return coroutineScope {
+            //This is a list of the pictures that were already uploaded but that have been removed from the profile.
+            val picturesToDelete: List<FirebasePicture> =
+                updatedPictures
+                    .filter { it is FirebasePicture && !outdatedPictures.contains(it) }
+                    .map { it as FirebasePicture }
+
+            val pictureDeletionResult = async {
+                if(picturesToDelete.isEmpty()) Unit
+                else deleteUserPictures(userId, picturesToDelete)
+            }
+
+            val pictureUploadResult = updatedPictures.map {
+                async {
+                    when(it){
+                        //If the picture was already uploaded, simply return its file name.
+                        is FirebasePicture -> it.filename
+                        //Otherwise uploaded and return it's new file name
+                        is DevicePicture -> uploadUserPicture(userId, it.bitmap)
+                    }
+                }
+            }
+
+            pictureDeletionResult.await()
+            //Returns a list of the new filenames
+            pictureUploadResult.awaitAll()
+        }
+    }
+
+    private suspend fun deleteUserPictures(userId: String, pictures: List<FirebasePicture>){
+        return coroutineScope {
+            pictures.map { async { deleteUserPicture(userId, it) } }.awaitAll()
+        }
+    }
+
+    private suspend fun deleteUserPicture(userId: String, picture: FirebasePicture){
+        FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture.filename).delete().getTaskResult()
     }
 
     suspend fun uploadUserPictures(userId: String, pictures: List<Bitmap>): List<String>{

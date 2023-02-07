@@ -83,9 +83,7 @@ fun EditProfileView(
                 )
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = {
-                    val pictures = if(uiState.pictures == viewModel.currentProfile.pictures) emptyList() else uiState.pictures
-                    val data = viewModel.currentProfile.toModifiedData(bioText.text, selectedGenderIndex, selectedOrientationIndex)
-                    viewModel.updateProfile(data, pictures)
+                    viewModel.updateProfile(bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
                 }) {
                     Text(text = stringResource(id = R.string.done))
                 }

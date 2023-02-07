@@ -26,22 +26,35 @@ class EditProfileViewModel: ViewModel() {
             field = value
         }
 
-    fun updateProfile(data: Map<String, Any>, pictures: List<UserPicture>){
+    fun updateProfile(uiBio: String, uiGenderIndex: Int, uiOrientationIndex: Int, uiPictures: List<UserPicture>){
+        val pictures = if(uiPictures == currentProfile.pictures) emptyList() else uiPictures
+        val data = currentProfile.toModifiedData(uiBio, uiGenderIndex, uiOrientationIndex)
+
         viewModelScope.launch {
-            _userPictures.update { it.copy(isLoading = true) }
+            //If no information has been changed, simply leave the screen
+            if(pictures.isEmpty() && data.isEmpty()){
+                _action.emit(EditProfileAction.ON_PROFILE_EDITED)
+                return@launch
+            }
+
+            //Otherwise show loading and perform update operations
+            _userPictures.update { it.copy(isLoading = true, errorMessage = null) }
             try{
                 if(pictures.isNotEmpty() && data.isNotEmpty()){
-                    FirebaseRepository.updateProfileDataAndPictures(data, pictures)
+                    FirebaseRepository.updateProfileDataAndPictures(data, currentProfile.pictures, pictures)
                 } else if(pictures.isEmpty() && data.isNotEmpty()){
                     FirebaseRepository.updateProfileData(data)
                 } else if(pictures.isNotEmpty()){
-                    FirebaseRepository.updateProfilePictures(pictures)
+                    FirebaseRepository.updateProfilePictures(currentProfile.pictures, pictures)
                 }
+
+                //TODO: update field 'CurrentProfile' to display the information correctly once it's uploaded
+
+                _userPictures.update { it.copy(isLoading = false) }
+                _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }catch (e: Exception){
                 _userPictures.update { it.copy(isLoading = false, errorMessage = e.message) }
             }
-
-            _action.emit(EditProfileAction.ON_PROFILE_EDITED)
         }
     }
 
