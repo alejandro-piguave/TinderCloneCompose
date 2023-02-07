@@ -13,6 +13,9 @@ class HomeViewModel: ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    private val _currentProfile = MutableSharedFlow<CurrentProfile>()
+    val currentProfile = _currentProfile.asSharedFlow()
+
     private val _newMatch = MutableSharedFlow<NewMatch>()
     val newMatch = _newMatch.asSharedFlow()
 
@@ -60,7 +63,8 @@ class HomeViewModel: ViewModel() {
             _uiState.update { HomeUiState.Loading }
             try {
                 val profileList = FirebaseRepository.getProfiles()
-                _uiState.update { HomeUiState.Success(currentProfile = profileList.currentProfile, profileList = profileList.profiles) }
+                _uiState.update { HomeUiState.Success(profileList = profileList.profiles) }
+                _currentProfile.emit(profileList.currentProfile)
             }catch (e: Exception){
                 _uiState.update { HomeUiState.Error(e.message)}
             }
@@ -72,7 +76,6 @@ class HomeViewModel: ViewModel() {
 sealed class HomeUiState{
     object Loading: HomeUiState()
     data class Success(
-        val currentProfile: CurrentProfile,
         val profileList: List<Profile>
     ): HomeUiState()
     data class Error(val message: String?): HomeUiState()

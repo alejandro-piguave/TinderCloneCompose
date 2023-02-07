@@ -27,15 +27,15 @@ fun EditProfileView(
     onProfileEdited: () -> Unit,
     viewModel: EditProfileViewModel = viewModel()
 ) {
-    val uiState by viewModel.userPictures.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     var showErrorDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
-    var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(viewModel.currentProfile.bio)) }
-    var selectedGenderIndex by rememberSaveable { mutableStateOf(viewModel.currentProfile.genderIndex) }
-    var selectedOrientationIndex by rememberSaveable { mutableStateOf(viewModel.currentProfile.orientationIndex) }
+    var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(uiState.currentProfile.bio)) }
+    var selectedGenderIndex by rememberSaveable { mutableStateOf(uiState.currentProfile.genderIndex) }
+    var selectedOrientationIndex by rememberSaveable { mutableStateOf(uiState.currentProfile.orientationIndex) }
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.action.collect {
@@ -83,7 +83,7 @@ fun EditProfileView(
                 )
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = {
-                    viewModel.updateProfile(bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
+                    viewModel.updateProfile(uiState.currentProfile, bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
                 }) {
                     Text(text = stringResource(id = R.string.done))
                 }
@@ -135,9 +135,9 @@ fun EditProfileView(
 
                 SectionTitle(title = stringResource(id = R.string.personal_information))
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.name), text = viewModel.currentProfile.name)
+                TextRow(title = stringResource(id = R.string.name), text = uiState.currentProfile.name)
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.birth_date), text = viewModel.currentProfile.birthDate)
+                TextRow(title = stringResource(id = R.string.birth_date), text = uiState.currentProfile.birthDate)
                 FormDivider()
 
                 Spacer(modifier = Modifier.height(32.dp))

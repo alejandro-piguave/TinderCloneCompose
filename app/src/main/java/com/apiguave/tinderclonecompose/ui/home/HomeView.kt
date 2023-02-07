@@ -52,9 +52,9 @@ fun HomeView(
             onNavigateToNewMatch()
         }
     })
-    LaunchedEffect(key1 = uiState is HomeUiState.Success, block = {
-        (uiState as? HomeUiState.Success)?.let {
-            editProfileViewModel.currentProfile = it.currentProfile
+    LaunchedEffect(key1 = Unit, block = {
+        homeViewModel.currentProfile.collect{
+            editProfileViewModel.setCurrentProfile(it)
         }
     })
     Scaffold(

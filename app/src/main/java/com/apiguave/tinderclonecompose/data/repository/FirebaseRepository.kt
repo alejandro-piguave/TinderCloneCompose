@@ -10,20 +10,54 @@ object FirebaseRepository {
     private val storageRepository = StorageRepository()
     private val firestoreRepository = FirestoreRepository()
 
-    suspend fun updateProfileData(data: Map<String, Any>){
-        firestoreRepository.updateProfileData(data)
+    suspend fun updateProfile(currentProfile: CurrentProfile,
+                              newBio: String, newGenderIndex: Int,
+                              newOrientationIndex: Int,
+                              newPictures: List<UserPicture>): CurrentProfile {
+
+        val arePicturesEqual = currentProfile.pictures == newPictures
+        val isDataEqual = currentProfile.isDataEqual(newBio, newGenderIndex, newOrientationIndex)
+
+        if(arePicturesEqual && isDataEqual){
+            return currentProfile
+        } else if(arePicturesEqual){
+            val data = currentProfile.toModifiedData(newBio, newGenderIndex, newOrientationIndex)
+            firestoreRepository.updateProfileData(data)
+            return currentProfile.toModifiedProfile(
+                newBio,
+                newGenderIndex,
+                newOrientationIndex
+            )
+        } else if(isDataEqual){
+            val firebasePictures = updateProfilePictures(currentProfile.pictures, newPictures)
+            return currentProfile.copy(pictures = firebasePictures)
+        } else {
+            val data = currentProfile.toModifiedData(newBio, newGenderIndex, newOrientationIndex)
+            val firebasePictures = updateProfileDataAndPictures(data, currentProfile.pictures, newPictures)
+            return currentProfile.toModifiedProfile(
+                newBio,
+                newGenderIndex,
+                newOrientationIndex,
+                firebasePictures
+            )
+        }
     }
 
-    suspend fun updateProfilePictures(outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>){
+    private suspend fun updateProfilePictures(outdatedPictures: List<FirebasePicture>,
+                                      updatedPictures: List<UserPicture>): List<FirebasePicture>{
         val filenames = storageRepository.updateProfilePictures(AuthRepository.userId, outdatedPictures, updatedPictures)
-        val updatedData = mapOf<String, Any>(FirestoreUserProperties.pictures to filenames)
+        val updatedData = mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
         firestoreRepository.updateProfileData(updatedData)
+        return filenames
     }
 
-    suspend fun updateProfileDataAndPictures(data: Map<String, Any>, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>){
+    private suspend fun updateProfileDataAndPictures(data: Map<String, Any>,
+                                             outdatedPictures: List<FirebasePicture>,
+                                             updatedPictures: List<UserPicture>): List<FirebasePicture>{
         val filenames = storageRepository.updateProfilePictures(AuthRepository.userId, outdatedPictures, updatedPictures)
-        val updatedData = data + mapOf<String, Any>(FirestoreUserProperties.pictures to filenames)
+        val updatedData = data + mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
         firestoreRepository.updateProfileData(updatedData)
+        return filenames
     }
 
     fun getMessages(matchId: String) = firestoreRepository.getMessages(matchId)
@@ -52,7 +86,7 @@ object FirebaseRepository {
             profile.bio,
             profile.isMale,
             profile.orientation,
-            filenames
+            filenames.map { it.filename }
         )
     }
 

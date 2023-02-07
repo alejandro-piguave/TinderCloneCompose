@@ -17,7 +17,7 @@ class StorageRepository {
         private const val USERS = "users"
     }
 
-    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>): List<String>{
+    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>): List<FirebasePicture>{
         return coroutineScope {
             //This is a list of the pictures that were already uploaded but that have been removed from the profile.
             val picturesToDelete: List<FirebasePicture> =
@@ -34,7 +34,7 @@ class StorageRepository {
                 async {
                     when(it){
                         //If the picture was already uploaded, simply return its file name.
-                        is FirebasePicture -> it.filename
+                        is FirebasePicture -> it
                         //Otherwise uploaded and return it's new file name
                         is DevicePicture -> uploadUserPicture(userId, it.bitmap)
                     }
@@ -57,20 +57,19 @@ class StorageRepository {
         FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture.filename).delete().getTaskResult()
     }
 
-    suspend fun uploadUserPictures(userId: String, pictures: List<Bitmap>): List<String>{
+    suspend fun uploadUserPictures(userId: String, pictures: List<Bitmap>): List<FirebasePicture>{
         return coroutineScope {
             pictures.map { async { uploadUserPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun uploadUserPicture(userId: String, bitmap: Bitmap): String {
+    private suspend fun uploadUserPicture(userId: String, bitmap: Bitmap): FirebasePicture {
         val filename = UUID.randomUUID().toString()+".jpg"
         val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(filename)
 
-        val task = pictureRef.putBytes(bitmap.toByteArray())
-        task.getTaskResult()
+        pictureRef.putBytes(bitmap.toByteArray()).getTaskResult()
 
-        return filename
+        return FirebasePicture(pictureRef.downloadUrl.getTaskResult(), filename)
     }
 
     suspend fun getPicturesFromUser(userId: String, fileNames: List<String>): List<FirebasePicture>{
