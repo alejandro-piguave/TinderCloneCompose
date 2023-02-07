@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.apiguave.tinderclonecompose.data.UserPicture
 import com.apiguave.tinderclonecompose.ui.theme.*
 
 //Picture Grid components
@@ -32,7 +33,7 @@ const val GridItemCount = 9
 const val RowCount = 1 + (GridItemCount -1) / ColumnCount
 
 @Composable
-fun PictureGridRow(rowIndex: Int, imageUris: List<Uri>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
+fun PictureGridRow(rowIndex: Int, pictures: List<UserPicture>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
     Row(
         Modifier
             .fillMaxWidth()
@@ -40,9 +41,9 @@ fun PictureGridRow(rowIndex: Int, imageUris: List<Uri>, onAddPicture: () -> Unit
         repeat(ColumnCount) { columnIndex ->
             val cellIndex = rowIndex * ColumnCount + columnIndex
 
-            if(cellIndex < imageUris.size){
+            if(cellIndex < pictures.size){
                 SelectedPictureItem(
-                    imageUri = imageUris[cellIndex],
+                    imageUri = pictures[cellIndex].uri,
                     modifier = Modifier
                         .weight(1f)
                         .aspectRatio(.6f),
@@ -110,6 +111,9 @@ fun SelectedPictureItem(imageUri: Uri,
                 AsyncImage(
                     model = imageUri,
                     modifier = Modifier.fillMaxSize(),
+                    onState = {
+
+                    },
                     contentScale = ContentScale.FillBounds,
                     contentDescription = null
                 )

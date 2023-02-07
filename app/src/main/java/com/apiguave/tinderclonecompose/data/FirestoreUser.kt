@@ -25,4 +25,5 @@ object FirestoreUserProperties {
     const val isMale = "male"
     const val liked = "liked"
     const val passed = "passed"
+    const val bio = "bio"
 }

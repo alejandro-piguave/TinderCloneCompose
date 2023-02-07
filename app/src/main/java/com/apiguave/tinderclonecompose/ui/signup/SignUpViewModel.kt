@@ -1,13 +1,14 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
 import android.content.Intent
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import com.apiguave.tinderclonecompose.data.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.DevicePicture
+import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
 import com.apiguave.tinderclonecompose.data.repository.SignInCheck
+import com.apiguave.tinderclonecompose.extensions.filterIndex
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,14 +24,11 @@ class SignUpViewModel : ViewModel() {
         )
     )
     val uiState = _uiState.asStateFlow()
-    fun setLoading(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading, errorMessage = null) }
-    }
 
     fun removePictureAt(index: Int){
-        _uiState.update { it.copy(pictures = it.pictures.filterIndexed{ itemIndex, _ -> itemIndex != index })}
+        _uiState.update { it.copy(pictures = it.pictures.filterIndex(index))}
     }
-    fun addPicture(picture: Uri){
+    fun addPicture(picture: DevicePicture){
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
@@ -53,7 +51,7 @@ class SignUpViewModel : ViewModel() {
 
 data class SignUpUiState(
     val isLoading: Boolean,
-    val pictures: List<Uri>,
+    val pictures: List<DevicePicture>,
     val isUserSignedIn: Boolean,
     val errorMessage: String?
 )

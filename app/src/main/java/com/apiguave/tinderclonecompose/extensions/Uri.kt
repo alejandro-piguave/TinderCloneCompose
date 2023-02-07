@@ -6,6 +6,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import com.apiguave.tinderclonecompose.data.DevicePicture
 
 fun Uri.toBitmap(contentResolver: ContentResolver): Bitmap {
     return if(Build.VERSION.SDK_INT < 28) {
@@ -17,4 +18,8 @@ fun Uri.toBitmap(contentResolver: ContentResolver): Bitmap {
         val source = ImageDecoder.createSource(contentResolver, this)
         ImageDecoder.decodeBitmap(source)
     }
+}
+
+fun Uri.toDevicePicture(contentResolver: ContentResolver): DevicePicture{
+    return DevicePicture(this, this.toBitmap(contentResolver))
 }

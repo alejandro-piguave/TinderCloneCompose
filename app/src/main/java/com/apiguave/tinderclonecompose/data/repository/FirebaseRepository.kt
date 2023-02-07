@@ -10,6 +10,18 @@ object FirebaseRepository {
     private val storageRepository = StorageRepository()
     private val firestoreRepository = FirestoreRepository()
 
+    suspend fun updateProfileData(data: Map<String, Any>){
+
+    }
+
+    suspend fun updateProfilePictures(pictures: List<UserPicture>){
+
+    }
+
+    suspend fun updateProfileDataAndPictures(data: Map<String, Any>, pictures: List<UserPicture>){
+
+    }
+
     fun getMessages(matchId: String) = firestoreRepository.getMessages(matchId)
 
     suspend fun sendMessage(matchId: String, text: String) {
@@ -52,13 +64,13 @@ object FirebaseRepository {
     }
 
     private suspend fun getCurrentProfile(userModel: FirestoreUser): CurrentProfile {
-        val uris = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
-        return userModel.toCurrentProfile(uris)
+        val pictures = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getPicturesFromUser(userModel.id, userModel.pictures)
+        return userModel.toCurrentProfile(pictures)
     }
 
     private suspend fun getProfile(userModel: FirestoreUser): Profile {
-        val uris = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getUrisFromUser(userModel.id, userModel.pictures)
-        return userModel.toProfile(uris)
+        val pictures = if (userModel.pictures.isEmpty()) emptyList() else storageRepository.getPicturesFromUser(userModel.id, userModel.pictures)
+        return userModel.toProfile(pictures.map { it.uri })
     }
 
     suspend fun getMatches(): List<Match> {
@@ -72,13 +84,13 @@ object FirebaseRepository {
     private suspend fun FirestoreMatch.toMatch(): Match? {
         val userId = this.usersMatched.firstOrNull { it != AuthRepository.userId } ?: return null
         val user = firestoreRepository.getFirestoreUserModel(userId)
-        val uri = storageRepository.getUriFromUser(userId, user.pictures.first())
+        val picture = storageRepository.getPictureFromUser(userId, user.pictures.first())
         return Match(
             this.id,
             user.birthDate?.toAge() ?: 99,
             userId,
             user.name,
-            uri,
+            picture.uri,
             this.timestamp?.toShortString() ?: "",
             this.lastMessage
         )

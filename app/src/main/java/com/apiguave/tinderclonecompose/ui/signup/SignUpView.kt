@@ -16,7 +16,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -27,12 +26,9 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.Orientation
 import com.apiguave.tinderclonecompose.extensions.isValidUsername
-import com.apiguave.tinderclonecompose.extensions.toBitmap
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -40,8 +36,6 @@ import java.time.format.FormatStyle
 @Composable
 fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit, viewModel: SignUpViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
-
-    val context = LocalContext.current
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -72,17 +66,14 @@ fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNav
 
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            viewModel.setLoading(true)
-            coroutineScope.launch {
-                //Transforms the Uris to Bitmaps
-                val pictures = uiState.pictures.map { async { it.toBitmap(context.contentResolver) } }.awaitAll()
-                val isMale = selectedGenderIndex == 0
-                val orientation = Orientation.values()[selectedOrientationIndex]
-                val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, pictures)
-                //Signs up with the information provided
-                viewModel.signUp(it.data, profile)
-            }
+        onResult = {activityResult ->
+            //Transforms the Uris to Bitmaps
+            val isMale = selectedGenderIndex == 0
+            val orientation = Orientation.values()[selectedOrientationIndex]
+            val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, uiState.pictures.map { it.bitmap })
+            //Signs up with the information provided
+            viewModel.signUp(activityResult.data, profile)
+
         }
     )
 
@@ -126,7 +117,7 @@ fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNav
             items(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    imageUris = uiState.pictures,
+                    pictures = uiState.pictures,
                     onAddPicture = onAddPicture,
                     onAddedPictureClicked = {
                         showDeleteConfirmationDialog = true

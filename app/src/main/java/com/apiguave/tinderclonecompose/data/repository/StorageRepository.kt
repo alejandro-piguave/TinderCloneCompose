@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.repository
 
 import android.graphics.Bitmap
-import android.net.Uri
+import com.apiguave.tinderclonecompose.data.FirebasePicture
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toByteArray
 import com.google.firebase.storage.FirebaseStorage
@@ -29,14 +29,14 @@ class StorageRepository {
         return filename
     }
 
-    suspend fun getUrisFromUser(userId: String, fileNames: List<String>): List<Uri>{
+    suspend fun getPicturesFromUser(userId: String, fileNames: List<String>): List<FirebasePicture>{
         return coroutineScope {
-            fileNames.map { async { getUriFromUser(userId, it) } }.awaitAll()
+            fileNames.map { async { getPictureFromUser(userId, it) } }.awaitAll()
         }
     }
 
-    suspend fun getUriFromUser(userId: String, fileName: String): Uri {
+    suspend fun getPictureFromUser(userId: String, fileName: String): FirebasePicture {
         val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(fileName)
-        return fileRef.downloadUrl.getTaskResult()
+        return FirebasePicture(fileRef.downloadUrl.getTaskResult(), fileName)
     }
 }

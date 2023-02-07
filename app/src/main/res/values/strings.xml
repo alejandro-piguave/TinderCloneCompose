@@ -37,5 +37,6 @@
     <string name="no_match_value_passed">No match value passed</string>
     <string name="its_a">It\'s a</string>
     <string name="match">match!</string>
+    <string name="done">Done</string>
 
 </resources>

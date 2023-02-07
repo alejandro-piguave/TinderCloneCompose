@@ -76,8 +76,9 @@ fun MainContent(signInClient: GoogleSignInClient){
                     onReceiveUri = { uri, caller ->
                         if(caller == Routes.SignUp){
                             signUpViewModel.addPicture(uri)
+                        }else if(caller == Routes.EditProfile){
+                            editProfileViewModel.addPicture(uri)
                         }
-                        //imageUris.add(uri)
                         navController.popBackStack()
                     },
                     caller = it.arguments?.getString(Arguments.Caller)
@@ -114,6 +115,9 @@ fun MainContent(signInClient: GoogleSignInClient){
                     signInClient = signInClient,
                     onAddPicture = {
                         navController.navigate(Routes.getAddPictureRoute(Routes.EditProfile))
+                    },
+                    onProfileEdited = {
+                        navController.popBackStack()
                     },
                     onSignedOut = {
                         navController.navigate(Routes.Login){

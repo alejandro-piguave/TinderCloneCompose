@@ -47,14 +47,14 @@ fun HomeView(
     val scope = rememberCoroutineScope()
     val uiState by homeViewModel.uiState.collectAsState()
     LaunchedEffect(key1 = Unit, block = {
-        homeViewModel.newMatch.collect{
+        homeViewModel.newMatch.collect {
             newMatchViewModel.setMatch(it)
             onNavigateToNewMatch()
         }
     })
     LaunchedEffect(key1 = uiState is HomeUiState.Success, block = {
         (uiState as? HomeUiState.Success)?.let {
-            editProfileViewModel.setCurrentProfile(it.currentProfile)
+            editProfileViewModel.currentProfile = it.currentProfile
         }
     })
     Scaffold(
