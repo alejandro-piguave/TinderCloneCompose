@@ -34,6 +34,7 @@ class SignUpViewModel : ViewModel() {
 
     fun signUp(data: Intent?, profile: CreateUserProfile) {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
                 AuthRepository.signInWithGoogle(data, signInCheck = SignInCheck.ENFORCE_NEW_USER)
                 FirebaseRepository.createUserProfile(profile)

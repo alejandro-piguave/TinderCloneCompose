@@ -27,9 +27,10 @@ fun EditProfileView(
     onProfileEdited: () -> Unit,
     viewModel: EditProfileViewModel = viewModel()
 ) {
-    val userPictures by viewModel.userPictures.collectAsState()
+    val uiState by viewModel.userPictures.collectAsState()
 
-    var deleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
     var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(viewModel.currentProfile.bio)) }
@@ -45,14 +46,28 @@ fun EditProfileView(
         }
     })
 
-    if (deleteConfirmationDialog) {
+    LaunchedEffect(key1 = uiState.errorMessage, block = {
+        if(uiState.errorMessage != null){
+            showErrorDialog = true
+        }
+    })
+
+    if (showDeleteConfirmationDialog) {
         DeleteConfirmationDialog(
-            onDismissRequest = { deleteConfirmationDialog = false },
+            onDismissRequest = { showDeleteConfirmationDialog = false },
             onConfirm = {
-                deleteConfirmationDialog = false
+                showDeleteConfirmationDialog = false
                 viewModel.removePictureAt(deleteConfirmationPictureIndex)
             },
-            onDismiss = { deleteConfirmationDialog = false })
+            onDismiss = { showDeleteConfirmationDialog = false })
+    }
+
+    if(showErrorDialog){
+        ErrorDialog(
+            errorDescription = uiState.errorMessage,
+            onDismissRequest = { showErrorDialog = false },
+            onConfirm = { showErrorDialog = false}
+        )
     }
 
     Scaffold(
@@ -68,7 +83,7 @@ fun EditProfileView(
                 )
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = {
-                    val pictures = if(userPictures == viewModel.currentProfile.pictures) emptyList() else userPictures
+                    val pictures = if(uiState.pictures == viewModel.currentProfile.pictures) emptyList() else uiState.pictures
                     val data = viewModel.currentProfile.toModifiedData(bioText.text, selectedGenderIndex, selectedOrientationIndex)
                     viewModel.updateProfile(data, pictures)
                 }) {
@@ -82,10 +97,10 @@ fun EditProfileView(
             repeat(RowCount){rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    pictures = userPictures,
+                    pictures = uiState.pictures,
                     onAddPicture = onAddPicture,
                     onAddedPictureClicked = {
-                        deleteConfirmationDialog = true
+                        showDeleteConfirmationDialog = true
                         deleteConfirmationPictureIndex = it
                     }
                 )
@@ -145,5 +160,8 @@ fun EditProfileView(
     }
 
 
+    if(uiState.isLoading){
+        LoadingView()
+    }
 }
 

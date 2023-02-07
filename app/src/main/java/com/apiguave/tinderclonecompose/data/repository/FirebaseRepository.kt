@@ -11,7 +11,7 @@ object FirebaseRepository {
     private val firestoreRepository = FirestoreRepository()
 
     suspend fun updateProfileData(data: Map<String, Any>){
-
+        firestoreRepository.updateProfileData(data)
     }
 
     suspend fun updateProfilePictures(pictures: List<UserPicture>){

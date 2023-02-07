@@ -22,6 +22,11 @@ class FirestoreRepository {
         private const val MESSAGES = "messages"
     }
 
+    suspend fun updateProfileData(data: Map<String, Any>){
+        FirebaseFirestore.getInstance().collection(USERS).document(AuthRepository.userId).update(data).getTaskResult()
+    }
+
+
     fun getMessages(matchId: String): Flow<List<Message>> = callbackFlow {
         // Reference to use in Firestore
         var eventsCollection: CollectionReference? = null

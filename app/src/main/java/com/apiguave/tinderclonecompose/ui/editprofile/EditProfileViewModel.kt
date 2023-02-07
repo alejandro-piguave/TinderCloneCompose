@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel: ViewModel() {
-    private val _userPictures = MutableStateFlow<List<UserPicture>>(emptyList())
+    private val _userPictures = MutableStateFlow(EditProfileUiState(false, emptyList(), null))
     val userPictures = _userPictures.asStateFlow()
 
     private val _action = MutableSharedFlow<EditProfileAction>()
@@ -22,29 +22,35 @@ class EditProfileViewModel: ViewModel() {
 
     var currentProfile = CurrentProfile()
         set(value) {
-            _userPictures.update { value.pictures }
+            _userPictures.update { it.copy(pictures = value.pictures) }
             field = value
         }
 
     fun updateProfile(data: Map<String, Any>, pictures: List<UserPicture>){
         viewModelScope.launch {
-            if(pictures.isNotEmpty() && data.isNotEmpty()){
-                FirebaseRepository.updateProfileDataAndPictures(data, pictures)
-            } else if(pictures.isEmpty() && data.isNotEmpty()){
-                FirebaseRepository.updateProfileData(data)
-            } else if(pictures.isNotEmpty()){
-                FirebaseRepository.updateProfilePictures(pictures)
+            _userPictures.update { it.copy(isLoading = true) }
+            try{
+                if(pictures.isNotEmpty() && data.isNotEmpty()){
+                    FirebaseRepository.updateProfileDataAndPictures(data, pictures)
+                } else if(pictures.isEmpty() && data.isNotEmpty()){
+                    FirebaseRepository.updateProfileData(data)
+                } else if(pictures.isNotEmpty()){
+                    FirebaseRepository.updateProfilePictures(pictures)
+                }
+            }catch (e: Exception){
+                _userPictures.update { it.copy(isLoading = false, errorMessage = e.message) }
             }
+
             _action.emit(EditProfileAction.ON_PROFILE_EDITED)
         }
     }
 
     fun addPicture(picture: DevicePicture){
-        _userPictures.update { it + picture }
+        _userPictures.update { it.copy(pictures = it.pictures + picture) }
     }
 
     fun removePictureAt(index: Int){
-        _userPictures.update { it.filterIndex(index) }
+        _userPictures.update { it.copy(pictures = it.pictures.filterIndex(index)) }
     }
 
     fun signOut(signInClient: GoogleSignInClient){
@@ -56,5 +62,7 @@ class EditProfileViewModel: ViewModel() {
     }
 
 }
+
+data class EditProfileUiState(val isLoading: Boolean, val pictures: List<UserPicture>, val errorMessage: String? = null)
 
 enum class EditProfileAction{ON_SIGNED_OUT, ON_PROFILE_EDITED}
