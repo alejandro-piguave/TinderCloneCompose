@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data
+package com.apiguave.tinderclonecompose.data.datasource.model
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId

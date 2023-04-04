@@ -3,8 +3,8 @@ package com.apiguave.tinderclonecompose.ui.signup
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.DevicePicture
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import com.apiguave.tinderclonecompose.data.repository.ProfileRepository

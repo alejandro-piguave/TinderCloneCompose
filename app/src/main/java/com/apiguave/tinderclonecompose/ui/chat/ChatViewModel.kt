@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.Match
+import com.apiguave.tinderclonecompose.data.repository.model.Match
 import com.apiguave.tinderclonecompose.data.repository.MessageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

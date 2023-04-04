@@ -1,6 +1,9 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
-import com.apiguave.tinderclonecompose.data.*
+import com.apiguave.tinderclonecompose.data.datasource.model.*
+import com.apiguave.tinderclonecompose.data.repository.model.Message
+import com.apiguave.tinderclonecompose.data.repository.model.Orientation
+import com.apiguave.tinderclonecompose.data.repository.model.UserList
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.time.LocalDate
 
-class FirestoreDataSource {
+class FirestoreRemoteDataSource {
     companion object {
         private const val USERS = "users"
         private const val MATCHES = "matches"
@@ -163,7 +166,7 @@ class FirestoreDataSource {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
-    suspend fun getUserList(): UserList{
+    suspend fun getUserList(): UserList {
         //Get current user information
         val currentUser = getFirestoreUserModel(currentUserId)
         currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")

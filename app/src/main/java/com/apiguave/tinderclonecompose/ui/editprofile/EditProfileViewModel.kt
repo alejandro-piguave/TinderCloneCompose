@@ -2,9 +2,9 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.CurrentProfile
-import com.apiguave.tinderclonecompose.data.DevicePicture
-import com.apiguave.tinderclonecompose.data.UserPicture
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
+import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.extensions.filterIndex

@@ -1,9 +1,9 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import android.graphics.Bitmap
-import com.apiguave.tinderclonecompose.data.DevicePicture
-import com.apiguave.tinderclonecompose.data.FirebasePicture
-import com.apiguave.tinderclonecompose.data.UserPicture
+import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
+import com.apiguave.tinderclonecompose.data.repository.model.FirebasePicture
+import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toByteArray
 import com.google.firebase.storage.FirebaseStorage
@@ -12,7 +12,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
-class StorageDataSource {
+class StorageRemoteDataSource {
     companion object{
         private const val USERS = "users"
     }

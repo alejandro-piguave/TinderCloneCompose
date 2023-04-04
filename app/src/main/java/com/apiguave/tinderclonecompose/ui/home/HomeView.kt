@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.allowProfileGeneration
-import com.apiguave.tinderclonecompose.data.getRandomProfile
+import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
+import com.apiguave.tinderclonecompose.extensions.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
 import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel

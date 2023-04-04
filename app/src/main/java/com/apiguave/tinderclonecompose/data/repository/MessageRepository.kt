@@ -1,9 +1,9 @@
 package com.apiguave.tinderclonecompose.data.repository
 
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreDataSource
+import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 
 object MessageRepository {
-    private val firestoreDataSource = FirestoreDataSource()
+    private val firestoreDataSource = FirestoreRemoteDataSource()
 
     fun getMessages(matchId: String) = firestoreDataSource.getMessages(matchId)
 

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.Match
+import com.apiguave.tinderclonecompose.data.repository.model.Match
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.ui.components.BlankAppBar

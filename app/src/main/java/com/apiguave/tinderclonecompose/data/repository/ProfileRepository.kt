@@ -1,14 +1,18 @@
 package com.apiguave.tinderclonecompose.data.repository
 
-import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.data.datasource.AuthDataSource
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreDataSource
-import com.apiguave.tinderclonecompose.data.datasource.StorageDataSource
+import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
+import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.FirebasePicture
+import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
 
 object ProfileRepository {
     private val authDataSource = AuthDataSource()
-    private val storageDataSource = StorageDataSource()
-    private val firestoreDataSource = FirestoreDataSource()
+    private val storageDataSource = StorageRemoteDataSource()
+    private val firestoreDataSource = FirestoreRemoteDataSource()
 
     suspend fun updateProfile(currentProfile: CurrentProfile,
                               newBio: String, newGenderIndex: Int,
@@ -44,7 +48,7 @@ object ProfileRepository {
     }
 
     private suspend fun updateProfilePictures(outdatedPictures: List<FirebasePicture>,
-                                      updatedPictures: List<UserPicture>): List<FirebasePicture>{
+                                              updatedPictures: List<UserPicture>): List<FirebasePicture>{
         val filenames = storageDataSource.updateProfilePictures(authDataSource.userId, outdatedPictures, updatedPictures)
         val updatedData = mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
         firestoreDataSource.updateProfileData(updatedData)
@@ -52,8 +56,8 @@ object ProfileRepository {
     }
 
     private suspend fun updateProfileDataAndPictures(data: Map<String, Any>,
-                                             outdatedPictures: List<FirebasePicture>,
-                                             updatedPictures: List<UserPicture>): List<FirebasePicture>{
+                                                     outdatedPictures: List<FirebasePicture>,
+                                                     updatedPictures: List<UserPicture>): List<FirebasePicture>{
         val filenames = storageDataSource.updateProfilePictures(authDataSource.userId, outdatedPictures, updatedPictures)
         val updatedData = data + mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
         firestoreDataSource.updateProfileData(updatedData)

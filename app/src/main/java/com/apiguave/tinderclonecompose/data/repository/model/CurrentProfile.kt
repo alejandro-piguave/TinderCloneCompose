@@ -1,4 +1,6 @@
-package com.apiguave.tinderclonecompose.data
+package com.apiguave.tinderclonecompose.data.repository.model
+
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
 
 data class CurrentProfile(
     val id: String = "",
@@ -18,7 +20,7 @@ data class CurrentProfile(
                           newGenderIndex: Int = this.genderIndex,
                           newOrientationIndex: Int = this.orientationIndex,
                           newPictures: List<FirebasePicture> = this.pictures
-    ): CurrentProfile{
+    ): CurrentProfile {
         return this.copy(
             bio = if(newBio != this.bio) newBio else this.bio,
             genderIndex = if(newGenderIndex != this.genderIndex) newGenderIndex else this.genderIndex,

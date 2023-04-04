@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data
+package com.apiguave.tinderclonecompose.extensions
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,6 +7,8 @@ import com.apiguave.tinderclonecompose.ui.components.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.Orientation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

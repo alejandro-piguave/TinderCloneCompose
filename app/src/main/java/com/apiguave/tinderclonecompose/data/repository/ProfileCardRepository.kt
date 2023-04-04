@@ -1,8 +1,12 @@
 package com.apiguave.tinderclonecompose.data.repository
 
-import com.apiguave.tinderclonecompose.data.*
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreDataSource
-import com.apiguave.tinderclonecompose.data.datasource.StorageDataSource
+import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
+import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
+import com.apiguave.tinderclonecompose.data.repository.model.Profile
+import com.apiguave.tinderclonecompose.data.repository.model.ProfileList
 import com.apiguave.tinderclonecompose.extensions.toCurrentProfile
 import com.apiguave.tinderclonecompose.extensions.toProfile
 import kotlinx.coroutines.async
@@ -10,8 +14,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 object ProfileCardRepository {
-    private val storageDataSource = StorageDataSource()
-    private val firestoreDataSource = FirestoreDataSource()
+    private val storageDataSource = StorageRemoteDataSource()
+    private val firestoreDataSource = FirestoreRemoteDataSource()
 
     suspend fun swipeUser(profile: Profile, isLike: Boolean): NewMatch? {
         val matchModel = firestoreDataSource.swipeUser(profile.id, isLike)

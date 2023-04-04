@@ -2,9 +2,13 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.data.repository.ProfileCardRepository
 import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
+import com.apiguave.tinderclonecompose.data.repository.model.Profile
+import com.apiguave.tinderclonecompose.extensions.getRandomUserId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
