@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.ui.newmatch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.NewMatch
-import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
+import com.apiguave.tinderclonecompose.data.repository.MessageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ class NewMatchViewModel: ViewModel() {
         val matchId = _match.value?.id ?: return
         viewModelScope.launch {
             try {
-                FirebaseRepository.sendMessage(matchId, text)
+                MessageRepository.sendMessage(matchId, text)
             }catch (e: Exception){
                 //Show the message as unsent?
             }

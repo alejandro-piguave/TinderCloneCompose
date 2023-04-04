@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.data.datasource
 
 class AuthException(message: String): Exception(message)
 class FirestoreException(message: String): Exception(message)

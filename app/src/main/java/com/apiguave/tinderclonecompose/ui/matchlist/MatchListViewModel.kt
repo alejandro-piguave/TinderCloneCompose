@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.ui.matchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.Match
-import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
+import com.apiguave.tinderclonecompose.data.repository.MatchRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +18,7 @@ class MatchListViewModel: ViewModel() {
         _uiState.update { it.copy(isLoading = false, errorMessage = null) }
         viewModelScope.launch {
             try {
-                val matchList = FirebaseRepository.getMatches()
+                val matchList = MatchRepository.getMatches()
                 _uiState.update { it.copy(isLoading = false, matchList = matchList) }
             }catch (e: Exception){
                 _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }

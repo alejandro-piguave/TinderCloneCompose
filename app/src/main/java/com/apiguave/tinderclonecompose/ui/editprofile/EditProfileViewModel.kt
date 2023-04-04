@@ -6,7 +6,7 @@ import com.apiguave.tinderclonecompose.data.CurrentProfile
 import com.apiguave.tinderclonecompose.data.DevicePicture
 import com.apiguave.tinderclonecompose.data.UserPicture
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
-import com.apiguave.tinderclonecompose.data.repository.FirebaseRepository
+import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,7 +35,7 @@ class EditProfileViewModel: ViewModel() {
             //Otherwise show loading and perform update operations
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try{
-                val updatedProfile = FirebaseRepository.updateProfile(currentProfile, uiBio, uiGenderIndex, uiOrientationIndex, uiPictures)
+                val updatedProfile = ProfileRepository.updateProfile(currentProfile, uiBio, uiGenderIndex, uiOrientationIndex, uiPictures)
                 _uiState.update { it.copy(isLoading = false, currentProfile = updatedProfile, pictures = updatedProfile.pictures) }
                 _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }catch (e: Exception){

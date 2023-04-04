@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.data.datasource
 
 import android.graphics.Bitmap
 import com.apiguave.tinderclonecompose.data.DevicePicture
@@ -12,7 +12,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
-class StorageRepository {
+class StorageDataSource {
     companion object{
         private const val USERS = "users"
     }

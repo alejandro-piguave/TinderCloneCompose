@@ -1,8 +1,9 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.data.datasource
 
 import com.apiguave.tinderclonecompose.data.*
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,15 +16,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.time.LocalDate
 
-class FirestoreRepository {
+class FirestoreDataSource {
     companion object {
         private const val USERS = "users"
         private const val MATCHES = "matches"
         private const val MESSAGES = "messages"
     }
+    
+    private val currentUserId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
 
     suspend fun updateProfileData(data: Map<String, Any>){
-        FirebaseFirestore.getInstance().collection(USERS).document(AuthRepository.userId).update(data).getTaskResult()
+        FirebaseFirestore.getInstance().collection(USERS).document(currentUserId).update(data).getTaskResult()
     }
 
 
@@ -46,7 +50,7 @@ class FirestoreRepository {
             // Sends events to the flow! Consumers will get the new events
             try {
                 val messages = snapshot.toObjects(FirestoreMessage::class.java).map {
-                    val isSender = it.senderId == AuthRepository.userId
+                    val isSender = it.senderId == currentUserId
                     val text = it.message
                     Message(text, isSender)
                 }
@@ -63,7 +67,7 @@ class FirestoreRepository {
     }
 
     suspend fun sendMessage(matchId: String, text: String){
-        val data = FirestoreMessageProperties.toData(AuthRepository.userId, text)
+        val data = FirestoreMessageProperties.toData(currentUserId, text)
         coroutineScope {
             val newMessageResult = async {
                 FirebaseFirestore.getInstance()
@@ -88,12 +92,12 @@ class FirestoreRepository {
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(AuthRepository.userId)
+            .document(currentUserId)
             .update(mapOf((if (isLike) FirestoreUserProperties.liked else FirestoreUserProperties.passed) to FieldValue.arrayUnion(swipedUserId)))
             .getTaskResult()
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(AuthRepository.userId)
+            .document(currentUserId)
             .collection(FirestoreUserProperties.liked)
             .document(swipedUserId)
             .set(mapOf("exists" to true))
@@ -101,9 +105,9 @@ class FirestoreRepository {
 
         val hasUserLikedBack = hasUserLikedBack(swipedUserId)
         if(hasUserLikedBack){
-            val matchId = getMatchId(AuthRepository.userId, swipedUserId)
+            val matchId = getMatchId(currentUserId, swipedUserId)
             FieldValue.serverTimestamp()
-            val data = FirestoreMatchProperties.toData(swipedUserId, AuthRepository.userId)
+            val data = FirestoreMatchProperties.toData(swipedUserId, currentUserId)
             FirebaseFirestore.getInstance()
                 .collection(MATCHES)
                 .document(matchId)
@@ -131,7 +135,7 @@ class FirestoreRepository {
             .collection(USERS)
             .document(swipedUserId)
             .collection(FirestoreUserProperties.liked)
-            .document(AuthRepository.userId)
+            .document(currentUserId)
             .get()
             .getTaskResult()
         return result.exists()
@@ -161,9 +165,9 @@ class FirestoreRepository {
 
     suspend fun getUserList(): UserList{
         //Get current user information
-        val currentUser = getFirestoreUserModel(AuthRepository.userId)
+        val currentUser = getFirestoreUserModel(currentUserId)
         currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")
-        val excludedUserIds = currentUser.liked + currentUser.passed + AuthRepository.userId
+        val excludedUserIds = currentUser.liked + currentUser.passed + currentUserId
 
         //Build query
         val searchQuery: Query = kotlin.run {
@@ -190,7 +194,7 @@ class FirestoreRepository {
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {
         val query = FirebaseFirestore.getInstance().collection(MATCHES)
-            .whereArrayContains(FirestoreMatchProperties.usersMatched, AuthRepository.userId)
+            .whereArrayContains(FirestoreMatchProperties.usersMatched, currentUserId)
         val result = query.get().getTaskResult()
         return result.toObjects(FirestoreMatch::class.java)
     }
