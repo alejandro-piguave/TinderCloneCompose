@@ -6,7 +6,7 @@
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
 </p>
 
-Tinder clone application written using Jetpack Compose and Firebase, following the MVVM architechture pattern with Kotlin coroutines.
+Tinder clone application written with Jetpack Compose and Firebase, following the MVVM architechture pattern with Kotlin coroutines, flows and dependency injection with Koin.
 
 Note: The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project.
 Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
