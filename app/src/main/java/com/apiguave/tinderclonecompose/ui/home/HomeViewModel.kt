@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val profileRepository: ProfileRepository,
-    private val profileCardRepository: ProfileCardRepository): ViewModel() {
+    private val profileCardRepository: ProfileCardRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 

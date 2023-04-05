@@ -2,11 +2,11 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apiguave.tinderclonecompose.data.repository.AuthRepository
+import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
 import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
 import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
-import com.apiguave.tinderclonecompose.data.repository.AuthRepository
-import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class EditProfileViewModel(
     private val authRepository: AuthRepository,
-    private val profileRepository: ProfileRepository): ViewModel() {
+    private val profileRepository: ProfileRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(
         EditProfileUiState(
             CurrentProfile(),

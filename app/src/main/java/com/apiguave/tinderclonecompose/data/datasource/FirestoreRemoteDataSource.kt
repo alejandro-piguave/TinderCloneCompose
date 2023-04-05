@@ -1,6 +1,8 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import com.apiguave.tinderclonecompose.data.datasource.model.*
+import com.apiguave.tinderclonecompose.data.exception.AuthException
+import com.apiguave.tinderclonecompose.data.exception.FirestoreException
 import com.apiguave.tinderclonecompose.data.repository.model.Message
 import com.apiguave.tinderclonecompose.data.repository.model.Orientation
 import com.apiguave.tinderclonecompose.data.repository.model.UserList
