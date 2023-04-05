@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NewMatchViewModel: ViewModel() {
+class NewMatchViewModel(private val messageRepository: MessageRepository): ViewModel() {
     private val _match: MutableStateFlow<NewMatch?> = MutableStateFlow(null)
     val match = _match.asStateFlow()
 
@@ -16,7 +16,7 @@ class NewMatchViewModel: ViewModel() {
         val matchId = _match.value?.id ?: return
         viewModelScope.launch {
             try {
-                MessageRepository.sendMessage(matchId, text)
+                messageRepository.sendMessage(matchId, text)
             }catch (e: Exception){
                 //Show the message as unsent?
             }

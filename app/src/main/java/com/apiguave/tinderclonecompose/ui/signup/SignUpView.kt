@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.repository.model.Orientation
@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit, viewModel: SignUpViewModel = viewModel()) {
+fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit, viewModel: SignUpViewModel = getViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }

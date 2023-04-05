@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.repository
 
-import com.apiguave.tinderclonecompose.data.datasource.AuthDataSource
+import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
@@ -10,10 +10,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-object MatchRepository {
-    private val authDataSource = AuthDataSource()
-    private val storageDataSource = StorageRemoteDataSource()
-    private val firestoreDataSource = FirestoreRemoteDataSource()
+class MatchRepository(
+    private val authDataSource: AuthRemoteDataSource,
+    private val storageDataSource: StorageRemoteDataSource,
+    private val firestoreDataSource: FirestoreRemoteDataSource
+) {
+
 
     suspend fun getMatches(): List<Match> {
         val matchModels = firestoreDataSource.getFirestoreMatchModels()

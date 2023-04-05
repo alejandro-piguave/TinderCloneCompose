@@ -1,12 +1,11 @@
 package com.apiguave.tinderclonecompose.data.repository
 
 import android.content.Intent
-import com.apiguave.tinderclonecompose.data.datasource.AuthDataSource
+import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
 import com.google.firebase.auth.FirebaseUser
 
-object AuthRepository {
-    private val dataSource = AuthDataSource()
+class AuthRepository(private val dataSource: AuthRemoteDataSource) {
 
     val isUserSignedIn: Boolean
         get() = dataSource.isUserSignedIn

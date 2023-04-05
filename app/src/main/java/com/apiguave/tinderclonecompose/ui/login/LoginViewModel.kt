@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState(true, false, null))
     val uiState = _uiState.asStateFlow()
 
@@ -20,7 +20,7 @@ class LoginViewModel: ViewModel() {
 
     private fun checkLoginState() {
         _uiState.update {
-            if(AuthRepository.isUserSignedIn){
+            if(authRepository.isUserSignedIn){
                 it.copy(isUserSignedIn = true)
             } else {
                 it.copy(isLoading = false)
@@ -32,9 +32,12 @@ class LoginViewModel: ViewModel() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
-                AuthRepository.signInWithGoogle(activityResult.data, signInCheck = SignInCheck.ENFORCE_EXISTING_USER)
+                authRepository.signInWithGoogle(activityResult.data, signInCheck = SignInCheck.ENFORCE_EXISTING_USER)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
+                if(authRepository.isUserSignedIn){
+                    authRepository.signOut()
+                }
                 _uiState.update {
                     it.copy(isLoading = false, errorMessage = e.message)
                 }

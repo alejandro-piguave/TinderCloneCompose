@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.Match
@@ -38,8 +38,8 @@ import kotlinx.coroutines.launch
 fun MatchListView(
     onNavigateToChatView: () -> Unit,
     onArrowBackPressed: () -> Unit,
-    viewModel: MatchListViewModel = viewModel(),
-    chatViewModel: ChatViewModel = viewModel()
+    viewModel: MatchListViewModel = getViewModel(),
+    chatViewModel: ChatViewModel = getViewModel()
 ) {
     Scaffold(
         topBar = {

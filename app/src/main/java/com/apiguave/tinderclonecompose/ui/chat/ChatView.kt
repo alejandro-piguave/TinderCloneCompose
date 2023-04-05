@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.Match
@@ -33,7 +33,7 @@ import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
 
 @Composable
-fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = viewModel()) {
+fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = getViewModel()) {
     val match by viewModel.match.collectAsState()
     match?.let { match: Match ->
         val messages by viewModel.getMessages(match.id).collectAsState(listOf())

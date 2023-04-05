@@ -13,9 +13,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-object ProfileCardRepository {
-    private val storageDataSource = StorageRemoteDataSource()
-    private val firestoreDataSource = FirestoreRemoteDataSource()
+class ProfileCardRepository(
+    private val storageDataSource: StorageRemoteDataSource,
+    private val firestoreDataSource: FirestoreRemoteDataSource
+) {
+
 
     suspend fun swipeUser(profile: Profile, isLike: Boolean): NewMatch? {
         val matchModel = firestoreDataSource.swipeUser(profile.id, isLike)
@@ -36,12 +38,20 @@ object ProfileCardRepository {
     }
 
     private suspend fun getCurrentProfile(userModel: FirestoreUser): CurrentProfile {
-        val pictures = if (userModel.pictures.isEmpty()) emptyList() else storageDataSource.getPicturesFromUser(userModel.id, userModel.pictures)
+        val pictures =
+            if (userModel.pictures.isEmpty()) emptyList() else storageDataSource.getPicturesFromUser(
+                userModel.id,
+                userModel.pictures
+            )
         return userModel.toCurrentProfile(pictures)
     }
 
     private suspend fun getProfile(userModel: FirestoreUser): Profile {
-        val pictures = if (userModel.pictures.isEmpty()) emptyList() else storageDataSource.getPicturesFromUser(userModel.id, userModel.pictures)
+        val pictures =
+            if (userModel.pictures.isEmpty()) emptyList() else storageDataSource.getPicturesFromUser(
+                userModel.id,
+                userModel.pictures
+            )
         return userModel.toProfile(pictures.map { it.uri })
     }
 

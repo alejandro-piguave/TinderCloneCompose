@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.ui.main
 
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import androidx.navigation.*
 import com.apiguave.tinderclonecompose.ui.*
 import com.apiguave.tinderclonecompose.ui.chat.ChatView
@@ -29,10 +29,10 @@ fun MainContent(signInClient: GoogleSignInClient){
     TinderCloneComposeTheme {
         val navController = rememberAnimatedNavController()
 
-        val chatViewModel: ChatViewModel = viewModel()
-        val newMatchViewModel: NewMatchViewModel = viewModel()
-        val editProfileViewModel: EditProfileViewModel = viewModel()
-        val signUpViewModel: SignUpViewModel = viewModel()
+        val chatViewModel: ChatViewModel = getViewModel()
+        val newMatchViewModel: NewMatchViewModel = getViewModel()
+        val editProfileViewModel: EditProfileViewModel = getViewModel()
+        val signUpViewModel: SignUpViewModel = getViewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
 
             animatedComposable(Routes.Login) {

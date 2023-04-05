@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
 import com.apiguave.tinderclonecompose.extensions.getRandomProfile
@@ -39,9 +39,9 @@ fun HomeView(
     onNavigateToEditProfile: () -> Unit,
     onNavigateToMatchList: () -> Unit,
     onNavigateToNewMatch: () -> Unit,
-    homeViewModel: HomeViewModel = viewModel(),
-    newMatchViewModel: NewMatchViewModel = viewModel(),
-    editProfileViewModel: EditProfileViewModel = viewModel()
+    homeViewModel: HomeViewModel = getViewModel(),
+    newMatchViewModel: NewMatchViewModel = getViewModel(),
+    editProfileViewModel: EditProfileViewModel = getViewModel()
     ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()

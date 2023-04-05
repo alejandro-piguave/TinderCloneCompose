@@ -24,15 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.components.AnimatedLogo
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, onNavigateToHome: () -> Unit, loginViewModel: LoginViewModel = viewModel()) {
+fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, onNavigateToHome: () -> Unit, loginViewModel: LoginViewModel = getViewModel()) {
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {

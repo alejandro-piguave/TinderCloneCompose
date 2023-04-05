@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.apiguave.tinderclonecompose.R
@@ -40,7 +40,7 @@ import com.apiguave.tinderclonecompose.ui.theme.Green1
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NewMatchView(viewModel: NewMatchViewModel = viewModel(), onCloseClicked: () -> Unit){
+fun NewMatchView(viewModel: NewMatchViewModel = getViewModel(), onCloseClicked: () -> Unit){
     val match by viewModel.match.collectAsState()
     val interactionSource = remember { MutableInteractionSource() }
 

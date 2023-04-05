@@ -3,18 +3,21 @@ package com.apiguave.tinderclonecompose.ui.signup
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
 import com.apiguave.tinderclonecompose.data.repository.AuthRepository
 import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(
+    private val authRepository: AuthRepository,
+    private val profileRepository: ProfileRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(
         SignUpUiState(
             isLoading = false,
@@ -25,10 +28,11 @@ class SignUpViewModel : ViewModel() {
     )
     val uiState = _uiState.asStateFlow()
 
-    fun removePictureAt(index: Int){
-        _uiState.update { it.copy(pictures = it.pictures.filterIndex(index))}
+    fun removePictureAt(index: Int) {
+        _uiState.update { it.copy(pictures = it.pictures.filterIndex(index)) }
     }
-    fun addPicture(picture: DevicePicture){
+
+    fun addPicture(picture: DevicePicture) {
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
@@ -36,8 +40,8 @@ class SignUpViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
-                AuthRepository.signInWithGoogle(data, signInCheck = SignInCheck.ENFORCE_NEW_USER)
-                ProfileRepository.createUserProfile(profile)
+                authRepository.signInWithGoogle(data, signInCheck = SignInCheck.ENFORCE_NEW_USER)
+                profileRepository.createUserProfile(profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
                 _uiState.update {

@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChatViewModel: ViewModel() {
+class ChatViewModel(private val messageRepository: MessageRepository): ViewModel() {
     private val _match = MutableStateFlow<Match?>(null)
     val match = _match.asStateFlow()
 
-    fun getMessages(matchId: String) = MessageRepository.getMessages(matchId)
+    fun getMessages(matchId: String) = messageRepository.getMessages(matchId)
 
     fun sendMessage(text: String){
         val matchId = _match.value?.id ?: return
         viewModelScope.launch {
             try {
-                MessageRepository.sendMessage(matchId, text)
+                messageRepository.sendMessage(matchId, text)
             }catch (e: Exception){
                 //Show the message as unsent?
             }

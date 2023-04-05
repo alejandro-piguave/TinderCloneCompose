@@ -13,7 +13,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class EditProfileViewModel: ViewModel() {
+class EditProfileViewModel(
+    private val authRepository: AuthRepository,
+    private val profileRepository: ProfileRepository): ViewModel() {
     private val _uiState = MutableStateFlow(
         EditProfileUiState(
             CurrentProfile(),
@@ -35,7 +37,7 @@ class EditProfileViewModel: ViewModel() {
             //Otherwise show loading and perform update operations
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try{
-                val updatedProfile = ProfileRepository.updateProfile(currentProfile, uiBio, uiGenderIndex, uiOrientationIndex, uiPictures)
+                val updatedProfile = profileRepository.updateProfile(currentProfile, uiBio, uiGenderIndex, uiOrientationIndex, uiPictures)
                 _uiState.update { it.copy(isLoading = false, currentProfile = updatedProfile, pictures = updatedProfile.pictures) }
                 _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }catch (e: Exception){
@@ -54,7 +56,7 @@ class EditProfileViewModel: ViewModel() {
 
     fun signOut(signInClient: GoogleSignInClient){
         viewModelScope.launch {
-            AuthRepository.signOut()
+            authRepository.signOut()
             signInClient.signOut().getTaskResult()
             _action.emit(EditProfileAction.ON_SIGNED_OUT)
         }

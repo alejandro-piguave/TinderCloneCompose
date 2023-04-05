@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MatchListViewModel: ViewModel() {
+class MatchListViewModel(private val matchRepository: MatchRepository): ViewModel() {
     private val _uiState = MutableStateFlow(MatchListUiState(true, emptyList(), null))
     val uiState = _uiState.asStateFlow()
 
@@ -18,7 +18,7 @@ class MatchListViewModel: ViewModel() {
         _uiState.update { it.copy(isLoading = false, errorMessage = null) }
         viewModelScope.launch {
             try {
-                val matchList = MatchRepository.getMatches()
+                val matchList = matchRepository.getMatches()
                 _uiState.update { it.copy(isLoading = false, matchList = matchList) }
             }catch (e: Exception){
                 _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }

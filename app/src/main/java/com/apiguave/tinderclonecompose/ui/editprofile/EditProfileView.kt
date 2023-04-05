@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -25,7 +25,7 @@ fun EditProfileView(
     onAddPicture: () -> Unit,
     onSignedOut: () -> Unit,
     onProfileEdited: () -> Unit,
-    viewModel: EditProfileViewModel = viewModel()
+    viewModel: EditProfileViewModel = getViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

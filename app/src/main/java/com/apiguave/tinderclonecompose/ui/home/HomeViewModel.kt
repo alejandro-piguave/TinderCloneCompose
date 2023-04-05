@@ -14,7 +14,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(
+    private val profileRepository: ProfileRepository,
+    private val profileCardRepository: ProfileCardRepository): ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
@@ -29,7 +31,7 @@ class HomeViewModel: ViewModel() {
     fun swipeUser(profile: Profile, isLike: Boolean){
         viewModelScope.launch {
             try {
-                val match = ProfileCardRepository.swipeUser(profile, isLike)
+                val match = profileCardRepository.swipeUser(profile, isLike)
                 if(match != null){
                     _newMatch.emit(match)
                 }
@@ -55,7 +57,7 @@ class HomeViewModel: ViewModel() {
         viewModelScope.launch {
             _uiState.update { HomeUiState.Loading }
             try {
-                profiles.map { async { ProfileRepository.createUserProfile(getRandomUserId(),  it) } }.awaitAll()
+                profiles.map { async { profileRepository.createUserProfile(getRandomUserId(),  it) } }.awaitAll()
                 fetchProfiles()
             } catch (e: Exception) {
                 _uiState.update { HomeUiState.Error(e.message) }
@@ -67,7 +69,7 @@ class HomeViewModel: ViewModel() {
         viewModelScope.launch {
             _uiState.update { HomeUiState.Loading }
             try {
-                val profileList = ProfileCardRepository.getProfiles()
+                val profileList = profileCardRepository.getProfiles()
                 _uiState.update { HomeUiState.Success(profileList = profileList.profiles) }
                 _currentProfile.emit(profileList.currentProfile)
             }catch (e: Exception){

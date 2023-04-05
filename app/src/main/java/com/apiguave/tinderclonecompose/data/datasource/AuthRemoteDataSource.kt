@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-class AuthDataSource {
+class AuthRemoteDataSource {
 
     val isUserSignedIn: Boolean
         get() = FirebaseAuth.getInstance().currentUser != null
