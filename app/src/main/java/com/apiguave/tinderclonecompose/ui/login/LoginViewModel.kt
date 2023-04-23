@@ -11,7 +11,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(LoginUiState(true, false, null))
+    private val _uiState = MutableStateFlow(
+        LoginViewState(
+            isLoading = true,
+            isUserSignedIn = false,
+            errorMessage = null
+        )
+    )
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -46,4 +52,4 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
     }
 }
 
-data class LoginUiState(val isLoading: Boolean, val isUserSignedIn: Boolean, val errorMessage: String?)
+data class LoginViewState(val isLoading: Boolean, val isUserSignedIn: Boolean, val errorMessage: String?)

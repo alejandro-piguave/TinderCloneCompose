@@ -31,17 +31,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
 import com.apiguave.tinderclonecompose.ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NewMatchView(viewModel: NewMatchViewModel = getViewModel(), onCloseClicked: () -> Unit){
-    val match by viewModel.match.collectAsState()
+fun NewMatchView(
+    match: NewMatch?,
+    onSendMessage: (String) -> Unit,
+    onCloseClicked: () -> Unit
+){
     val interactionSource = remember { MutableInteractionSource() }
 
     match?.let { matchModel ->
@@ -160,15 +163,12 @@ fun NewMatchView(viewModel: NewMatchViewModel = getViewModel(), onCloseClicked: 
 
                 ChatFooter(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    onSendClicked = {
-                        viewModel.sendMessage(it)
-                        onCloseClicked()
-                    },
+                    onSendClicked = onSendMessage,
                     shape = RoundedCornerShape(6.dp)
                 )
 
             }
         }
     } ?: Text(modifier = Modifier
-        .fillMaxSize(), textAlign = TextAlign.Center,text = "No match found")
+        .fillMaxSize(), textAlign = TextAlign.Center, text = "No match found")
 }

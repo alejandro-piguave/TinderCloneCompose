@@ -14,20 +14,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
 import com.apiguave.tinderclonecompose.ui.components.*
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun EditProfileView(
-    signInClient: GoogleSignInClient,
-    onAddPicture: () -> Unit,
+    uiState: EditProfileUiState,
+    signOut: () -> Unit,
+    addPicture: () -> Unit,
     onSignedOut: () -> Unit,
     onProfileEdited: () -> Unit,
-    viewModel: EditProfileViewModel = getViewModel()
+    removePictureAt: (Int) -> Unit,
+    updateProfile: (currentProfile: CurrentProfile, bio: String, genderIndex: Int, orientationIndex: Int, pictures: List<UserPicture>) -> Unit,
+    action: SharedFlow<EditProfileAction>,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
 
     var showErrorDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
@@ -38,7 +41,7 @@ fun EditProfileView(
     var selectedOrientationIndex by rememberSaveable { mutableStateOf(uiState.currentProfile.orientationIndex) }
 
     LaunchedEffect(key1 = Unit, block = {
-        viewModel.action.collect {
+        action.collect {
             when(it){
                 EditProfileAction.ON_SIGNED_OUT -> onSignedOut()
                 EditProfileAction.ON_PROFILE_EDITED -> onProfileEdited()
@@ -57,7 +60,7 @@ fun EditProfileView(
             onDismissRequest = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 showDeleteConfirmationDialog = false
-                viewModel.removePictureAt(deleteConfirmationPictureIndex)
+                removePictureAt(deleteConfirmationPictureIndex)
             },
             onDismiss = { showDeleteConfirmationDialog = false })
     }
@@ -83,7 +86,7 @@ fun EditProfileView(
                 )
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = {
-                    viewModel.updateProfile(uiState.currentProfile, bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
+                    updateProfile(uiState.currentProfile, bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
                 }) {
                     Text(text = stringResource(id = R.string.done))
                 }
@@ -96,7 +99,7 @@ fun EditProfileView(
                 PictureGridRow(
                     rowIndex = rowIndex,
                     pictures = uiState.pictures,
-                    onAddPicture = onAddPicture,
+                    onAddPicture = addPicture,
                     onAddedPictureClicked = {
                         showDeleteConfirmationDialog = true
                         deleteConfirmationPictureIndex = it
@@ -141,7 +144,7 @@ fun EditProfileView(
                 FormDivider()
 
                 Spacer(modifier = Modifier.height(32.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.signOut(signInClient) }) {
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = signOut) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

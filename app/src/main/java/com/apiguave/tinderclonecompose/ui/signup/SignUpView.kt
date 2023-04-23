@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
+import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.repository.model.Orientation
@@ -34,8 +34,14 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNavigateToHome: () -> Unit, viewModel: SignUpViewModel = getViewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
+fun SignUpView(
+    uiState: SignUpUiState,
+    signInClient: GoogleSignInClient,
+    onAddPicture: () -> Unit,
+    onNavigateToHome: () -> Unit,
+    signUp: (data: Intent?, profile: CreateUserProfile) -> Unit,
+    removePictureAt: (Int) -> Unit
+) {
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -72,8 +78,7 @@ fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNav
             val orientation = Orientation.values()[selectedOrientationIndex]
             val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, uiState.pictures.map { it.bitmap })
             //Signs up with the information provided
-            viewModel.signUp(activityResult.data, profile)
-
+            signUp(activityResult.data, profile)
         }
     )
 
@@ -84,7 +89,7 @@ fun SignUpView(signInClient: GoogleSignInClient, onAddPicture: () -> Unit, onNav
             onDismissRequest = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 showDeleteConfirmationDialog = false
-                viewModel.removePictureAt(deleteConfirmationPictureIndex) },
+                removePictureAt(deleteConfirmationPictureIndex)},
             onDismiss = { showDeleteConfirmationDialog = false})
     }
 

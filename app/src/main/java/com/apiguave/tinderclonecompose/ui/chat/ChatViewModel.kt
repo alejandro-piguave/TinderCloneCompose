@@ -20,7 +20,7 @@ class ChatViewModel(private val messageRepository: MessageRepository): ViewModel
             try {
                 messageRepository.sendMessage(matchId, text)
             }catch (e: Exception){
-                //Show the message as unsent?
+                //Delete the message from the displayed list
             }
         }
     }

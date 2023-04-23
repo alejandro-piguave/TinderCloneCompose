@@ -7,8 +7,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.Match
@@ -33,44 +30,41 @@ import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
 
 @Composable
-fun ChatView(onArrowBackPressed: () -> Unit, viewModel: ChatViewModel = getViewModel()) {
-    val match by viewModel.match.collectAsState()
-    match?.let { match: Match ->
-        val messages by viewModel.getMessages(match.id).collectAsState(listOf())
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                ChatAppBar(match = match, onArrowBackPressed = onArrowBackPressed)
-            },
-            bottomBar = { ChatFooter(
-                onSendClicked = {text ->
-                    viewModel.sendMessage(text)
-                }
-            ) }
-        ) { padding ->
-            LazyColumn(
-                Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
-                item {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        textAlign = TextAlign.Center,
-                        color = Color.Gray,
-                        fontSize = 12.sp,
-                        text = stringResource(id = R.string.you_matched_with_on, match.userName, match.formattedDate).uppercase())
-                }
-                items(messages.size){ index ->
-                    MessageItem(match = match,message = messages[index])
-                }
+fun ChatView(
+    match: Match,
+    onArrowBackPressed: () -> Unit,
+    sendMessage: (String) -> Unit,
+    messages: List<Message>
+) {
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            ChatAppBar(match = match, onArrowBackPressed = onArrowBackPressed)
+        },
+        bottomBar = { ChatFooter(
+            onSendClicked = sendMessage
+        ) }
+    ) { padding ->
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    textAlign = TextAlign.Center,
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    text = stringResource(id = R.string.you_matched_with_on, match.userName, match.formattedDate).uppercase())
+            }
+            items(messages.size){ index ->
+                MessageItem(match = match,message = messages[index])
             }
         }
-
-    } ?: run{
-        Text(modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = stringResource(id = R.string.no_match_value_passed))
     }
 
 }

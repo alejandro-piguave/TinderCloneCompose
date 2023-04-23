@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.login
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,8 +14,6 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -29,18 +28,18 @@ import com.apiguave.tinderclonecompose.ui.components.AnimatedLogo
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun LoginView(signInClient: GoogleSignInClient, onNavigateToSignUp: () -> Unit, onNavigateToHome: () -> Unit, loginViewModel: LoginViewModel = getViewModel()) {
+fun LoginView(signInClient: GoogleSignInClient,
+              uiState: LoginViewState,
+              onNavigateToSignUp: () -> Unit,
+              onNavigateToHome: () -> Unit,
+              onSignIn: (ActivityResult) -> Unit,
+              ) {
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            loginViewModel.signIn(it)
-        }
+        onResult = onSignIn
     )
-
-    val uiState by loginViewModel.uiState.collectAsState()
 
     LaunchedEffect(key1 = uiState, block = {
         if(uiState.isUserSignedIn){

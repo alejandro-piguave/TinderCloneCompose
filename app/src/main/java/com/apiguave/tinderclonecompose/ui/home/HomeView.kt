@@ -21,40 +21,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
+import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
+import com.apiguave.tinderclonecompose.data.repository.model.Profile
 import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
 import com.apiguave.tinderclonecompose.extensions.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
-import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
-import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun HomeView(
-    onNavigateToEditProfile: () -> Unit,
-    onNavigateToMatchList: () -> Unit,
-    onNavigateToNewMatch: () -> Unit,
-    homeViewModel: HomeViewModel = getViewModel(),
-    newMatchViewModel: NewMatchViewModel = getViewModel(),
-    editProfileViewModel: EditProfileViewModel = getViewModel()
+    uiState: HomeUiState,
+    navigateToEditProfile: () -> Unit,
+    navigateToMatchList: () -> Unit,
+    navigateToNewMatch: () -> Unit,
+    setLoading: () -> Unit,
+    removeLastProfile: () -> Unit,
+    fetchProfiles: () -> Unit,
+    swipeUser: (Profile, Boolean) -> Unit,
+    createProfiles: (List<CreateUserProfile>) -> Unit,
+    newMatch: SharedFlow<NewMatch>,
+    currentProfile: SharedFlow<CurrentProfile>,
+    setMatch: (NewMatch) -> Unit,
+    setCurrentProfile: (CurrentProfile) -> Unit
     ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val uiState by homeViewModel.uiState.collectAsState()
     LaunchedEffect(key1 = Unit, block = {
-        homeViewModel.newMatch.collect {
-            newMatchViewModel.setMatch(it)
-            onNavigateToNewMatch()
+        newMatch.collect {
+            setMatch(it)
+            navigateToNewMatch()
         }
     })
     LaunchedEffect(key1 = Unit, block = {
-        homeViewModel.currentProfile.collect{
-            editProfileViewModel.setCurrentProfile(it)
+        currentProfile.collect{
+            setCurrentProfile(it)
         }
     })
     Scaffold(
@@ -68,14 +76,14 @@ fun HomeView(
             ) {
                 TopBarIcon(
                     imageVector = Icons.Filled.AccountCircle,
-                    onClick = onNavigateToEditProfile
+                    onClick = navigateToEditProfile
                 )
                 Spacer(Modifier.weight(1f))
                 TopBarIcon(resId = R.drawable.tinder_logo, modifier = Modifier.size(32.dp))
                 Spacer(Modifier.weight(1f))
                 TopBarIcon(
                     resId = R.drawable.ic_baseline_message_24,
-                    onClick = onNavigateToMatchList
+                    onClick = navigateToMatchList
                 )
             }
         },
@@ -98,15 +106,16 @@ fun HomeView(
                 .fillMaxSize()
                 .padding(padding), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when(val state = uiState){
+            when(uiState){
                 is HomeUiState.Error-> {
                     Spacer(Modifier.weight(1f))
-                    Text(modifier = Modifier.padding(horizontal = 8.dp),text = state.message ?: "", color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                    Text(modifier = Modifier.padding(horizontal = 8.dp),
+                        text = uiState.message ?: "", color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(12.dp))
                     GradientButton(onClick = {
                         scope.launch {
                             delay(200)
-                            homeViewModel.fetchProfiles()
+                            fetchProfiles()
                         }
                     }) {
                         Text(stringResource(id = R.string.retry))
@@ -129,15 +138,20 @@ fun HomeView(
                         val localDensity = LocalDensity.current
                         var buttonRowHeightDp by remember { mutableStateOf(0.dp) }
 
-                        val swipeStates = state.profileList.map { rememberSwipeableCardState() }
-                        state.profileList.forEachIndexed { index, profile ->
-                            ProfileCardView(profile, modifier = Modifier.swipableCard(
-                                state = swipeStates[index],
-                                onSwiped = {
-                                    homeViewModel.swipeUser(profile, it == SwipingDirection.Right)
-                                    homeViewModel.removeLastProfile()
-                                }
-                            ), contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
+                        val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
+                        uiState.profileList.forEachIndexed { index, profile ->
+                            ProfileCardView(profile,
+                                modifier = Modifier.swipableCard(
+                                    state = swipeStates[index],
+                                    onSwiped = {
+                                        swipeUser(
+                                            profile,
+                                            it == SwipingDirection.Right
+                                        )
+                                        removeLastProfile()
+                                    }
+                                ),
+                                contentModifier = Modifier.padding(bottom = buttonRowHeightDp.plus(8.dp))
                             )
                         }
 
@@ -149,8 +163,7 @@ fun HomeView(
                                 .onGloballyPositioned { coordinates ->
                                     buttonRowHeightDp =
                                         with(localDensity) { coordinates.size.height.toDp() }
-                                }
-                            ,
+                                },
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Spacer(Modifier.weight(1f))
@@ -158,7 +171,7 @@ fun HomeView(
                                 onClick = {
                                     scope.launch {
                                         swipeStates.last().swipe(SwipingDirection.Left)
-                                        homeViewModel.removeLastProfile()
+                                        removeLastProfile()
                                     }
                                 },
                                 enabled = swipeStates.isNotEmpty(),
@@ -169,11 +182,13 @@ fun HomeView(
                                 onClick = {
                                     scope.launch {
                                         swipeStates.last().swipe(SwipingDirection.Right)
-                                        homeViewModel.removeLastProfile()
+                                        removeLastProfile()
                                     }
                                 },
                                 enabled = swipeStates.isNotEmpty(),
-                                imageVector = Icons.Filled.Favorite, color1 = Green1, color2 = Green2
+                                imageVector = Icons.Filled.Favorite,
+                                color1 = Green1,
+                                color2 = Green2
                             )
                             Spacer(Modifier.weight(1f))
                         }
@@ -191,7 +206,7 @@ fun HomeView(
                 onGenerate = { profileCount ->
                     showGenerateProfilesDialog = false
                     scope.launch(Dispatchers.Main) {
-                        homeViewModel.setLoading()
+                        setLoading()
                         val profiles = withContext(Dispatchers.IO) {
                             (0 until profileCount).map {
                                 async {
@@ -199,7 +214,7 @@ fun HomeView(
                                 }
                             }.awaitAll()
                         }
-                        homeViewModel.createProfiles(profiles)
+                        createProfiles(profiles)
                     }
                 }
             )

@@ -8,8 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,11 +20,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.koin.androidx.compose.getViewModel
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.repository.model.Match
-import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.components.GradientButton
@@ -36,10 +32,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MatchListView(
-    onNavigateToChatView: () -> Unit,
+    uiState: MatchListUiState,
     onArrowBackPressed: () -> Unit,
-    viewModel: MatchListViewModel = getViewModel(),
-    chatViewModel: ChatViewModel = getViewModel()
+    fetchMatches: () -> Unit,
+    navigateToMatch: (Match) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -49,7 +45,6 @@ fun MatchListView(
             )
         }
     ) { padding ->
-        val uiState by viewModel.uiState.collectAsState()
         if (uiState.isLoading) {
             Column {
                 Spacer(Modifier.weight(1f))
@@ -65,7 +60,7 @@ fun MatchListView(
                 GradientButton(onClick = {
                     coroutineScope.launch {
                         delay(200)
-                        viewModel.fetchMatches()
+                        fetchMatches()
                     }
                 }) {
                     Text(stringResource(id = R.string.retry))
@@ -90,8 +85,7 @@ fun MatchListView(
             ) {
                 items(uiState.matchList.size) {
                     MatchItem(uiState.matchList[it]) {
-                        chatViewModel.setMatch(uiState.matchList[it])
-                        onNavigateToChatView()
+                        navigateToMatch(uiState.matchList[it])
                     }
                 }
             }
