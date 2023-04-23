@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.model.Match
+import com.apiguave.tinderclonecompose.domain.match.entity.Match
 import com.apiguave.tinderclonecompose.ui.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
 import com.apiguave.tinderclonecompose.ui.components.GradientButton
@@ -55,7 +55,7 @@ fun MatchListView(
             Column(modifier = Modifier.padding(horizontal = 8.dp),horizontalAlignment = Alignment.CenterHorizontally) {
                 val coroutineScope = rememberCoroutineScope()
                 Spacer(Modifier.weight(1f))
-                Text(text = uiState.errorMessage!!, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                Text(text = uiState.errorMessage, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(12.dp))
                 GradientButton(onClick = {
                     coroutineScope.launch {

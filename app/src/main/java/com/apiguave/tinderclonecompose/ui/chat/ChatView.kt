@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.model.Match
-import com.apiguave.tinderclonecompose.data.repository.model.Message
+import com.apiguave.tinderclonecompose.domain.match.entity.Match
+import com.apiguave.tinderclonecompose.domain.message.entity.Message
 import com.apiguave.tinderclonecompose.extensions.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite

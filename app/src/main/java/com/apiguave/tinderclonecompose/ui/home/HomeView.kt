@@ -22,10 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
-import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
-import com.apiguave.tinderclonecompose.data.repository.model.Profile
+import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.NewMatch
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.Profile
 import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
 import com.apiguave.tinderclonecompose.extensions.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*

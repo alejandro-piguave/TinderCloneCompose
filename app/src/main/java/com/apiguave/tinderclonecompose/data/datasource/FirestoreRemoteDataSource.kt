@@ -1,11 +1,11 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import com.apiguave.tinderclonecompose.data.datasource.model.*
-import com.apiguave.tinderclonecompose.data.exception.AuthException
-import com.apiguave.tinderclonecompose.data.exception.FirestoreException
-import com.apiguave.tinderclonecompose.data.repository.model.Message
-import com.apiguave.tinderclonecompose.data.repository.model.Orientation
-import com.apiguave.tinderclonecompose.data.repository.model.UserList
+import com.apiguave.tinderclonecompose.data.datasource.exception.AuthException
+import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
+import com.apiguave.tinderclonecompose.domain.message.entity.Message
+import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserList
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -168,7 +168,7 @@ class FirestoreRemoteDataSource {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
-    suspend fun getUserList(): UserList {
+    suspend fun getUserList(): FirestoreUserList {
         //Get current user information
         val currentUser = getFirestoreUserModel(currentUserId)
         currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")
@@ -194,7 +194,7 @@ class FirestoreRemoteDataSource {
         val result = searchQuery.get().getTaskResult()
         //Filter documents
         val compatibleUsers: List<FirestoreUser> = result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject() }
-        return UserList(currentUser, compatibleUsers)
+        return FirestoreUserList(currentUser, compatibleUsers)
     }
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {

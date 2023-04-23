@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import android.content.Intent
-import com.apiguave.tinderclonecompose.data.exception.AuthException
+import com.apiguave.tinderclonecompose.data.datasource.exception.AuthException
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth

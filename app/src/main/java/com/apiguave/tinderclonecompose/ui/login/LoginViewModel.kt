@@ -4,7 +4,7 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
-import com.apiguave.tinderclonecompose.data.repository.AuthRepository
+import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

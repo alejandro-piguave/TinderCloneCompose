@@ -1,14 +1,14 @@
-package com.apiguave.tinderclonecompose.data.repository.impl
+package com.apiguave.tinderclonecompose.data.repository
 
 import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
-import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
-import com.apiguave.tinderclonecompose.data.repository.model.FirebasePicture
-import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
+import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
+import com.apiguave.tinderclonecompose.domain.profile.entity.FirebasePicture
+import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
 
 class ProfileRepositoryImpl(
     private val authDataSource: AuthRemoteDataSource,

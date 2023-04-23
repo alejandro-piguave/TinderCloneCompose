@@ -1,11 +1,11 @@
-package com.apiguave.tinderclonecompose.data.repository.impl
+package com.apiguave.tinderclonecompose.data.repository
 
 import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
-import com.apiguave.tinderclonecompose.data.repository.MatchRepository
-import com.apiguave.tinderclonecompose.data.repository.model.Match
+import com.apiguave.tinderclonecompose.domain.match.MatchRepository
+import com.apiguave.tinderclonecompose.domain.match.entity.Match
 import com.apiguave.tinderclonecompose.extensions.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

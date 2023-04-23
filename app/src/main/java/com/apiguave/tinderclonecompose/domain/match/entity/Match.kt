@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.repository.model
+package com.apiguave.tinderclonecompose.domain.match.entity
 
 import android.net.Uri
 

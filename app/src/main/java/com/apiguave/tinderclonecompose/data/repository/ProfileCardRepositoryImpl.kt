@@ -1,13 +1,13 @@
-package com.apiguave.tinderclonecompose.data.repository.impl
+package com.apiguave.tinderclonecompose.data.repository
 
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
-import com.apiguave.tinderclonecompose.data.repository.ProfileCardRepository
-import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
-import com.apiguave.tinderclonecompose.data.repository.model.NewMatch
-import com.apiguave.tinderclonecompose.data.repository.model.Profile
-import com.apiguave.tinderclonecompose.data.repository.model.ProfileList
+import com.apiguave.tinderclonecompose.domain.profilecard.ProfileCardRepository
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.NewMatch
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.Profile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.ProfileList
 import com.apiguave.tinderclonecompose.extensions.toCurrentProfile
 import com.apiguave.tinderclonecompose.extensions.toProfile
 import kotlinx.coroutines.async

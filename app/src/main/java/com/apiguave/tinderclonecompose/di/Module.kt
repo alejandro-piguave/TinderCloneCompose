@@ -4,7 +4,11 @@ import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.repository.*
-import com.apiguave.tinderclonecompose.data.repository.impl.*
+import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
+import com.apiguave.tinderclonecompose.domain.match.MatchRepository
+import com.apiguave.tinderclonecompose.domain.message.MessageRepository
+import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.domain.profilecard.ProfileCardRepository
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
 import com.apiguave.tinderclonecompose.ui.home.HomeViewModel

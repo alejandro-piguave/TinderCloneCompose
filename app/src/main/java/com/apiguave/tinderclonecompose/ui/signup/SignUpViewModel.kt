@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
-import com.apiguave.tinderclonecompose.data.repository.AuthRepository
-import com.apiguave.tinderclonecompose.data.repository.ProfileRepository
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.DevicePicture
+import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
+import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

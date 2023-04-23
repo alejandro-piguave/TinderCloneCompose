@@ -1,8 +1,8 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.domain.profile
 
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
-import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
+import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
+import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
 
 interface ProfileRepository {
     suspend fun createUserProfile(profile: CreateUserProfile)

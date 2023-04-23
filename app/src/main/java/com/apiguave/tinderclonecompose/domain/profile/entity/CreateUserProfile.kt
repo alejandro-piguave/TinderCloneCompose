@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.repository.model
+package com.apiguave.tinderclonecompose.domain.profile.entity
 
 import android.graphics.Bitmap
 import java.time.LocalDate

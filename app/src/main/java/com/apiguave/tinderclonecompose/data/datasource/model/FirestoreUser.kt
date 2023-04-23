@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.datasource.model
 
-import com.apiguave.tinderclonecompose.data.repository.model.Orientation
+import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 

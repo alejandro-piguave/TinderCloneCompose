@@ -23,8 +23,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.model.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.repository.model.Orientation
+import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
 import com.apiguave.tinderclonecompose.extensions.isValidUsername
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

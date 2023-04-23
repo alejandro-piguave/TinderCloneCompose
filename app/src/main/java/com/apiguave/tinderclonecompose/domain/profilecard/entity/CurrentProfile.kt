@@ -1,6 +1,8 @@
-package com.apiguave.tinderclonecompose.data.repository.model
+package com.apiguave.tinderclonecompose.domain.profilecard.entity
 
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
+import com.apiguave.tinderclonecompose.domain.profile.entity.FirebasePicture
+import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
 
 data class CurrentProfile(
     val id: String = "",

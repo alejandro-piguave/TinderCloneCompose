@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.repository.model.CurrentProfile
-import com.apiguave.tinderclonecompose.data.repository.model.UserPicture
+import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
+import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
 import com.apiguave.tinderclonecompose.ui.components.*
 import kotlinx.coroutines.flow.SharedFlow
 

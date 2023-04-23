@@ -1,9 +1,9 @@
-package com.apiguave.tinderclonecompose.data.repository.impl
+package com.apiguave.tinderclonecompose.data.repository
 
 import android.content.Intent
 import com.apiguave.tinderclonecompose.data.datasource.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
-import com.apiguave.tinderclonecompose.data.repository.AuthRepository
+import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 
 class AuthRepositoryImpl(private val dataSource: AuthRemoteDataSource): AuthRepository {

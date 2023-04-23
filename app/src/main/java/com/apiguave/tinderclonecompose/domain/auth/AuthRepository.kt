@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.repository
+package com.apiguave.tinderclonecompose.domain.auth
 
 import android.content.Intent
 import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
