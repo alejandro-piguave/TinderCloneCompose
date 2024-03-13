@@ -114,7 +114,7 @@ fun SelectedPictureItem(imageUri: Uri,
                     onState = {
 
                     },
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
             }
