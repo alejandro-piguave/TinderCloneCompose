@@ -1,0 +1,49 @@
+[versions]
+accompanist-navigation-animation = "0.27.1"
+activity-compose = "1.7.0"
+androidx-junit = "1.1.4"
+coil = "2.3.0"
+core-ktx = "1.9.0"
+datetime = "0.8.1-rc"
+desugar_jdk_libs = "2.0.4"
+espresso-core = "3.5.0"
+firebase-auth = "21.1.0"
+firebase-firestore-ktx = "24.4.2"
+firebase-storage-ktx = "20.0.1"
+junit = "4.13.2"
+koin-androidx-compose = "3.4.0"
+lifecycle-runtime-ktx = "2.6.1"
+material = "1.3.1"
+navigation-compose = "2.5.3"
+compose-ui = "1.4.0"
+play-services-auth = "20.1.0"
+ui-test-manifest = "1.3.1"
+
+[libraries]
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist-navigation-animation" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui-test-manifest" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "ui-test-manifest" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui-test-manifest" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebase-auth" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebase-auth" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebase-firestore-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebase-storage-ktx" }
+junit = { module = "junit:junit", version.ref = "junit" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-androidx-compose" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-androidx-compose" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play-services-auth" }
+
+[plugins]
