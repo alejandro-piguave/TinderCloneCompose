@@ -12,7 +12,6 @@ import androidx.compose.ui.text.style.TextAlign
 import org.koin.androidx.compose.getViewModel
 import androidx.navigation.*
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.*
 import com.apiguave.tinderclonecompose.ui.chat.ChatView
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.components.AddPictureView

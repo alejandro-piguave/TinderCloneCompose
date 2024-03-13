@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
+import com.apiguave.tinderclonecompose.domain.account.AccountRepository
 import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
 import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel(
-    private val authRepository: AuthRepository,
+    private val accountRepository: AccountRepository,
     private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -57,7 +57,7 @@ class EditProfileViewModel(
 
     fun signOut(signInClient: GoogleSignInClient){
         viewModelScope.launch {
-            authRepository.signOut()
+            accountRepository.signOut()
             signInClient.signOut().getTaskResult()
             _action.emit(EditProfileAction.ON_SIGNED_OUT)
         }

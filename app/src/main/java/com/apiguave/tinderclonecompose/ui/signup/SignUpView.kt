@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
-import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -39,7 +39,7 @@ fun SignUpView(
     signInClient: GoogleSignInClient,
     onAddPicture: () -> Unit,
     onNavigateToHome: () -> Unit,
-    signUp: (data: Intent?, profile: CreateUserProfile) -> Unit,
+    signUp: (data: ActivityResult, profile: CreateUserProfile) -> Unit,
     removePictureAt: (Int) -> Unit
 ) {
 
@@ -72,13 +72,13 @@ fun SignUpView(
 
     val startForResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {activityResult ->
+        onResult = { activityResult ->
             //Transforms the Uris to Bitmaps
             val isMale = selectedGenderIndex == 0
             val orientation = Orientation.values()[selectedOrientationIndex]
             val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, uiState.pictures.map { it.bitmap })
             //Signs up with the information provided
-            signUp(activityResult.data, profile)
+            signUp(activityResult, profile)
         }
     )
 

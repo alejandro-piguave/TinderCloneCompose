@@ -1,11 +1,11 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import com.apiguave.tinderclonecompose.data.datasource.model.*
-import com.apiguave.tinderclonecompose.data.datasource.exception.AuthException
 import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
 import com.apiguave.tinderclonecompose.domain.message.entity.Message
 import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserList
+import com.apiguave.tinderclonecompose.domain.account.exception.AuthException
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
 import com.google.firebase.auth.FirebaseAuth

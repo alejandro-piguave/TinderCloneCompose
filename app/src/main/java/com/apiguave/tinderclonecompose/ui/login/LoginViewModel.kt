@@ -3,14 +3,14 @@ package com.apiguave.tinderclonecompose.ui.login
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
-import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
+import com.apiguave.tinderclonecompose.domain.account.AccountRepository
+import com.apiguave.tinderclonecompose.extensions.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
+class LoginViewModel(private val accountRepository: AccountRepository): ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginViewState(
             isLoading = true,
@@ -26,7 +26,7 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
 
     private fun checkLoginState() {
         _uiState.update {
-            if(authRepository.isUserSignedIn){
+            if(accountRepository.isUserSignedIn){
                 it.copy(isUserSignedIn = true)
             } else {
                 it.copy(isLoading = false)
@@ -38,11 +38,12 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
-                authRepository.signInWithGoogle(activityResult.data, signInCheck = SignInCheck.ENFORCE_EXISTING_USER)
+                val account = activityResult.toProviderAccount()
+                accountRepository.signIn(account)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
-                if(authRepository.isUserSignedIn){
-                    authRepository.signOut()
+                if(accountRepository.isUserSignedIn){
+                    accountRepository.signOut()
                 }
                 _uiState.update {
                     it.copy(isLoading = false, errorMessage = e.message)

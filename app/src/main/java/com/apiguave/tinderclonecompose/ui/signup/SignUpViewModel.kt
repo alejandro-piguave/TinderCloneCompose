@@ -1,21 +1,21 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
-import android.content.Intent
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.datasource.SignInCheck
-import com.apiguave.tinderclonecompose.domain.auth.AuthRepository
+import com.apiguave.tinderclonecompose.domain.account.AccountRepository
 import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
 import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
+import com.apiguave.tinderclonecompose.extensions.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
-    private val authRepository: AuthRepository,
+    private val accountRepository: AccountRepository,
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -36,11 +36,12 @@ class SignUpViewModel(
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
-    fun signUp(data: Intent?, profile: CreateUserProfile) {
+    fun signUp(activityResult: ActivityResult, profile: CreateUserProfile) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
-                authRepository.signInWithGoogle(data, signInCheck = SignInCheck.ENFORCE_NEW_USER)
+                val account = activityResult.toProviderAccount()
+                accountRepository.signIn(account)
                 profileRepository.createUserProfile(profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
