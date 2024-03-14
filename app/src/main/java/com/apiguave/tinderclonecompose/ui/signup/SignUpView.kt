@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
@@ -38,7 +39,7 @@ import java.time.format.FormatStyle
 fun SignUpView(
     uiState: SignUpUiState,
     signInClient: GoogleSignInClient,
-    onAddPicture: () -> Unit,
+    onPictureSelected: (DevicePicture) -> Unit,
     onNavigateToHome: () -> Unit,
     signUp: (data: ActivityResult, profile: CreateUserProfile) -> Unit,
     removePictureAt: (Int) -> Unit
@@ -46,6 +47,7 @@ fun SignUpView(
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
+    var showSelectPictureDialog by remember{ mutableStateOf(false) }
 
     var deleteConfirmationPictureIndex by remember { mutableStateOf(0) }
     var birthdate by rememberSaveable { mutableStateOf(eighteenYearsAgo) }
@@ -102,6 +104,13 @@ fun SignUpView(
         )
     }
 
+    if(showSelectPictureDialog) {
+        SelectPictureDialog(onCloseClick = { showSelectPictureDialog = false }, onReceiveUri = {
+            showSelectPictureDialog = false
+            onPictureSelected(it)
+        })
+    }
+
     FormDatePickerDialog(dateDialogState, onDateChange = { birthdate = it })
     
     Surface {
@@ -124,7 +133,7 @@ fun SignUpView(
                 PictureGridRow(
                     rowIndex = rowIndex,
                     pictures = uiState.pictures,
-                    onAddPicture = onAddPicture,
+                    onAddPicture = { showSelectPictureDialog = true },
                     onAddedPictureClicked = {
                         showDeleteConfirmationDialog = true
                         deleteConfirmationPictureIndex = it

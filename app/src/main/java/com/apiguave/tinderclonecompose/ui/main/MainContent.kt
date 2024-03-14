@@ -15,7 +15,6 @@ import androidx.navigation.*
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.chat.ChatView
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
-import com.apiguave.tinderclonecompose.ui.components.AddPictureView
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
 import com.apiguave.tinderclonecompose.ui.home.HomeView
@@ -43,8 +42,6 @@ fun MainContent(signInClient: GoogleSignInClient){
 
         val chatViewModel: ChatViewModel = getViewModel()
         val newMatchViewModel: NewMatchViewModel = getViewModel()
-        val editProfileViewModel: EditProfileViewModel = getViewModel()
-        val signUpViewModel: SignUpViewModel = getViewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
 
             animatedComposable(Routes.Login) {
@@ -70,12 +67,13 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.SignUp) {
+                val signUpViewModel: SignUpViewModel = koinViewModel()
                 val uiState by signUpViewModel.uiState.collectAsState()
                 SignUpView(
                     uiState = uiState,
                     signInClient = signInClient,
-                    onAddPicture = {
-                        navController.navigate(Routes.getAddPictureRoute(Routes.SignUp))
+                    onPictureSelected = {
+                        signUpViewModel.addPicture(it)
                     },
                     onNavigateToHome = {
                         navController.navigate(Routes.Home){
@@ -86,22 +84,6 @@ fun MainContent(signInClient: GoogleSignInClient){
                     },
                     removePictureAt = signUpViewModel::removePictureAt,
                     signUp = signUpViewModel::signUp
-                )
-            }
-
-            animatedComposable(Routes.AddPicture, arguments = listOf(navArgument(Arguments.Caller){ type = NavType.StringType})){
-                AddPictureView(
-                    onCloseClicked = navController::popBackStack
-                    ,
-                    onReceiveUri = { uri, caller ->
-                        if(caller == Routes.SignUp){
-                            signUpViewModel.addPicture(uri)
-                        }else if(caller == Routes.EditProfile){
-                            editProfileViewModel.addPicture(uri)
-                        }
-                        navController.popBackStack()
-                    },
-                    caller = it.arguments?.getString(Arguments.Caller)
                 )
             }
 
@@ -142,14 +124,15 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.EditProfile){
+                val editProfileViewModel: EditProfileViewModel = koinViewModel()
                 val uiState by editProfileViewModel.uiState.collectAsState()
                 LaunchedEffect(key1 = Unit){
                     editProfileViewModel.updateUserProfile()
                 }
                 EditProfileView(
                     uiState = uiState,
-                    addPicture = {
-                        navController.navigate(Routes.getAddPictureRoute(Routes.EditProfile))
+                    onPictureSelected = {
+                        editProfileViewModel.addPicture(it)
                     },
                     onProfileEdited = navController::popBackStack
                     ,

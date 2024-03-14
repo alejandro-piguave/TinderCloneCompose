@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.ui.components.*
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -21,8 +22,8 @@ import kotlinx.coroutines.flow.SharedFlow
 fun EditProfileView(
     uiState: EditProfileUiState,
     signOut: () -> Unit,
-    addPicture: () -> Unit,
     onSignedOut: () -> Unit,
+    onPictureSelected: (DevicePicture) -> Unit,
     onProfileEdited: () -> Unit,
     removePictureAt: (Int) -> Unit,
     updateProfile: () -> Unit,
@@ -34,6 +35,7 @@ fun EditProfileView(
 
     var showErrorDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showSelectPictureDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
 
     LaunchedEffect(key1 = Unit, block = {
@@ -69,6 +71,13 @@ fun EditProfileView(
         )
     }
 
+    if(showSelectPictureDialog) {
+        SelectPictureDialog(onCloseClick = { showSelectPictureDialog = false }, onReceiveUri = {
+            showSelectPictureDialog = false
+            onPictureSelected(it)
+        })
+    }
+
     Scaffold(
         topBar = {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
@@ -93,7 +102,7 @@ fun EditProfileView(
                 PictureGridRow(
                     rowIndex = rowIndex,
                     pictures = uiState.pictures,
-                    onAddPicture = addPicture,
+                    onAddPicture = { showSelectPictureDialog = true },
                     onAddedPictureClicked = {
                         showDeleteConfirmationDialog = true
                         deleteConfirmationPictureIndex = it

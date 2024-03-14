@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture, caller: String?) -> Unit, caller: String?){
+fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture) -> Unit){
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -51,7 +51,7 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture, cal
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             coroutineScope.launch {
                 val devicePicture = withContext(Dispatchers.IO) {uri?.toDevicePicture(context.contentResolver) }
-                devicePicture?.let { onReceiveUri(it, caller) }
+                devicePicture?.let { onReceiveUri(it) }
             }
         }
 
@@ -61,7 +61,7 @@ fun AddPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture, cal
             if(success){
                 coroutineScope.launch {
                     val devicePicture = withContext(Dispatchers.IO) {imageUri?.toDevicePicture(context.contentResolver) }
-                    devicePicture?.let { onReceiveUri(it, caller) }
+                    devicePicture?.let { onReceiveUri(it) }
                 }
             }
         }
