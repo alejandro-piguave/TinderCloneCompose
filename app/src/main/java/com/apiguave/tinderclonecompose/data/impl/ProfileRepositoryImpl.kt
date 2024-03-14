@@ -1,8 +1,6 @@
 package com.apiguave.tinderclonecompose.data.impl
 
 import com.apiguave.tinderclonecompose.data.account.AuthRepository
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
-import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
@@ -17,7 +15,6 @@ class ProfileRepositoryImpl(
     private val pictureRepository: PictureRepository,
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
-    private val firestoreDataSource: FirestoreRemoteDataSource
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
@@ -32,15 +29,14 @@ class ProfileRepositoryImpl(
 
     override suspend fun createProfile(userId: String, profile: CreateUserProfile) {
         val filenames = pictureRepository.uploadProfilePictures(profile.pictures)
-        firestoreDataSource.createUserProfile(
+        userRepository.createUser(
             userId,
             profile.name,
             profile.birthdate,
             profile.bio,
-            profile.isMale,
-            profile.orientation.toFirestoreOrientation(),
-            filenames.map { it.filename }
-        )
+            profile.gender,
+            profile.orientation,
+            filenames.map { it.filename })
     }
 
     override suspend fun updateProfile(

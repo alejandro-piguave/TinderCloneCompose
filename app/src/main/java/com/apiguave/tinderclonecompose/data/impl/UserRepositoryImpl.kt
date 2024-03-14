@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.impl
 
 import com.apiguave.tinderclonecompose.data.account.AuthRepository
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
+import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
@@ -10,6 +10,7 @@ import com.apiguave.tinderclonecompose.data.user.datasource.UserLocalDataSource
 import com.apiguave.tinderclonecompose.data.user.datasource.UserRemoteDataSource
 import com.apiguave.tinderclonecompose.data.user.repository.User
 import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
+import java.time.LocalDate
 
 class UserRepositoryImpl(
     private val authRepository: AuthRepository,
@@ -61,5 +62,17 @@ class UserRepositoryImpl(
     override suspend fun getCompatibleUsers(): List<User> {
         val currentUser = getCurrentUser()
         return userRemoteDataSource.getCompatibleUsers(currentUser)
+    }
+
+    override suspend fun createUser(
+        userId: String,
+        name: String,
+        birthdate: LocalDate,
+        bio: String,
+        gender: Gender,
+        orientation: Orientation,
+        pictures: List<String>
+    ) {
+        userRemoteDataSource.createUser(userId, name, birthdate, bio, gender, orientation, pictures)
     }
 }

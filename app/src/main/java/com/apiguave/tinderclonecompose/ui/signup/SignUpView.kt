@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.ui.extension.isValidUsername
 import com.apiguave.tinderclonecompose.ui.components.*
@@ -74,9 +75,9 @@ fun SignUpView(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { activityResult ->
             //Transforms the Uris to Bitmaps
-            val isMale = selectedGenderIndex == 0
+            val gender = if(selectedGenderIndex == 0) Gender.MALE else Gender.FEMALE
             val orientation = Orientation.values()[selectedOrientationIndex]
-            val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, isMale, orientation, uiState.pictures.map { it.bitmap })
+            val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, gender, orientation, uiState.pictures.map { it.bitmap })
             //Signs up with the information provided
             signUp(activityResult, profile)
         }

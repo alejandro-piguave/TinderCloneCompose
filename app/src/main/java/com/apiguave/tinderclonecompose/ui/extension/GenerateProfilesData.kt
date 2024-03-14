@@ -8,6 +8,7 @@ import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -28,7 +29,7 @@ suspend fun getRandomProfile(context: Context): CreateUserProfile {
         val birthdate = getRandomBirthdate()
         val orientation = Orientation.values().random()
 
-        return CreateUserProfile(name, birthdate, "", isMale, orientation, pictures)
+        return CreateUserProfile(name, birthdate, "", if(isMale) Gender.MALE else Gender.FEMALE, orientation, pictures)
 }
 fun getRandomUserId(): String = UUID.randomUUID().toString()
 fun getRandomPictureCount(): Int = minPictureCount + Random.nextInt(maxPictureCount - minPictureCount)

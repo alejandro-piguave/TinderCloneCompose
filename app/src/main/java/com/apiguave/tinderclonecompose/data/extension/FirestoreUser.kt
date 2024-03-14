@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.extension
 
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
+import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUser
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.user.repository.User
 

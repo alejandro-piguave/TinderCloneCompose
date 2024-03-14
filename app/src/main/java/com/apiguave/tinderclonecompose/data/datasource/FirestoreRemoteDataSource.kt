@@ -4,16 +4,13 @@ import com.apiguave.tinderclonecompose.data.account.exception.AuthException
 import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatchProperties
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreOrientation
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
+import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUser
+import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
-import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import java.time.LocalDate
 
 class FirestoreRemoteDataSource {
     companion object {
@@ -74,28 +71,6 @@ class FirestoreRemoteDataSource {
             .get()
             .getTaskResult()
         return result.exists()
-    }
-
-    suspend fun createUserProfile(
-        userId: String,
-        name: String,
-        birthdate: LocalDate,
-        bio: String,
-        isMale: Boolean,
-        orientation: FirestoreOrientation,
-        pictures: List<String>
-    ) {
-        val user = FirestoreUser(
-            name = name,
-            birthDate = birthdate.toTimestamp(),
-            bio = bio,
-            male = isMale,
-            orientation = orientation,
-            pictures = pictures,
-            liked = emptyList(),
-            passed = emptyList()
-        )
-        FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {
