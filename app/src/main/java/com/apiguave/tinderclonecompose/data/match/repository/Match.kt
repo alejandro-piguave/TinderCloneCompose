@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.match.entity
+package com.apiguave.tinderclonecompose.data.match.repository
 
 data class Match(
     val id: String,

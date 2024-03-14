@@ -8,4 +8,5 @@ interface PictureRepository {
     suspend fun updateProfilePictures(outdatedPictures: List<FirebasePicture>, updatedPictures: List<Picture>): List<FirebasePicture>
     suspend fun uploadProfilePictures(pictures: List<Bitmap>): List<FirebasePicture>
     suspend fun getPictures(user: User): List<FirebasePicture>
+    suspend fun getPicture(user: User): FirebasePicture
 }

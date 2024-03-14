@@ -1,26 +1,27 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRemoteDataSource
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
-import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.extension.toAge
 import com.apiguave.tinderclonecompose.data.extension.toShortString
-import com.apiguave.tinderclonecompose.data.match.MatchRepository
-import com.apiguave.tinderclonecompose.data.match.entity.Match
+import com.apiguave.tinderclonecompose.data.match.datasource.MatchRemoteDataSource
+import com.apiguave.tinderclonecompose.data.match.repository.MatchRepository
+import com.apiguave.tinderclonecompose.data.match.repository.Match
+import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
+import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 class MatchRepositoryImpl(
-    private val authDataSource: AuthRemoteDataSource,
-    private val storageDataSource: PictureRemoteDataSource,
-    private val firestoreDataSource: FirestoreRemoteDataSource
+    private val authDataSource: AuthRepository,
+    private val pictureRepository: PictureRepository,
+    private val userRepository: UserRepository,
+    private val matchRemoteDataSource: MatchRemoteDataSource,
 ): MatchRepository {
 
-
     override suspend fun getMatches(): List<Match> {
-        val matchModels = firestoreDataSource.getFirestoreMatchModels()
+        val matchModels = matchRemoteDataSource.getFirestoreMatchModels()
         val matches = coroutineScope {
             matchModels.map { async { it.toMatch() } }.awaitAll()
         }
@@ -29,11 +30,11 @@ class MatchRepositoryImpl(
 
     private suspend fun FirestoreMatch.toMatch(): Match? {
         val userId = this.usersMatched.firstOrNull { it != authDataSource.userId } ?: return null
-        val user = firestoreDataSource.getFirestoreUserModel(userId)
-        val picture = storageDataSource.getPictureFromUser(userId, user.pictures.first())
+        val user = userRepository.getUser(userId)
+        val picture = pictureRepository.getPicture(user)
         return Match(
             this.id,
-            user.birthDate?.toDate()?.toAge() ?: 99,
+            user.birthDate.toAge(),
             userId,
             user.name,
             picture.uri.toString(),

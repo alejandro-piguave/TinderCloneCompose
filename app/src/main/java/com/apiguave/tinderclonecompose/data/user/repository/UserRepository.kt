@@ -16,4 +16,5 @@ interface UserRepository {
         gender: Gender,
         orientation: Orientation,
         pictures: List<String>)
+    suspend fun getUser(userId: String): User
 }

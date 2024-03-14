@@ -75,4 +75,8 @@ class UserRepositoryImpl(
     ) {
         userRemoteDataSource.createUser(userId, name, birthdate, bio, gender, orientation, pictures)
     }
+
+    override suspend fun getUser(userId: String): User {
+        return userRemoteDataSource.getUser(userId)
+    }
 }

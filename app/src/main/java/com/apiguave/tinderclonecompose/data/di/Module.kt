@@ -9,12 +9,13 @@ import com.apiguave.tinderclonecompose.data.impl.MatchRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.MessageRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.ProfileRepositoryImpl
 import com.apiguave.tinderclonecompose.data.account.AuthRepository
-import com.apiguave.tinderclonecompose.data.match.MatchRepository
+import com.apiguave.tinderclonecompose.data.match.repository.MatchRepository
 import com.apiguave.tinderclonecompose.data.message.repository.MessageRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.home.HomeRepository
 import com.apiguave.tinderclonecompose.data.impl.PictureRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.UserRepositoryImpl
+import com.apiguave.tinderclonecompose.data.match.datasource.MatchRemoteDataSource
 import com.apiguave.tinderclonecompose.data.message.datasource.MessageRemoteDataSource
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureLocalDataSource
 import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
@@ -31,7 +32,6 @@ val dataModule = module {
 
     //Repositories
     single<AuthRepository> { AuthRepositoryImpl(get()) }
-    single<MatchRepository> { MatchRepositoryImpl(get(),get(),get()) }
     single<HomeRepository> { HomeRepositoryImpl(get(), get(), get()) }
     single<ProfileRepository> { ProfileRepositoryImpl(get(),get(), get()) }
 
@@ -48,4 +48,8 @@ val dataModule = module {
     single { PictureRemoteDataSource() }
     single { PictureLocalDataSource() }
     single<PictureRepository> { PictureRepositoryImpl(get(), get(), get(), get()) }
+
+    //Matches
+    single { MatchRemoteDataSource() }
+    single<MatchRepository> { MatchRepositoryImpl(get(),get(),get(), get()) }
 }
