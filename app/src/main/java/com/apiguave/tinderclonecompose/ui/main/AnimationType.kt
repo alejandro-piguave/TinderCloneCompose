@@ -63,24 +63,18 @@ enum class AnimationType(
             )
         },
         exitTransition = {
-            if(targetState.destination.route == Routes.NewMatch){
-                fadeOut(tween(FADE_TRANSITION_DURATION))
-            } else {
-                slideOutOfContainer(
-                    towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = tween(SLIDE_TRANSITION_DURATION)
-                )
-            }
+            slideOutOfContainer(
+                towards = AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(SLIDE_TRANSITION_DURATION)
+            )
+
         },
         popEnterTransition = {
-            if (targetState.destination.route == Routes.NewMatch){
-                fadeIn(tween(FADE_TRANSITION_DURATION))
-            } else {
-                slideIntoContainer(
-                    towards = AnimatedContentScope.SlideDirection.Right,
-                    animationSpec = tween(SLIDE_TRANSITION_DURATION)
-                )
-            }
+            slideIntoContainer(
+                towards = AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(SLIDE_TRANSITION_DURATION)
+            )
+
         },
         popExitTransition = {
             slideOutOfContainer(
