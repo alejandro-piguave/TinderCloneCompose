@@ -47,7 +47,7 @@ class PictureRepositoryImpl(
     }
 
     override suspend fun getPicture(user: User): FirebasePicture {
-        return pictureRemoteDataSource.getPictureFromUser(user)
+        return pictureRemoteDataSource.getPictureFromUser(user.id, user.pictures.first())
     }
 
 }

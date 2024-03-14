@@ -75,13 +75,12 @@ class PictureRemoteDataSource {
 
     suspend fun getPicturesFromUser(user: User): List<FirebasePicture>{
         return coroutineScope {
-            user.pictures.map { async { getPictureFromUser(user) } }.awaitAll()
+            user.pictures.map { async { getPictureFromUser(user.id, it) } }.awaitAll()
         }
     }
 
-    suspend fun getPictureFromUser(user: User): FirebasePicture {
-        val filename = user.pictures.first()
-        val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(user.id).child(filename)
-        return FirebasePicture(fileRef.downloadUrl.getTaskResult(), filename)
+    suspend fun getPictureFromUser(userId: String, picture: String): FirebasePicture {
+        val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture)
+        return FirebasePicture(fileRef.downloadUrl.getTaskResult(), picture)
     }
 }
