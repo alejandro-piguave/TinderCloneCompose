@@ -8,8 +8,8 @@ import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatchPrope
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreOrientation
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
-import com.apiguave.tinderclonecompose.extensions.getTaskResult
-import com.apiguave.tinderclonecompose.extensions.toTimestamp
+import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

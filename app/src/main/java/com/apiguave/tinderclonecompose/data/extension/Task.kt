@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extensions
+package com.apiguave.tinderclonecompose.data.extension
 
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.suspendCancellableCoroutine

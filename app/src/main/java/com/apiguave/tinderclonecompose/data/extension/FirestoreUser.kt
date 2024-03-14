@@ -6,8 +6,6 @@ import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.data.home.entity.UserProfile
 import com.apiguave.tinderclonecompose.data.profile.entity.FirebasePicture
 import com.apiguave.tinderclonecompose.data.profile.entity.Gender
-import com.apiguave.tinderclonecompose.extensions.toAge
-import com.apiguave.tinderclonecompose.extensions.toLongString
 
 fun FirestoreUser.toProfile(uris: List<Uri>): Profile {
     return Profile(this.id, this.name, this.birthDate?.toAge() ?: 99, uris.map { it.toString() })

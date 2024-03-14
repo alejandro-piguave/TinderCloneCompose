@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.data.profile.entity.FirebasePicture
 import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
-import com.apiguave.tinderclonecompose.extensions.getTaskResult
-import com.apiguave.tinderclonecompose.extensions.toByteArray
+import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonecompose.data.extension.toByteArray
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

@@ -25,8 +25,8 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
-import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
-import com.apiguave.tinderclonecompose.extensions.getRandomProfile
+import com.apiguave.tinderclonecompose.ui.extension.allowProfileGeneration
+import com.apiguave.tinderclonecompose.ui.extension.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2

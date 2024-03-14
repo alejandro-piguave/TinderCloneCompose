@@ -7,7 +7,7 @@ import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
-import com.apiguave.tinderclonecompose.extensions.getRandomUserId
+import com.apiguave.tinderclonecompose.ui.extension.getRandomUserId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*

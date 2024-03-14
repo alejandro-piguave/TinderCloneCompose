@@ -22,7 +22,7 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.match.entity.Match
 import com.apiguave.tinderclonecompose.data.message.repository.Message
-import com.apiguave.tinderclonecompose.extensions.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.extension.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
 import com.apiguave.tinderclonecompose.ui.theme.Orange

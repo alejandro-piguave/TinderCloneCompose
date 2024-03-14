@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.data.account
 
 import com.apiguave.tinderclonecompose.data.account.exception.AuthException
 import com.apiguave.tinderclonecompose.data.account.entity.Account
-import com.apiguave.tinderclonecompose.extensions.getTaskResult
+import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider

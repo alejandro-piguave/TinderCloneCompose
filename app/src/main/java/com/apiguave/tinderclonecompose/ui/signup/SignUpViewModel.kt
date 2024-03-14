@@ -7,8 +7,8 @@ import com.apiguave.tinderclonecompose.data.account.AccountRepository
 import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
-import com.apiguave.tinderclonecompose.extensions.filterIndex
-import com.apiguave.tinderclonecompose.extensions.toProviderAccount
+import com.apiguave.tinderclonecompose.ui.extension.filterIndex
+import com.apiguave.tinderclonecompose.ui.extension.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

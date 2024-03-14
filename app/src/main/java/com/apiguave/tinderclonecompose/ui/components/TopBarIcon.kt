@@ -9,8 +9,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
-import com.apiguave.tinderclonecompose.extensions.conditional
-import com.apiguave.tinderclonecompose.extensions.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.extension.conditional
+import com.apiguave.tinderclonecompose.ui.extension.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 

@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extensions
+package com.apiguave.tinderclonecompose.ui.extension
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache

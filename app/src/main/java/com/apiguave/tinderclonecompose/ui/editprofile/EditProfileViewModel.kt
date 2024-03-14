@@ -7,10 +7,10 @@ import com.apiguave.tinderclonecompose.data.account.AccountRepository
 import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
-import com.apiguave.tinderclonecompose.extensions.filterIndex
-import com.apiguave.tinderclonecompose.extensions.getTaskResult
-import com.apiguave.tinderclonecompose.extensions.toGender
-import com.apiguave.tinderclonecompose.extensions.toOrientation
+import com.apiguave.tinderclonecompose.ui.extension.filterIndex
+import com.apiguave.tinderclonecompose.ui.extension.getTaskResult
+import com.apiguave.tinderclonecompose.ui.extension.toGender
+import com.apiguave.tinderclonecompose.ui.extension.toOrientation
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

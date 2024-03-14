@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extensions
+package com.apiguave.tinderclonecompose.ui.extension
 
 import androidx.activity.result.ActivityResult
 import com.apiguave.tinderclonecompose.data.account.entity.Account

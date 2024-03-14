@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.extensions.conditional
-import com.apiguave.tinderclonecompose.extensions.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.extension.conditional
+import com.apiguave.tinderclonecompose.ui.extension.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 

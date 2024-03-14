@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extensions
+package com.apiguave.tinderclonecompose.ui.extension
 
 import android.content.Context
 import android.graphics.Bitmap

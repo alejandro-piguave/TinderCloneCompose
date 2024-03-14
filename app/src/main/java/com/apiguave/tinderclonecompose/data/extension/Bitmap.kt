@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extensions
+package com.apiguave.tinderclonecompose.data.extension
 
 import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream

@@ -10,7 +10,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.apiguave.tinderclonecompose.extensions.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.extension.withLinearGradient
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 

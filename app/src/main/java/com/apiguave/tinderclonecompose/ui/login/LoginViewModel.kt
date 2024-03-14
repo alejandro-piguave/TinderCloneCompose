@@ -4,7 +4,7 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.account.AccountRepository
-import com.apiguave.tinderclonecompose.extensions.toProviderAccount
+import com.apiguave.tinderclonecompose.ui.extension.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
