@@ -2,11 +2,11 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.home.HomeRepository
-import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.domain.home.entity.NewMatch
-import com.apiguave.tinderclonecompose.domain.home.entity.Profile
+import com.apiguave.tinderclonecompose.data.home.HomeRepository
+import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
+import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.extensions.getRandomUserId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

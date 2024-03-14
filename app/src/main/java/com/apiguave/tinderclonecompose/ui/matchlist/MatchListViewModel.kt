@@ -2,8 +2,8 @@ package com.apiguave.tinderclonecompose.ui.matchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.match.MatchRepository
-import com.apiguave.tinderclonecompose.domain.match.entity.Match
+import com.apiguave.tinderclonecompose.data.match.MatchRepository
+import com.apiguave.tinderclonecompose.data.match.entity.Match
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

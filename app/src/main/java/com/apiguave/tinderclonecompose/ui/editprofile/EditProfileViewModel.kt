@@ -3,10 +3,10 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.account.AccountRepository
-import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
-import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
+import com.apiguave.tinderclonecompose.data.account.AccountRepository
+import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
+import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toGender

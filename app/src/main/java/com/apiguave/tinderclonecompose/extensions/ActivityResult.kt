@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.extensions
 
 import androidx.activity.result.ActivityResult
-import com.apiguave.tinderclonecompose.domain.account.entity.Account
+import com.apiguave.tinderclonecompose.data.account.entity.Account
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 suspend fun ActivityResult.toProviderAccount(): Account {

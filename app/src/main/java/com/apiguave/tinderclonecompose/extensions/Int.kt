@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.extensions
 
-import com.apiguave.tinderclonecompose.domain.profile.entity.Gender
-import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
+import com.apiguave.tinderclonecompose.data.profile.entity.Gender
+import com.apiguave.tinderclonecompose.data.profile.entity.Orientation
 
 fun Int.toGender(): Gender = when(this) {
     0 -> Gender.MALE
@@ -9,7 +9,7 @@ fun Int.toGender(): Gender = when(this) {
     else -> throw IllegalArgumentException("Int must be 0 or 1 in order to covert to Gender")
 }
 
-fun Int.toOrientation(): Orientation  = when(this) {
+fun Int.toOrientation(): Orientation = when(this) {
     0 -> Orientation.MEN
     1 -> Orientation.WOMEN
     2 -> Orientation.BOTH

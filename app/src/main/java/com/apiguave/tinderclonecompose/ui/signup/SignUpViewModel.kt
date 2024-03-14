@@ -3,10 +3,10 @@ package com.apiguave.tinderclonecompose.ui.signup
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.account.AccountRepository
-import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
+import com.apiguave.tinderclonecompose.data.account.AccountRepository
+import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import com.apiguave.tinderclonecompose.extensions.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow

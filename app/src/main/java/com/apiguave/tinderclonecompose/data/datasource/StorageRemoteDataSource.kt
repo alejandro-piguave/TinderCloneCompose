@@ -1,9 +1,9 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
 import android.graphics.Bitmap
-import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
-import com.apiguave.tinderclonecompose.domain.profile.entity.FirebasePicture
-import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
+import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
+import com.apiguave.tinderclonecompose.data.profile.entity.FirebasePicture
+import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toByteArray
 import com.google.firebase.storage.FirebaseStorage

@@ -22,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.domain.home.entity.NewMatch
-import com.apiguave.tinderclonecompose.domain.home.entity.Profile
+import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
+import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
 import com.apiguave.tinderclonecompose.extensions.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*

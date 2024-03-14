@@ -1,30 +1,26 @@
 package com.apiguave.tinderclonecompose.data.datasource
 
-import com.apiguave.tinderclonecompose.data.datasource.model.*
+import com.apiguave.tinderclonecompose.data.account.exception.AuthException
 import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
-import com.apiguave.tinderclonecompose.domain.message.entity.Message
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreHomeData
-import com.apiguave.tinderclonecompose.domain.account.exception.AuthException
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatchProperties
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreOrientation
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import java.time.LocalDate
 
 class FirestoreRemoteDataSource {
     companion object {
         private const val USERS = "users"
         private const val MATCHES = "matches"
-        private const val MESSAGES = "messages"
     }
     
     private val currentUserId: String
@@ -32,64 +28,6 @@ class FirestoreRemoteDataSource {
 
     suspend fun updateProfileData(data: Map<String, Any>){
         FirebaseFirestore.getInstance().collection(USERS).document(currentUserId).update(data).getTaskResult()
-    }
-
-    fun getMessages(matchId: String): Flow<List<Message>> = callbackFlow {
-        // Reference to use in Firestore
-        var eventsCollection: CollectionReference? = null
-        try {
-            eventsCollection = FirebaseFirestore.getInstance()
-                .collection(MATCHES)
-                .document(matchId).collection(MESSAGES)
-        } catch (e: Throwable) {
-            // If Firebase cannot be initialized, close the stream of data
-            // flow consumers will stop collecting and the coroutine will resume
-            close(e)
-        }
-
-        // Registers callback to firestore, which will be called on new events
-        val subscription = eventsCollection?.orderBy(FirestoreMessageProperties.timestamp)?.addSnapshotListener { snapshot, _ ->
-            if (snapshot == null) { return@addSnapshotListener }
-            // Sends events to the flow! Consumers will get the new events
-            try {
-                val messages = snapshot.toObjects(FirestoreMessage::class.java).map {
-                    val isSender = it.senderId == currentUserId
-                    val text = it.message
-                    Message(text, isSender)
-                }
-                trySend(messages)
-            }catch (e: Exception){
-                close(e)
-            }
-        }
-
-        // The callback inside awaitClose will be executed when the flow is
-        // either closed or cancelled.
-        // In this case, remove the callback from Firestore
-        awaitClose { subscription?.remove() }
-    }
-
-    suspend fun sendMessage(matchId: String, text: String){
-        val data = FirestoreMessageProperties.toData(currentUserId, text)
-        coroutineScope {
-            val newMessageResult = async {
-                FirebaseFirestore.getInstance()
-                    .collection(MATCHES)
-                    .document(matchId)
-                    .collection(MESSAGES)
-                    .add(data)
-                    .getTaskResult()
-            }
-            val lastMessageResult = async {
-                FirebaseFirestore.getInstance()
-                    .collection(MATCHES)
-                    .document(matchId)
-                    .update(mapOf(FirestoreMatchProperties.lastMessage to text))
-                    .getTaskResult()
-            }
-            newMessageResult.await()
-            lastMessageResult.await()
-        }
     }
 
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {

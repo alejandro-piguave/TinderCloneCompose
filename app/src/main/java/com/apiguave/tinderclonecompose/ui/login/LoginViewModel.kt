@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.ui.login
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.account.AccountRepository
+import com.apiguave.tinderclonecompose.data.account.AccountRepository
 import com.apiguave.tinderclonecompose.extensions.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
