@@ -15,49 +15,52 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.ui.extension.allowProfileGeneration
-import com.apiguave.tinderclonecompose.ui.extension.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.components.dialogs.GenerateProfilesDialog
+import com.apiguave.tinderclonecompose.ui.components.dialogs.NewMatchDialog
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun HomeView(
-    uiState: HomeUiState,
+    uiState: HomeViewState,
     navigateToEditProfile: () -> Unit,
     navigateToMatchList: () -> Unit,
-    navigateToNewMatch: () -> Unit,
-    setLoading: () -> Unit,
     removeLastProfile: () -> Unit,
     fetchProfiles: () -> Unit,
     swipeUser: (Profile, Boolean) -> Unit,
-    createProfiles: (List<CreateUserProfile>) -> Unit,
-    newMatch: SharedFlow<NewMatch>,
-    setMatch: (NewMatch) -> Unit
+    onGenerateProfiles: (Int) -> Unit,
+    onShowProfileGenerationDialog: () -> Unit,
+    onSendMessage: (String, String) -> Unit,
+    onCloseDialog: () -> Unit
     ) {
-    var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    LaunchedEffect(key1 = Unit, block = {
-        newMatch.collect {
-            setMatch(it)
-            navigateToNewMatch()
+
+    when(uiState.dialogState) {
+        HomeViewDialogState.GenerateProfilesDialog -> {
+            GenerateProfilesDialog(
+                onDismissRequest = onCloseDialog,
+                onGenerate = onGenerateProfiles
+            )
         }
-    })
+        is HomeViewDialogState.NewMatchDialog -> {
+            NewMatchDialog(match = uiState.dialogState.newMatch, onSendMessage = { onSendMessage(uiState.dialogState.newMatch.id, it) }, onCloseClicked = onCloseDialog)
+        }
+        else -> {}
+    }
     Scaffold(
         topBar = {
             Row(
@@ -84,7 +87,7 @@ fun HomeView(
             if (allowProfileGeneration) {
                 FloatingActionButton(
                     modifier = Modifier.size(40.dp),
-                    onClick = { showGenerateProfilesDialog = true }) {
+                    onClick = onShowProfileGenerationDialog) {
                     Icon(
                         tint = Color.White,
                         imageVector = Icons.Default.Add,
@@ -99,11 +102,11 @@ fun HomeView(
                 .fillMaxSize()
                 .padding(padding), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when(uiState){
-                is HomeUiState.Error-> {
+            when(uiState.contentState){
+                is HomeViewContentState.Error-> {
                     Spacer(Modifier.weight(1f))
                     Text(modifier = Modifier.padding(horizontal = 8.dp),
-                        text = uiState.message ?: "", color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                        text = uiState.contentState.message, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(12.dp))
                     GradientButton(onClick = {
                         scope.launch {
@@ -115,12 +118,12 @@ fun HomeView(
                     }
                     Spacer(Modifier.weight(1f))
                 }
-                HomeUiState.Loading -> {
+                HomeViewContentState.Loading -> {
                     Spacer(Modifier.weight(1f))
                     AnimatedGradientLogo(Modifier.fillMaxWidth(.4f))
                     Spacer(Modifier.weight(1f))
                 }
-                is HomeUiState.Success -> {
+                is HomeViewContentState.Success -> {
                     Spacer(Modifier.weight(1f))
                     Box(Modifier.padding(horizontal = 12.dp)) {
                         Text(
@@ -131,8 +134,8 @@ fun HomeView(
                         val localDensity = LocalDensity.current
                         var buttonRowHeightDp by remember { mutableStateOf(0.dp) }
 
-                        val swipeStates = uiState.profileList.map { rememberSwipeableCardState() }
-                        uiState.profileList.forEachIndexed { index, profile ->
+                        val swipeStates = uiState.contentState.profileList.map { rememberSwipeableCardState() }
+                        uiState.contentState.profileList.forEachIndexed { index, profile ->
                             ProfileCardView(profile,
                                 modifier = Modifier.swipableCard(
                                     state = swipeStates[index],
@@ -186,33 +189,30 @@ fun HomeView(
                             Spacer(Modifier.weight(1f))
                         }
                     }
-
                     Spacer(Modifier.weight(1f))
                 }
             }
         }
-
-        if (showGenerateProfilesDialog) {
-            val context = LocalContext.current
-            GenerateProfilesDialog(
-                onDismissRequest = { showGenerateProfilesDialog = false },
-                onGenerate = { profileCount ->
-                    showGenerateProfilesDialog = false
-                    scope.launch(Dispatchers.Main) {
-                        setLoading()
-                        val profiles = withContext(Dispatchers.IO) {
-                            (0 until profileCount).map {
-                                async {
-                                    getRandomProfile(context)
-                                }
-                            }.awaitAll()
-                        }
-                        createProfiles(profiles)
-                    }
-                }
-            )
-        }
     }
 }
 
+@Preview
+@Composable
+fun HomeViewPreview() {
+    TinderCloneComposeTheme {
+        HomeView(
+            uiState = HomeViewState(HomeViewDialogState.NoDialog, HomeViewContentState.Loading),
+            navigateToEditProfile = {},
+            navigateToMatchList = {},
+            removeLastProfile = {},
+            fetchProfiles = {},
+            swipeUser = { _, _ ->
 
+            },
+            onGenerateProfiles = {},
+            onShowProfileGenerationDialog = {},
+            onCloseDialog = {},
+            onSendMessage = { _, _ ->}
+        )
+    }
+}

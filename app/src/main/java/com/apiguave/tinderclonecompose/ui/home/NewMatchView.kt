@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.newmatch
+package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

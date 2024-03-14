@@ -7,5 +7,4 @@ object Routes{
     const val EditProfile = "edit_profile"
     const val MatchList = "match_list"
     const val Chat = "chat"
-    const val NewMatch = "new_match"
 }

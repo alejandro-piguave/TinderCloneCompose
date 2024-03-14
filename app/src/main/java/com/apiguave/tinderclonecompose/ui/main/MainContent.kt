@@ -15,14 +15,11 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.chat.ChatView
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileScreen
-import com.apiguave.tinderclonecompose.ui.home.HomeView
-import com.apiguave.tinderclonecompose.ui.home.HomeViewModel
+import com.apiguave.tinderclonecompose.ui.home.HomeScreen
 import com.apiguave.tinderclonecompose.ui.login.LoginView
 import com.apiguave.tinderclonecompose.ui.login.LoginViewModel
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListView
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListViewModel
-import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchView
-import com.apiguave.tinderclonecompose.ui.newmatch.NewMatchViewModel
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
 import com.apiguave.tinderclonecompose.ui.signup.SignUpViewModel
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
@@ -39,9 +36,7 @@ fun MainContent(signInClient: GoogleSignInClient){
         val navController = rememberAnimatedNavController()
 
         val chatViewModel: ChatViewModel = getViewModel()
-        val newMatchViewModel: NewMatchViewModel = getViewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
-
             animatedComposable(Routes.Login) {
                 val loginViewModel: LoginViewModel = koinViewModel()
                 val uiState by loginViewModel.uiState.collectAsState()
@@ -86,38 +81,13 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.Home, animationType = AnimationType.HOME) {
-                val homeViewModel: HomeViewModel = koinViewModel()
-                val uiState by homeViewModel.uiState.collectAsState()
-                HomeView(
-                    uiState = uiState,
+                HomeScreen(
                     navigateToEditProfile = {
                         navController.navigate(Routes.EditProfile)
                     },
                     navigateToMatchList = {
                         navController.navigate(Routes.MatchList)
-                    },
-                    navigateToNewMatch = {
-                        navController.navigate(Routes.NewMatch)
-                    },
-                    setLoading = homeViewModel::setLoading,
-                    removeLastProfile = homeViewModel::removeLastProfile,
-                    fetchProfiles = homeViewModel::fetchProfiles,
-                    swipeUser = homeViewModel::swipeUser,
-                    createProfiles = homeViewModel::createProfiles,
-                    setMatch = newMatchViewModel::setMatch,
-                    newMatch = homeViewModel.newMatch,
-                )
-            }
-
-            animatedComposable(Routes.NewMatch, animationType = AnimationType.FADE){
-                val newMatch by newMatchViewModel.match.collectAsState()
-                NewMatchView(
-                    match = newMatch,
-                    onSendMessage = {
-                        newMatchViewModel.sendMessage(it)
-                        navController.popBackStack()
-                    },
-                    onCloseClicked = navController::popBackStack
+                    }
                 )
             }
 
@@ -131,7 +101,8 @@ fun MainContent(signInClient: GoogleSignInClient){
                                 inclusive = true
                             }
                         }
-                    },)
+                    }
+                )
             }
 
             animatedComposable(Routes.MatchList){
