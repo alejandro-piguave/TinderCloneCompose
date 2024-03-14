@@ -2,12 +2,11 @@ package com.apiguave.tinderclonecompose.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.domain.profilecard.ProfileCardRepository
+import com.apiguave.tinderclonecompose.domain.home.HomeRepository
 import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
 import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.NewMatch
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.Profile
+import com.apiguave.tinderclonecompose.domain.home.entity.NewMatch
+import com.apiguave.tinderclonecompose.domain.home.entity.Profile
 import com.apiguave.tinderclonecompose.extensions.getRandomUserId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -16,13 +15,10 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val profileRepository: ProfileRepository,
-    private val profileCardRepository: ProfileCardRepository
+    private val homeRepository: HomeRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
-
-    private val _currentProfile = MutableSharedFlow<CurrentProfile>()
-    val currentProfile = _currentProfile.asSharedFlow()
 
     private val _newMatch = MutableSharedFlow<NewMatch>()
     val newMatch = _newMatch.asSharedFlow()
@@ -32,7 +28,7 @@ class HomeViewModel(
     fun swipeUser(profile: Profile, isLike: Boolean){
         viewModelScope.launch {
             try {
-                val match = profileCardRepository.swipeUser(profile, isLike)
+                val match = homeRepository.swipeUser(profile, isLike)
                 if(match != null){
                     _newMatch.emit(match)
                 }
@@ -70,9 +66,8 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState.update { HomeUiState.Loading }
             try {
-                val profileList = profileCardRepository.getProfiles()
-                _uiState.update { HomeUiState.Success(profileList = profileList.profiles) }
-                _currentProfile.emit(profileList.currentProfile)
+                val profiles = homeRepository.getProfiles()
+                _uiState.update { HomeUiState.Success(profileList = profiles) }
             }catch (e: Exception){
                 _uiState.update { HomeUiState.Error(e.message)}
             }

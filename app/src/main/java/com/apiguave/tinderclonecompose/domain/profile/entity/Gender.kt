@@ -1,5 +1,5 @@
 package com.apiguave.tinderclonecompose.domain.profile.entity
 
-enum class Orientation {
-    MEN, WOMEN, BOTH
+enum class Gender {
+    MALE, FEMALE
 }

@@ -18,6 +18,6 @@ val presentationModule = module {
     viewModel { EditProfileViewModel(get(), get()) }
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
-    viewModel { HomeViewModel(get(), get()) }
     viewModel { MatchListViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
 }

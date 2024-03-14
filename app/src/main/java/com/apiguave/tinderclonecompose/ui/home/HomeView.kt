@@ -23,9 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.domain.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.NewMatch
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.Profile
+import com.apiguave.tinderclonecompose.domain.home.entity.NewMatch
+import com.apiguave.tinderclonecompose.domain.home.entity.Profile
 import com.apiguave.tinderclonecompose.extensions.allowProfileGeneration
 import com.apiguave.tinderclonecompose.extensions.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
@@ -48,9 +47,7 @@ fun HomeView(
     swipeUser: (Profile, Boolean) -> Unit,
     createProfiles: (List<CreateUserProfile>) -> Unit,
     newMatch: SharedFlow<NewMatch>,
-    currentProfile: SharedFlow<CurrentProfile>,
-    setMatch: (NewMatch) -> Unit,
-    setCurrentProfile: (CurrentProfile) -> Unit
+    setMatch: (NewMatch) -> Unit
     ) {
     var showGenerateProfilesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -58,11 +55,6 @@ fun HomeView(
         newMatch.collect {
             setMatch(it)
             navigateToNewMatch()
-        }
-    })
-    LaunchedEffect(key1 = Unit, block = {
-        currentProfile.collect{
-            setCurrentProfile(it)
         }
     })
     Scaffold(

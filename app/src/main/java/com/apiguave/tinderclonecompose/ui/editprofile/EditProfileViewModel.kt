@@ -1,14 +1,16 @@
 package com.apiguave.tinderclonecompose.ui.editprofile
 
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.domain.account.AccountRepository
 import com.apiguave.tinderclonecompose.domain.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
 import com.apiguave.tinderclonecompose.domain.profile.entity.DevicePicture
 import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
 import com.apiguave.tinderclonecompose.extensions.filterIndex
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
+import com.apiguave.tinderclonecompose.extensions.toGender
+import com.apiguave.tinderclonecompose.extensions.toOrientation
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,28 +20,47 @@ class EditProfileViewModel(
     private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
-        EditProfileUiState(
-            CurrentProfile(),
-            false,
-            emptyList(),
-            null)
+        EditProfileUiState()
     )
     val uiState = _uiState.asStateFlow()
 
     private val _action = MutableSharedFlow<EditProfileAction>()
     val action = _action.asSharedFlow()
 
-    fun setCurrentProfile(currentProfile: CurrentProfile){
-        _uiState.update { it.copy(currentProfile = currentProfile, pictures = currentProfile.pictures) }
+    fun updateUserProfile(){
+        val currentProfile = profileRepository.getUserProfile()
+        _uiState.update {
+            it.copy(
+                name = currentProfile.name,
+                bio = TextFieldValue(currentProfile.bio),
+                birthDate = currentProfile.birthDate,
+                genderIndex = currentProfile.gender?.ordinal ?: -1,
+                orientationIndex = currentProfile.orientation?.ordinal ?: -1,
+                pictures = currentProfile.pictures
+            )
+        }
     }
 
-    fun updateProfile(currentProfile: CurrentProfile, uiBio: String, uiGenderIndex: Int, uiOrientationIndex: Int, uiPictures: List<UserPicture>){
+    fun updateProfile(){
         viewModelScope.launch {
             //Otherwise show loading and perform update operations
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try{
-                val updatedProfile = profileRepository.updateProfile(currentProfile, uiBio, uiGenderIndex, uiOrientationIndex, uiPictures)
-                _uiState.update { it.copy(isLoading = false, currentProfile = updatedProfile, pictures = updatedProfile.pictures) }
+                val currentBio = _uiState.value.bio.text
+                val currentGender = _uiState.value.genderIndex.toGender()
+                val currentOrientation = _uiState.value.orientationIndex.toOrientation()
+                val currentPictures = _uiState.value.pictures
+                val updatedProfile = profileRepository.updateProfile(currentBio, currentGender, currentOrientation, currentPictures)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        name = updatedProfile.name,
+                        bio = TextFieldValue(updatedProfile.bio),
+                        genderIndex = updatedProfile.gender?.ordinal ?: -1,
+                        orientationIndex = updatedProfile.orientation?.ordinal ?: -1,
+                        pictures = updatedProfile.pictures
+                    )
+                }
                 _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }catch (e: Exception){
                 _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
@@ -66,9 +87,13 @@ class EditProfileViewModel(
 }
 
 data class EditProfileUiState(
-    val currentProfile: CurrentProfile,
-    val isLoading: Boolean,
-    val pictures: List<UserPicture>,
+    val name: String="",
+    val birthDate: String = "",
+    val bio: TextFieldValue = TextFieldValue(),
+    val genderIndex: Int = -1,
+    val orientationIndex: Int = -1,
+    val pictures: List<UserPicture> = emptyList(),
+    val isLoading: Boolean = false,
     val errorMessage: String? = null)
 
 enum class EditProfileAction{ON_SIGNED_OUT, ON_PROFILE_EDITED}

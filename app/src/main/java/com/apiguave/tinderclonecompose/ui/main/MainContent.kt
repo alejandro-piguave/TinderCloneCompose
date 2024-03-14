@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -124,9 +125,7 @@ fun MainContent(signInClient: GoogleSignInClient){
                     swipeUser = homeViewModel::swipeUser,
                     createProfiles = homeViewModel::createProfiles,
                     setMatch = newMatchViewModel::setMatch,
-                    setCurrentProfile = editProfileViewModel::setCurrentProfile,
                     newMatch = homeViewModel.newMatch,
-                    currentProfile = homeViewModel.currentProfile
                 )
             }
 
@@ -144,6 +143,9 @@ fun MainContent(signInClient: GoogleSignInClient){
 
             animatedComposable(Routes.EditProfile){
                 val uiState by editProfileViewModel.uiState.collectAsState()
+                LaunchedEffect(key1 = Unit){
+                    editProfileViewModel.updateUserProfile()
+                }
                 EditProfileView(
                     uiState = uiState,
                     addPicture = {
@@ -161,6 +163,9 @@ fun MainContent(signInClient: GoogleSignInClient){
                     removePictureAt = editProfileViewModel::removePictureAt,
                     signOut = {editProfileViewModel.signOut(signInClient)},
                     updateProfile = editProfileViewModel::updateProfile,
+                    onBioChanged = {},
+                    onGenderIndexChanged = {},
+                    onOrientationIndexChanged = {},
                     action = editProfileViewModel.action
                 )
             }

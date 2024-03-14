@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.components
 
-import android.net.Uri
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +42,7 @@ fun PictureGridRow(rowIndex: Int, pictures: List<UserPicture>, onAddPicture: () 
 
             if(cellIndex < pictures.size){
                 SelectedPictureItem(
-                    imageUri = pictures[cellIndex].uri,
+                    imageUri = pictures[cellIndex].uri.toString(),
                     modifier = Modifier
                         .weight(1f)
                         .aspectRatio(.6f),
@@ -97,7 +96,7 @@ fun EmptyPictureItem(modifier: Modifier = Modifier, onClick: () -> Unit){
 }
 
 @Composable
-fun SelectedPictureItem(imageUri: Uri,
+fun SelectedPictureItem(imageUri: String,
                         modifier: Modifier = Modifier,
                         onClick: () -> Unit){
     Box(modifier = modifier.clickable(onClick = onClick)) {

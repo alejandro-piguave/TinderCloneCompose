@@ -18,7 +18,7 @@ fun Timestamp.toShortString(): String{
     return shortFormatter.format(this.toDate())
 }
 
-fun Timestamp.toLongString(): String{
+fun Timestamp.toLongString(): String {
     return longFormatter.format(this.toDate())
 }
 

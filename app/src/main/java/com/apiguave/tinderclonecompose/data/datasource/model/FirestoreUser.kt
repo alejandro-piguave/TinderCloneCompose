@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.data.datasource.model
 
-import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 
@@ -12,7 +11,7 @@ data class FirestoreUser(
     val bio: String="",
     @field:JvmField
     val male: Boolean?=null,
-    val orientation: Orientation?=null,
+    val orientation: FirestoreOrientation?=null,
     val pictures: List<String> = emptyList(),
     val liked: List<String> = emptyList(),
     val passed: List<String> = emptyList()

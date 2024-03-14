@@ -5,7 +5,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,8 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.domain.profilecard.entity.CurrentProfile
-import com.apiguave.tinderclonecompose.domain.profile.entity.UserPicture
 import com.apiguave.tinderclonecompose.ui.components.*
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -28,17 +25,16 @@ fun EditProfileView(
     onSignedOut: () -> Unit,
     onProfileEdited: () -> Unit,
     removePictureAt: (Int) -> Unit,
-    updateProfile: (currentProfile: CurrentProfile, bio: String, genderIndex: Int, orientationIndex: Int, pictures: List<UserPicture>) -> Unit,
+    updateProfile: () -> Unit,
+    onBioChanged:(TextFieldValue) -> Unit,
+    onGenderIndexChanged: (Int) -> Unit,
+    onOrientationIndexChanged: (Int) -> Unit,
     action: SharedFlow<EditProfileAction>,
 ) {
 
     var showErrorDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
-
-    var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(uiState.currentProfile.bio)) }
-    var selectedGenderIndex by rememberSaveable { mutableStateOf(uiState.currentProfile.genderIndex) }
-    var selectedOrientationIndex by rememberSaveable { mutableStateOf(uiState.currentProfile.orientationIndex) }
 
     LaunchedEffect(key1 = Unit, block = {
         action.collect {
@@ -85,9 +81,7 @@ fun EditProfileView(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.weight(1f))
-                TextButton(onClick = {
-                    updateProfile(uiState.currentProfile, bioText.text, selectedGenderIndex, selectedOrientationIndex, uiState.pictures)
-                }) {
+                TextButton(onClick = updateProfile) {
                     Text(text = stringResource(id = R.string.done))
                 }
             }
@@ -111,36 +105,29 @@ fun EditProfileView(
             Column(Modifier.fillMaxWidth()) {
                 SectionTitle(title = stringResource(id = R.string.about_me))
                 FormTextField(
-                    value = bioText,
+                    value = uiState.bio,
                     placeholder = stringResource(id = R.string.write_something_interesting),
-                    onValueChange = {
-                        bioText = it
-                    })
+                    onValueChange = onBioChanged)
 
                 SectionTitle(title = stringResource(id = R.string.gender))
                 HorizontalPicker(
                     id = R.array.genders,
-                    selectedIndex = selectedGenderIndex,
-                    onOptionClick = {
-                        selectedGenderIndex = it
-
-                    })
+                    selectedIndex = uiState.genderIndex,
+                    onOptionClick = onGenderIndexChanged)
 
                 SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
 
                 HorizontalPicker(
                     id = R.array.interests,
-                    selectedIndex = selectedOrientationIndex,
-                    onOptionClick = {
-                        selectedOrientationIndex = it
-                    })
+                    selectedIndex = uiState.orientationIndex,
+                    onOptionClick = onOrientationIndexChanged)
 
 
                 SectionTitle(title = stringResource(id = R.string.personal_information))
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.name), text = uiState.currentProfile.name)
+                TextRow(title = stringResource(id = R.string.name), text = uiState.name)
                 FormDivider()
-                TextRow(title = stringResource(id = R.string.birth_date), text = uiState.currentProfile.birthDate)
+                TextRow(title = stringResource(id = R.string.birth_date), text = uiState.birthDate)
                 FormDivider()
 
                 Spacer(modifier = Modifier.height(32.dp))

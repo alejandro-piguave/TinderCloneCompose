@@ -3,8 +3,7 @@ package com.apiguave.tinderclonecompose.data.datasource
 import com.apiguave.tinderclonecompose.data.datasource.model.*
 import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
 import com.apiguave.tinderclonecompose.domain.message.entity.Message
-import com.apiguave.tinderclonecompose.domain.profile.entity.Orientation
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserList
+import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreHomeData
 import com.apiguave.tinderclonecompose.domain.account.exception.AuthException
 import com.apiguave.tinderclonecompose.extensions.getTaskResult
 import com.apiguave.tinderclonecompose.extensions.toTimestamp
@@ -34,7 +33,6 @@ class FirestoreRemoteDataSource {
     suspend fun updateProfileData(data: Map<String, Any>){
         FirebaseFirestore.getInstance().collection(USERS).document(currentUserId).update(data).getTaskResult()
     }
-
 
     fun getMessages(matchId: String): Flow<List<Message>> = callbackFlow {
         // Reference to use in Firestore
@@ -152,7 +150,7 @@ class FirestoreRemoteDataSource {
         birthdate: LocalDate,
         bio: String,
         isMale: Boolean,
-        orientation: Orientation,
+        orientation: FirestoreOrientation,
         pictures: List<String>
     ) {
         val user = FirestoreUser(
@@ -168,7 +166,7 @@ class FirestoreRemoteDataSource {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
-    suspend fun getUserList(): FirestoreUserList {
+    suspend fun getHomeData(): FirestoreHomeData {
         //Get current user information
         val currentUser = getFirestoreUserModel(currentUserId)
         currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")
@@ -180,13 +178,13 @@ class FirestoreRemoteDataSource {
                 .whereNotEqualTo(
                     FirestoreUserProperties.orientation,
                     if (currentUser.male)
-                        Orientation.women.name
-                    else Orientation.men.name
+                        FirestoreOrientation.women.name
+                    else FirestoreOrientation.men.name
                 )
-            if (currentUser.orientation != Orientation.both) {
+            if (currentUser.orientation != FirestoreOrientation.both) {
                 query.whereEqualTo(
                     FirestoreUserProperties.isMale,
-                    currentUser.orientation == Orientation.men
+                    currentUser.orientation == FirestoreOrientation.men
                 )
             } else query
         }
@@ -194,7 +192,7 @@ class FirestoreRemoteDataSource {
         val result = searchQuery.get().getTaskResult()
         //Filter documents
         val compatibleUsers: List<FirestoreUser> = result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject() }
-        return FirestoreUserList(currentUser, compatibleUsers)
+        return FirestoreHomeData(currentUser, compatibleUsers)
     }
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {
