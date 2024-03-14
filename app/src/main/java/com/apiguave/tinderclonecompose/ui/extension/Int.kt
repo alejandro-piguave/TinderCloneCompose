@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.ui.extension
 
-import com.apiguave.tinderclonecompose.data.profile.entity.Gender
-import com.apiguave.tinderclonecompose.data.profile.entity.Orientation
+import com.apiguave.tinderclonecompose.data.profile.repository.Gender
+import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 
 fun Int.toGender(): Gender = when(this) {
     0 -> Gender.MALE

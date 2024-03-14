@@ -1,23 +1,24 @@
-package com.apiguave.tinderclonecompose.data.datasource
+package com.apiguave.tinderclonecompose.data.picture.datasource
 
 import android.graphics.Bitmap
-import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
-import com.apiguave.tinderclonecompose.data.profile.entity.FirebasePicture
-import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonecompose.data.extension.toByteArray
+import com.apiguave.tinderclonecompose.data.user.repository.User
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
-class StorageRemoteDataSource {
+class PictureRemoteDataSource {
     companion object{
         private const val USERS = "users"
     }
 
-    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<UserPicture>): List<FirebasePicture>{
+    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<Picture>): List<FirebasePicture>{
         return coroutineScope {
             //This is a list of the pictures that were already uploaded but that have been removed from the profile.
             val picturesToDelete: List<FirebasePicture> =
@@ -72,9 +73,9 @@ class StorageRemoteDataSource {
         return FirebasePicture(pictureRef.downloadUrl.getTaskResult(), filename)
     }
 
-    suspend fun getPicturesFromUser(userId: String, fileNames: List<String>): List<FirebasePicture>{
+    suspend fun getPicturesFromUser(user: User): List<FirebasePicture>{
         return coroutineScope {
-            fileNames.map { async { getPictureFromUser(userId, it) } }.awaitAll()
+            user.pictures.map { async { getPictureFromUser(user.id, it) } }.awaitAll()
         }
     }
 

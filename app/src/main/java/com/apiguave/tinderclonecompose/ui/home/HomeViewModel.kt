@@ -3,8 +3,8 @@ package com.apiguave.tinderclonecompose.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.home.HomeRepository
-import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.ui.extension.getRandomUserId
@@ -54,7 +54,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState.update { HomeUiState.Loading }
             try {
-                profiles.map { async { profileRepository.createUserProfile(getRandomUserId(),  it) } }.awaitAll()
+                profiles.map { async { profileRepository.createProfile(getRandomUserId(),  it) } }.awaitAll()
                 fetchProfiles()
             } catch (e: Exception) {
                 _uiState.update { HomeUiState.Error(e.message) }

@@ -3,10 +3,10 @@ package com.apiguave.tinderclonecompose.ui.signup
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.account.AccountRepository
-import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
+import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.ui.extension.filterIndex
 import com.apiguave.tinderclonecompose.ui.extension.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
-    private val accountRepository: AccountRepository,
+    private val authRepository: AuthRepository,
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -41,8 +41,8 @@ class SignUpViewModel(
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
                 val account = activityResult.toProviderAccount()
-                accountRepository.signIn(account)
-                profileRepository.createUserProfile(profile)
+                authRepository.signIn(account)
+                profileRepository.createProfile(profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
                 _uiState.update {

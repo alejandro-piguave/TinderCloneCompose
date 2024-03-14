@@ -2,13 +2,16 @@ package com.apiguave.tinderclonecompose.data.extension
 
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
+import java.util.Locale
 
-fun Timestamp.toAge(): Int{
+fun Date.toAge(): Int{
     val now = GregorianCalendar()
     now.time = Date()
     val birthdate = GregorianCalendar()
-    birthdate.time = this.toDate()
+    birthdate.time = this
     return now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR)
 }
 
@@ -18,8 +21,8 @@ fun Timestamp.toShortString(): String{
     return shortFormatter.format(this.toDate())
 }
 
-fun Timestamp.toLongString(): String {
-    return longFormatter.format(this.toDate())
+fun Date.toLongString(): String {
+    return longFormatter.format(this)
 }
 
 

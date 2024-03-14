@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.profile.entity
+package com.apiguave.tinderclonecompose.data.picture.repository
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -7,9 +7,9 @@ import android.net.Uri
 *  Regardless of if it was already on their profile
 *  or it has just been included from the device.
 * */
-sealed class UserPicture(val uri: Uri)
+sealed class Picture(val uri: Uri)
 
 //A picture retrieved from the device
-class DevicePicture(uri: Uri, val bitmap: Bitmap): UserPicture(uri)
+class DevicePicture(uri: Uri, val bitmap: Bitmap): Picture(uri)
 //A picture retrieved from Firebase
-class FirebasePicture(uri: Uri, val filename: String): UserPicture(uri)
+class FirebasePicture(uri: Uri, val filename: String): Picture(uri)

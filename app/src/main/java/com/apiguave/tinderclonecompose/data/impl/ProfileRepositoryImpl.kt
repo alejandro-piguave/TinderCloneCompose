@@ -1,39 +1,37 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRemoteDataSource
+import com.apiguave.tinderclonecompose.data.account.AuthRepository
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
-import com.apiguave.tinderclonecompose.data.profile.ProfileLocalDataSource
-import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUser
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreUserProperties
-import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toUserProfile
-import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.home.entity.UserProfile
-import com.apiguave.tinderclonecompose.data.profile.entity.FirebasePicture
-import com.apiguave.tinderclonecompose.data.profile.entity.Gender
-import com.apiguave.tinderclonecompose.data.profile.entity.Orientation
-import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.UserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.Gender
+import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
+import com.apiguave.tinderclonecompose.data.picture.repository.Picture
+import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
+import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
 
 class ProfileRepositoryImpl(
-    private val authDataSource: AuthRemoteDataSource,
-    private val storageDataSource: StorageRemoteDataSource,
-    private val firestoreDataSource: FirestoreRemoteDataSource,
-    private val profileLocalDataSource: ProfileLocalDataSource
+    private val pictureRepository: PictureRepository,
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository,
+    private val firestoreDataSource: FirestoreRemoteDataSource
 ): ProfileRepository {
 
-    override fun getUserProfile(): UserProfile {
-        return profileLocalDataSource.userProfile.toUserProfile(profileLocalDataSource.userPictures)
+    override suspend fun getProfile(): UserProfile {
+        val currentUser = userRepository.getCurrentUser()
+        val currentPictures = pictureRepository.getProfilePictures()
+        return currentUser.toUserProfile(currentPictures)
     }
 
-    override suspend fun createUserProfile(profile: CreateUserProfile) {
-        createUserProfile(authDataSource.userId, profile)
+    override suspend fun createProfile(profile: CreateUserProfile) {
+        createProfile(authRepository.userId, profile)
     }
 
-    override suspend fun createUserProfile(userId: String, profile: CreateUserProfile) {
-        val filenames = storageDataSource.uploadUserPictures(userId, profile.pictures)
+    override suspend fun createProfile(userId: String, profile: CreateUserProfile) {
+        val filenames = pictureRepository.uploadProfilePictures(profile.pictures)
         firestoreDataSource.createUserProfile(
             userId,
             profile.name,
@@ -49,76 +47,24 @@ class ProfileRepositoryImpl(
         bio: String,
         gender: Gender,
         orientation: Orientation,
-        pictures: List<UserPicture>
+        pictures: List<Picture>
     ): UserProfile {
-        val currentProfile = profileLocalDataSource.userProfile
-        val currentPictures = profileLocalDataSource.userPictures
-
-        val arePicturesEqual = currentPictures == pictures
-        val modifiedProfileData = currentProfile.getModifiedData(bio, gender, orientation)
+        val currentProfile = getProfile()
+        val arePicturesEqual = currentProfile.pictures == pictures
 
         when {
-            arePicturesEqual && modifiedProfileData != null -> {
-                firestoreDataSource.updateProfileData(modifiedProfileData)
-                profileLocalDataSource.userProfile = profileLocalDataSource.userProfile.copy(bio = bio, orientation = orientation.toFirestoreOrientation(), male = gender.toBoolean())
+            arePicturesEqual -> {
+                userRepository.updateCurrentUser(bio, gender, orientation, currentProfile.pictures.map { it.filename })
             }
-            !arePicturesEqual && modifiedProfileData == null -> {
-                val firebasePictures = updateProfilePictures(currentPictures, pictures)
-                profileLocalDataSource.userPictures = firebasePictures
-            }
-            !arePicturesEqual && modifiedProfileData != null -> {
-                val firebasePictures = updateProfileDataAndPictures(modifiedProfileData, currentPictures, pictures)
-                profileLocalDataSource.userProfile = profileLocalDataSource.userProfile.copy(bio = bio, orientation = orientation.toFirestoreOrientation(), male = gender.toBoolean())
-                profileLocalDataSource.userPictures = firebasePictures
+            !arePicturesEqual -> {
+                val filenames = pictureRepository.updateProfilePictures(
+                    currentProfile.pictures,
+                    pictures
+                )
+                userRepository.updateCurrentUser(bio, gender, orientation, filenames.map { it.filename })
             }
         }
 
-        return getUserProfile()
+        return getProfile()
     }
-    private fun FirestoreUser.getModifiedData(bio: String, gender: Gender, orientation: Orientation): Map<String, Any>? {
-        val data = mutableMapOf<String, Any>()
-        if(bio != this.bio){
-            data[FirestoreUserProperties.bio] = bio
-        }
-        if(gender.toBoolean() != this.male){
-            data[FirestoreUserProperties.isMale] = gender.toBoolean()
-        }
-        if(orientation.toFirestoreOrientation() != this.orientation){
-            data[FirestoreUserProperties.orientation] = orientation.toFirestoreOrientation()
-        }
-
-        return if(data.isEmpty()) null else data
-    }
-
-    private suspend fun updateProfilePictures(
-        outdatedPictures: List<FirebasePicture>,
-        updatedPictures: List<UserPicture>
-    ): List<FirebasePicture> {
-        val filenames = storageDataSource.updateProfilePictures(
-            authDataSource.userId,
-            outdatedPictures,
-            updatedPictures
-        )
-        val updatedData =
-            mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
-        firestoreDataSource.updateProfileData(updatedData)
-        return filenames
-    }
-
-    private suspend fun updateProfileDataAndPictures(
-        data: Map<String, Any>,
-        outdatedPictures: List<FirebasePicture>,
-        updatedPictures: List<UserPicture>
-    ): List<FirebasePicture> {
-        val filenames = storageDataSource.updateProfilePictures(
-            authDataSource.userId,
-            outdatedPictures,
-            updatedPictures
-        )
-        val updatedData =
-            data + mapOf<String, Any>(FirestoreUserProperties.pictures to filenames.map { it.filename })
-        firestoreDataSource.updateProfileData(updatedData)
-        return filenames
-    }
-
 }

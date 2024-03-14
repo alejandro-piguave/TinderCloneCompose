@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.data.impl
 
 import com.apiguave.tinderclonecompose.data.account.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
-import com.apiguave.tinderclonecompose.data.datasource.StorageRemoteDataSource
+import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.extension.toAge
 import com.apiguave.tinderclonecompose.data.extension.toShortString
@@ -14,7 +14,7 @@ import kotlinx.coroutines.coroutineScope
 
 class MatchRepositoryImpl(
     private val authDataSource: AuthRemoteDataSource,
-    private val storageDataSource: StorageRemoteDataSource,
+    private val storageDataSource: PictureRemoteDataSource,
     private val firestoreDataSource: FirestoreRemoteDataSource
 ): MatchRepository {
 
@@ -33,7 +33,7 @@ class MatchRepositoryImpl(
         val picture = storageDataSource.getPictureFromUser(userId, user.pictures.first())
         return Match(
             this.id,
-            user.birthDate?.toAge() ?: 99,
+            user.birthDate?.toDate()?.toAge() ?: 99,
             userId,
             user.name,
             picture.uri.toString(),

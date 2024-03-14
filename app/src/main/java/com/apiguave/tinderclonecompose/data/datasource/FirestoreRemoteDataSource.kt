@@ -2,7 +2,6 @@ package com.apiguave.tinderclonecompose.data.datasource
 
 import com.apiguave.tinderclonecompose.data.account.exception.AuthException
 import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
-import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreHomeData
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.datasource.model.FirestoreOrientation
@@ -13,7 +12,6 @@ import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import java.time.LocalDate
 
@@ -25,10 +23,6 @@ class FirestoreRemoteDataSource {
     
     private val currentUserId: String
         get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
-
-    suspend fun updateProfileData(data: Map<String, Any>){
-        FirebaseFirestore.getInstance().collection(USERS).document(currentUserId).update(data).getTaskResult()
-    }
 
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
         FirebaseFirestore.getInstance()
@@ -102,35 +96,6 @@ class FirestoreRemoteDataSource {
             passed = emptyList()
         )
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
-    }
-
-    suspend fun getHomeData(): FirestoreHomeData {
-        //Get current user information
-        val currentUser = getFirestoreUserModel(currentUserId)
-        currentUser.male ?: throw FirestoreException("Couldn't find field 'isMale' for the current user.")
-        val excludedUserIds = currentUser.liked + currentUser.passed + currentUserId
-
-        //Build query
-        val searchQuery: Query = kotlin.run {
-            val query = FirebaseFirestore.getInstance().collection(USERS)
-                .whereNotEqualTo(
-                    FirestoreUserProperties.orientation,
-                    if (currentUser.male)
-                        FirestoreOrientation.women.name
-                    else FirestoreOrientation.men.name
-                )
-            if (currentUser.orientation != FirestoreOrientation.both) {
-                query.whereEqualTo(
-                    FirestoreUserProperties.isMale,
-                    currentUser.orientation == FirestoreOrientation.men
-                )
-            } else query
-        }
-
-        val result = searchQuery.get().getTaskResult()
-        //Filter documents
-        val compatibleUsers: List<FirestoreUser> = result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject() }
-        return FirestoreHomeData(currentUser, compatibleUsers)
     }
 
     suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {

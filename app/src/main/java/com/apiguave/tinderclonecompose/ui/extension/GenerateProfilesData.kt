@@ -7,8 +7,8 @@ import com.apiguave.tinderclonecompose.ui.components.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.profile.entity.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.profile.entity.Orientation
+import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
+import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

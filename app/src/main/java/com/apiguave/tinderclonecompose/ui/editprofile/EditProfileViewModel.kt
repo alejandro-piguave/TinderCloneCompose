@@ -3,10 +3,10 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.account.AccountRepository
-import com.apiguave.tinderclonecompose.data.profile.ProfileRepository
-import com.apiguave.tinderclonecompose.data.profile.entity.DevicePicture
-import com.apiguave.tinderclonecompose.data.profile.entity.UserPicture
+import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.ui.extension.filterIndex
 import com.apiguave.tinderclonecompose.ui.extension.getTaskResult
 import com.apiguave.tinderclonecompose.ui.extension.toGender
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel(
-    private val accountRepository: AccountRepository,
+    private val authRepository: AuthRepository,
     private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -28,16 +28,18 @@ class EditProfileViewModel(
     val action = _action.asSharedFlow()
 
     fun updateUserProfile(){
-        val currentProfile = profileRepository.getUserProfile()
-        _uiState.update {
-            it.copy(
-                name = currentProfile.name,
-                bio = TextFieldValue(currentProfile.bio),
-                birthDate = currentProfile.birthDate,
-                genderIndex = currentProfile.gender?.ordinal ?: -1,
-                orientationIndex = currentProfile.orientation?.ordinal ?: -1,
-                pictures = currentProfile.pictures
-            )
+        viewModelScope.launch {
+            val currentProfile = profileRepository.getProfile()
+            _uiState.update {
+                it.copy(
+                    name = currentProfile.name,
+                    bio = TextFieldValue(currentProfile.bio),
+                    birthDate = currentProfile.birthDate,
+                    genderIndex = currentProfile.gender.ordinal,
+                    orientationIndex = currentProfile.orientation.ordinal,
+                    pictures = currentProfile.pictures
+                )
+            }
         }
     }
 
@@ -56,8 +58,8 @@ class EditProfileViewModel(
                         isLoading = false,
                         name = updatedProfile.name,
                         bio = TextFieldValue(updatedProfile.bio),
-                        genderIndex = updatedProfile.gender?.ordinal ?: -1,
-                        orientationIndex = updatedProfile.orientation?.ordinal ?: -1,
+                        genderIndex = updatedProfile.gender.ordinal,
+                        orientationIndex = updatedProfile.orientation.ordinal,
                         pictures = updatedProfile.pictures
                     )
                 }
@@ -78,7 +80,7 @@ class EditProfileViewModel(
 
     fun signOut(signInClient: GoogleSignInClient){
         viewModelScope.launch {
-            accountRepository.signOut()
+            authRepository.signOut()
             signInClient.signOut().getTaskResult()
             _action.emit(EditProfileAction.ON_SIGNED_OUT)
         }
@@ -92,7 +94,7 @@ data class EditProfileUiState(
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,
-    val pictures: List<UserPicture> = emptyList(),
+    val pictures: List<Picture> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null)
 
