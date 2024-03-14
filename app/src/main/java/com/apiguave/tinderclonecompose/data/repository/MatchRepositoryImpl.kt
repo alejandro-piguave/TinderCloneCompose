@@ -35,7 +35,7 @@ class MatchRepositoryImpl(
             user.birthDate?.toAge() ?: 99,
             userId,
             user.name,
-            picture.uri,
+            picture.uri.toString(),
             this.timestamp?.toShortString() ?: "",
             this.lastMessage
         )

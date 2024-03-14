@@ -180,15 +180,16 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.Chat){
-                val viewModel: ChatViewModel = koinViewModel()
-                val chatMatch by viewModel.match.collectAsState()
+                val chatMatch by chatViewModel.match.collectAsState()
                 chatMatch?.let {
-                    val messages by viewModel.getMessages(it.id).collectAsState(initial = listOf())
+                    val messages by chatViewModel.getMessages(it.id).collectAsState(
+                        initial = listOf()
+                    )
                     ChatView(
                         match = it,
                         messages = messages,
                         onArrowBackPressed = navController::popBackStack,
-                        sendMessage = viewModel::sendMessage,
+                        sendMessage = chatViewModel::sendMessage,
                     )
                 }  ?: run{
                     Text(modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = stringResource(id = R.string.no_match_value_passed))
