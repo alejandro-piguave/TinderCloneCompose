@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.extension.toAge
 import com.apiguave.tinderclonecompose.data.extension.toShortString

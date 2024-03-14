@@ -28,10 +28,15 @@ class HomeViewModel(
     fun swipeUser(profile: Profile, isLike: Boolean){
         viewModelScope.launch {
             try {
-                val match = homeRepository.swipeUser(profile, isLike)
-                if(match != null){
-                    _newMatch.emit(match)
+                if(isLike) {
+                    val match = homeRepository.likeProfile(profile)
+                    if(match != null){
+                        _newMatch.emit(match)
+                    }
+                } else {
+                    homeRepository.passProfile(profile)
                 }
+
             }catch (e: Exception){
                 //Bringing the profile card back to the profile deck?
             }

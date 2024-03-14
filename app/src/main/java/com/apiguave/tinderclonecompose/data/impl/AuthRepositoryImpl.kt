@@ -1,10 +1,10 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRemoteDataSource
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
-import com.apiguave.tinderclonecompose.data.account.entity.Account
-import com.apiguave.tinderclonecompose.data.account.exception.SignInException
-import com.apiguave.tinderclonecompose.data.account.exception.SignUpException
+import com.apiguave.tinderclonecompose.data.auth.AuthRemoteDataSource
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.entity.Account
+import com.apiguave.tinderclonecompose.data.auth.exception.SignInException
+import com.apiguave.tinderclonecompose.data.auth.exception.SignUpException
 
 class AuthRepositoryImpl(private val dataSource: AuthRemoteDataSource): AuthRepository {
     override val isUserSignedIn: Boolean

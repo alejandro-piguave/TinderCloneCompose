@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonecompose.data.account
+package com.apiguave.tinderclonecompose.data.auth
 
-import com.apiguave.tinderclonecompose.data.account.entity.Account
+import com.apiguave.tinderclonecompose.data.auth.entity.Account
 
 interface AuthRepository {
     val isUserSignedIn: Boolean

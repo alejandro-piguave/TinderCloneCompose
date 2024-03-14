@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.ui.editprofile
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture

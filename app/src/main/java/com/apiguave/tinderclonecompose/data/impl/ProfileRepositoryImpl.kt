@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.extension.toUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile

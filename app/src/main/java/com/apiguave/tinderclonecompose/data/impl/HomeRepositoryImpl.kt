@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
 import com.apiguave.tinderclonecompose.data.extension.toProfile
 import com.apiguave.tinderclonecompose.data.home.HomeRepository
 import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
@@ -15,14 +14,17 @@ import kotlinx.coroutines.coroutineScope
 class HomeRepositoryImpl(
     private val pictureRepository: PictureRepository,
     private val userRepository: UserRepository,
-    private val firestoreDataSource: FirestoreRemoteDataSource,
 ): HomeRepository {
 
-    override suspend fun swipeUser(profile: Profile, isLike: Boolean): NewMatch? {
-        val matchModel = firestoreDataSource.swipeUser(profile.id, isLike)
+    override suspend fun likeProfile(profile: Profile): NewMatch? {
+        val matchModel = userRepository.likeUser(profile.id)
         return matchModel?.let { model ->
             NewMatch(model.id, profile.id, profile.name, profile.pictures)
         }
+    }
+
+    override suspend fun passProfile(profile: Profile) {
+        userRepository.passUser(profile.id)
     }
 
     override suspend fun getProfiles(): List<Profile> {

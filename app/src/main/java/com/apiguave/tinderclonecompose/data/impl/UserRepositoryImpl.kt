@@ -1,9 +1,10 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.user.datasource.UserLocalDataSource
@@ -78,5 +79,13 @@ class UserRepositoryImpl(
 
     override suspend fun getUser(userId: String): User {
         return userRemoteDataSource.getUser(userId)
+    }
+
+    override suspend fun likeUser(userId: String): FirestoreMatch? {
+        return userRemoteDataSource.swipeUser(userId, false)
+    }
+
+    override suspend fun passUser(userId: String) {
+        userRemoteDataSource.swipeUser(userId, false)
     }
 }

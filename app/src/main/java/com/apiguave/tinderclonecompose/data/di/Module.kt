@@ -1,14 +1,13 @@
 package com.apiguave.tinderclonecompose.data.di
 
-import com.apiguave.tinderclonecompose.data.account.AuthRemoteDataSource
-import com.apiguave.tinderclonecompose.data.datasource.FirestoreRemoteDataSource
+import com.apiguave.tinderclonecompose.data.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
 import com.apiguave.tinderclonecompose.data.impl.AuthRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.HomeRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.MatchRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.MessageRepositoryImpl
 import com.apiguave.tinderclonecompose.data.impl.ProfileRepositoryImpl
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.match.repository.MatchRepository
 import com.apiguave.tinderclonecompose.data.message.repository.MessageRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
@@ -26,13 +25,14 @@ import org.koin.dsl.module
 
 val dataModule = module {
 
-    //Data sources
+    //Auth
     single { AuthRemoteDataSource() }
-    single { FirestoreRemoteDataSource() }
-
-    //Repositories
     single<AuthRepository> { AuthRepositoryImpl(get()) }
-    single<HomeRepository> { HomeRepositoryImpl(get(), get(), get()) }
+
+    //Home
+    single<HomeRepository> { HomeRepositoryImpl(get(), get()) }
+
+    //Profile
     single<ProfileRepository> { ProfileRepositoryImpl(get(),get(), get()) }
 
     //Messages

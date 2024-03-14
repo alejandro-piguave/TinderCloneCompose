@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.impl
 
 import android.graphics.Bitmap
-import com.apiguave.tinderclonecompose.data.account.AuthRepository
+import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureLocalDataSource
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
 import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture

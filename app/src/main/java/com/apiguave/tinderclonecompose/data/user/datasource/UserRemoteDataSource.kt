@@ -1,16 +1,19 @@
 package com.apiguave.tinderclonecompose.data.user.datasource
 
-import com.apiguave.tinderclonecompose.data.account.exception.AuthException
-import com.apiguave.tinderclonecompose.data.datasource.exception.FirestoreException
+import com.apiguave.tinderclonecompose.data.auth.exception.AuthException
+import com.apiguave.tinderclonecompose.data.user.datasource.exception.FirestoreException
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.apiguave.tinderclonecompose.data.extension.toUser
+import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.user.repository.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -19,6 +22,7 @@ import java.time.LocalDate
 class UserRemoteDataSource {
     companion object {
         private const val USERS = "users"
+        private const val MATCHES = "matches"
     }
     private val currentUserId: String
         get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
@@ -83,5 +87,57 @@ class UserRemoteDataSource {
             passed = emptyList()
         )
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
+    }
+
+    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
+        FirebaseFirestore.getInstance()
+            .collection(USERS)
+            .document(currentUserId)
+            .update(mapOf((if (isLike) FirestoreUserProperties.liked else FirestoreUserProperties.passed) to FieldValue.arrayUnion(swipedUserId)))
+            .getTaskResult()
+        FirebaseFirestore.getInstance()
+            .collection(USERS)
+            .document(currentUserId)
+            .collection(FirestoreUserProperties.liked)
+            .document(swipedUserId)
+            .set(mapOf("exists" to true))
+            .getTaskResult()
+
+        val hasUserLikedBack = hasUserLikedBack(swipedUserId)
+        if(hasUserLikedBack){
+            val matchId = getMatchId(currentUserId, swipedUserId)
+            FieldValue.serverTimestamp()
+            val data = FirestoreMatchProperties.toData(swipedUserId, currentUserId)
+            FirebaseFirestore.getInstance()
+                .collection(MATCHES)
+                .document(matchId)
+                .set(data)
+                .getTaskResult()
+
+            val result = FirebaseFirestore.getInstance()
+                .collection(MATCHES)
+                .document(matchId)
+                .get()
+                .getTaskResult()
+            return result.toObject()
+        }
+        return null
+    }
+
+    private fun getMatchId(userId1: String, userId2: String): String{
+        return if(userId1 > userId2){
+            userId1 + userId2
+        } else userId2 + userId1
+    }
+
+    private suspend fun hasUserLikedBack(swipedUserId: String): Boolean{
+        val result = FirebaseFirestore.getInstance()
+            .collection(USERS)
+            .document(swipedUserId)
+            .collection(FirestoreUserProperties.liked)
+            .document(currentUserId)
+            .get()
+            .getTaskResult()
+        return result.exists()
     }
 }
