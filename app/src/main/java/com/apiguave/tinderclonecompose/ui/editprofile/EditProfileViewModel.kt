@@ -20,12 +20,36 @@ class EditProfileViewModel(
     private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
-        EditProfileUiState()
+        EditProfileViewState()
     )
     val uiState = _uiState.asStateFlow()
 
     private val _action = MutableSharedFlow<EditProfileAction>()
     val action = _action.asSharedFlow()
+
+    fun setBio(bio: TextFieldValue) {
+        _uiState.update { it.copy(bio = bio) }
+    }
+
+    fun setGenderIndex(genderIndex: Int) {
+        _uiState.update { it.copy(genderIndex = genderIndex) }
+    }
+
+    fun setOrientationIndex(orientationIndex: Int) {
+        _uiState.update { it.copy(orientationIndex = orientationIndex) }
+    }
+
+    fun closeDialog() {
+        _uiState.update { it.copy(dialogState = EditProfileDialogState.NoDialog) }
+    }
+
+    fun showConfirmDeletionDialog(index: Int) {
+        _uiState.update { it.copy(dialogState = EditProfileDialogState.DeleteConfirmationDialog(index)) }
+    }
+
+    fun showSelectPictureDialog() {
+        _uiState.update { it.copy(dialogState = EditProfileDialogState.SelectPictureDialog) }
+    }
 
     fun updateUserProfile(){
         viewModelScope.launch {
@@ -46,7 +70,7 @@ class EditProfileViewModel(
     fun updateProfile(){
         viewModelScope.launch {
             //Otherwise show loading and perform update operations
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _uiState.update { it.copy(dialogState = EditProfileDialogState.Loading) }
             try{
                 val currentBio = _uiState.value.bio.text
                 val currentGender = _uiState.value.genderIndex.toGender()
@@ -55,7 +79,7 @@ class EditProfileViewModel(
                 val updatedProfile = profileRepository.updateProfile(currentBio, currentGender, currentOrientation, currentPictures)
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
+                        dialogState = EditProfileDialogState.Loading,
                         name = updatedProfile.name,
                         bio = TextFieldValue(updatedProfile.bio),
                         genderIndex = updatedProfile.gender.ordinal,
@@ -65,7 +89,7 @@ class EditProfileViewModel(
                 }
                 _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }catch (e: Exception){
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+                _uiState.update { it.copy(dialogState = EditProfileDialogState.ErrorDialog(e.message ?: "")) }
             }
         }
     }
@@ -88,14 +112,22 @@ class EditProfileViewModel(
 
 }
 
-data class EditProfileUiState(
+sealed class EditProfileDialogState {
+    object NoDialog: EditProfileDialogState()
+    data class DeleteConfirmationDialog(val index: Int): EditProfileDialogState()
+    data class ErrorDialog(val message: String): EditProfileDialogState()
+    object SelectPictureDialog: EditProfileDialogState()
+    object Loading: EditProfileDialogState()
+}
+
+data class EditProfileViewState(
     val name: String="",
     val birthDate: String = "",
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,
     val pictures: List<Picture> = emptyList(),
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null)
+    val dialogState: EditProfileDialogState = EditProfileDialogState.NoDialog
+)
 
 enum class EditProfileAction{ON_SIGNED_OUT, ON_PROFILE_EDITED}

@@ -29,6 +29,10 @@ import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.ui.extension.isValidUsername
 import com.apiguave.tinderclonecompose.ui.components.*
+import com.apiguave.tinderclonecompose.ui.components.dialogs.DeleteConfirmationDialog
+import com.apiguave.tinderclonecompose.ui.components.dialogs.FormDatePickerDialog
+import com.apiguave.tinderclonecompose.ui.components.dialogs.SelectPictureDialog
+import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch

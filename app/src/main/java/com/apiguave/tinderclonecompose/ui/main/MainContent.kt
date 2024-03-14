@@ -4,7 +4,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,8 +14,7 @@ import androidx.navigation.*
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.chat.ChatView
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
-import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileView
-import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileViewModel
+import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileScreen
 import com.apiguave.tinderclonecompose.ui.home.HomeView
 import com.apiguave.tinderclonecompose.ui.home.HomeViewModel
 import com.apiguave.tinderclonecompose.ui.login.LoginView
@@ -124,33 +122,16 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.EditProfile){
-                val editProfileViewModel: EditProfileViewModel = koinViewModel()
-                val uiState by editProfileViewModel.uiState.collectAsState()
-                LaunchedEffect(key1 = Unit){
-                    editProfileViewModel.updateUserProfile()
-                }
-                EditProfileView(
-                    uiState = uiState,
-                    onPictureSelected = {
-                        editProfileViewModel.addPicture(it)
-                    },
-                    onProfileEdited = navController::popBackStack
-                    ,
+                EditProfileScreen(
+                    signInClient = signInClient,
+                    onProfileEdited = navController::popBackStack,
                     onSignedOut = {
                         navController.navigate(Routes.Login){
                             popUpTo(Routes.Home){
                                 inclusive = true
                             }
                         }
-                    },
-                    removePictureAt = editProfileViewModel::removePictureAt,
-                    signOut = {editProfileViewModel.signOut(signInClient)},
-                    updateProfile = editProfileViewModel::updateProfile,
-                    onBioChanged = {},
-                    onGenderIndexChanged = {},
-                    onOrientationIndexChanged = {},
-                    action = editProfileViewModel.action
-                )
+                    },)
             }
 
             animatedComposable(Routes.MatchList){

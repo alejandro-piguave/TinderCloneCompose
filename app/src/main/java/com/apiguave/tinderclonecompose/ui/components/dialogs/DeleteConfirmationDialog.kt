@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.components
+package com.apiguave.tinderclonecompose.ui.components.dialogs
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text

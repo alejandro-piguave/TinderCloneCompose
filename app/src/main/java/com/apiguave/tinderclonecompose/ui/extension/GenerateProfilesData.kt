@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.ui.extension
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.apiguave.tinderclonecompose.ui.components.eighteenYearsAgo
+import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R

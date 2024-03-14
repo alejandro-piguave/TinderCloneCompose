@@ -28,6 +28,7 @@ import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.ui.extension.allowProfileGeneration
 import com.apiguave.tinderclonecompose.ui.extension.getRandomProfile
 import com.apiguave.tinderclonecompose.ui.components.*
+import com.apiguave.tinderclonecompose.ui.components.dialogs.GenerateProfilesDialog
 import com.apiguave.tinderclonecompose.ui.theme.Green1
 import com.apiguave.tinderclonecompose.ui.theme.Green2
 import com.apiguave.tinderclonecompose.ui.theme.Orange

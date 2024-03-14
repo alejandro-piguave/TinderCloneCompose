@@ -1,81 +1,85 @@
 package com.apiguave.tinderclonecompose.ui.editprofile
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
-import com.apiguave.tinderclonecompose.ui.components.*
-import kotlinx.coroutines.flow.SharedFlow
+import com.apiguave.tinderclonecompose.ui.components.ErrorDialog
+import com.apiguave.tinderclonecompose.ui.components.FormDivider
+import com.apiguave.tinderclonecompose.ui.components.FormTextField
+import com.apiguave.tinderclonecompose.ui.components.HorizontalPicker
+import com.apiguave.tinderclonecompose.ui.components.LoadingView
+import com.apiguave.tinderclonecompose.ui.components.PictureGridRow
+import com.apiguave.tinderclonecompose.ui.components.RowCount
+import com.apiguave.tinderclonecompose.ui.components.SectionTitle
+import com.apiguave.tinderclonecompose.ui.components.TextRow
+import com.apiguave.tinderclonecompose.ui.components.dialogs.DeleteConfirmationDialog
+import com.apiguave.tinderclonecompose.ui.components.dialogs.SelectPictureDialog
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 
 @Composable
 fun EditProfileView(
-    uiState: EditProfileUiState,
-    signOut: () -> Unit,
-    onSignedOut: () -> Unit,
+    uiState: EditProfileViewState,
+    onSignOutClicked: () -> Unit,
     onPictureSelected: (DevicePicture) -> Unit,
-    onProfileEdited: () -> Unit,
     removePictureAt: (Int) -> Unit,
     updateProfile: () -> Unit,
     onBioChanged:(TextFieldValue) -> Unit,
     onGenderIndexChanged: (Int) -> Unit,
     onOrientationIndexChanged: (Int) -> Unit,
-    action: SharedFlow<EditProfileAction>,
+    onDialogClosed: () -> Unit,
+    onSelectPictureClicked: () -> Unit,
+    onDeletePictureClicked: (Int) -> Unit,
 ) {
-
-    var showErrorDialog by remember { mutableStateOf(false) }
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
-    var showSelectPictureDialog by remember { mutableStateOf(false) }
-    var deleteConfirmationPictureIndex by remember { mutableStateOf(-1) }
-
-    LaunchedEffect(key1 = Unit, block = {
-        action.collect {
-            when(it){
-                EditProfileAction.ON_SIGNED_OUT -> onSignedOut()
-                EditProfileAction.ON_PROFILE_EDITED -> onProfileEdited()
-            }
+    when(uiState.dialogState) {
+        is EditProfileDialogState.DeleteConfirmationDialog -> {
+            DeleteConfirmationDialog(
+                onDismissRequest = onDialogClosed,
+                onConfirm = {
+                    onDialogClosed()
+                    removePictureAt(uiState.dialogState.index)
+                },
+                onDismiss = onDialogClosed)
         }
-    })
-
-    LaunchedEffect(key1 = uiState.errorMessage, block = {
-        if(uiState.errorMessage != null){
-            showErrorDialog = true
+        is EditProfileDialogState.ErrorDialog -> {
+            ErrorDialog(
+                errorDescription = uiState.dialogState.message,
+                onDismissRequest = onDialogClosed,
+                onConfirm = onDialogClosed
+            )
         }
-    })
-
-    if (showDeleteConfirmationDialog) {
-        DeleteConfirmationDialog(
-            onDismissRequest = { showDeleteConfirmationDialog = false },
-            onConfirm = {
-                showDeleteConfirmationDialog = false
-                removePictureAt(deleteConfirmationPictureIndex)
-            },
-            onDismiss = { showDeleteConfirmationDialog = false })
-    }
-
-    if(showErrorDialog){
-        ErrorDialog(
-            errorDescription = uiState.errorMessage,
-            onDismissRequest = { showErrorDialog = false },
-            onConfirm = { showErrorDialog = false}
-        )
-    }
-
-    if(showSelectPictureDialog) {
-        SelectPictureDialog(onCloseClick = { showSelectPictureDialog = false }, onReceiveUri = {
-            showSelectPictureDialog = false
-            onPictureSelected(it)
-        })
+        EditProfileDialogState.Loading -> {
+            LoadingView()
+        }
+        EditProfileDialogState.SelectPictureDialog -> {
+            SelectPictureDialog(onCloseClick = onDialogClosed, onReceiveUri = {
+                onDialogClosed()
+                onPictureSelected(it)
+            })
+        }
+         else -> {}
     }
 
     Scaffold(
@@ -98,15 +102,12 @@ fun EditProfileView(
         Column(modifier = Modifier
             .padding(padding)
             .verticalScroll(rememberScrollState())) {
-            repeat(RowCount){rowIndex ->
+            repeat(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
                     pictures = uiState.pictures,
-                    onAddPicture = { showSelectPictureDialog = true },
-                    onAddedPictureClicked = {
-                        showDeleteConfirmationDialog = true
-                        deleteConfirmationPictureIndex = it
-                    }
+                    onAddPicture = onSelectPictureClicked,
+                    onAddedPictureClicked = onDeletePictureClicked
                 )
             }
 
@@ -140,7 +141,7 @@ fun EditProfileView(
                 FormDivider()
 
                 Spacer(modifier = Modifier.height(32.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = signOut) {
+                OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = onSignOutClicked) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -155,10 +156,24 @@ fun EditProfileView(
             }
         }
     }
-
-
-    if(uiState.isLoading){
-        LoadingView()
-    }
 }
 
+@Preview
+@Composable
+fun EditProfileViewPreview() {
+    TinderCloneComposeTheme {
+        EditProfileView(
+            uiState = EditProfileViewState(),
+            onSignOutClicked = {},
+            onPictureSelected = {},
+            removePictureAt = {},
+            updateProfile = {},
+            onBioChanged = {},
+            onGenderIndexChanged = {},
+            onOrientationIndexChanged = {},
+            onDialogClosed = {},
+            onSelectPictureClicked = {},
+            onDeletePictureClicked = {}
+        )
+    }
+}

@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.components
+package com.apiguave.tinderclonecompose.ui.components.dialogs
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
