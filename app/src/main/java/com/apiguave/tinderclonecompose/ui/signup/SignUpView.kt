@@ -1,8 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.signup
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -13,109 +10,77 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
-import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.profile.repository.Gender
-import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.ui.extension.isValidUsername
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.components.dialogs.DeleteConfirmationDialog
 import com.apiguave.tinderclonecompose.ui.components.dialogs.FormDatePickerDialog
 import com.apiguave.tinderclonecompose.ui.components.dialogs.SelectPictureDialog
-import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
 fun SignUpView(
-    uiState: SignUpUiState,
-    signInClient: GoogleSignInClient,
+    uiState: SignUpViewState,
     onPictureSelected: (DevicePicture) -> Unit,
-    onNavigateToHome: () -> Unit,
-    signUp: (data: ActivityResult, profile: CreateUserProfile) -> Unit,
-    removePictureAt: (Int) -> Unit
+    removePictureAt: (Int) -> Unit,
+    onSignUpClicked: () -> Unit,
+    onCloseDialogClicked: () -> Unit,
+    onSelectPictureClicked: () -> Unit,
+    onDeletePictureClicked: (Int) -> Unit,
+    onBirthDateChanged: (LocalDate) -> Unit,
+    onNameChanged: (TextFieldValue) -> Unit,
+    onBioChanged: (TextFieldValue) -> Unit,
+    onGenderIndexChanged: (Int) -> Unit,
+    onOrientationIndexChanged: (Int) -> Unit,
 ) {
 
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
-    var showErrorDialog by remember { mutableStateOf(false) }
-    var showSelectPictureDialog by remember{ mutableStateOf(false) }
-
-    var deleteConfirmationPictureIndex by remember { mutableStateOf(0) }
-    var birthdate by rememberSaveable { mutableStateOf(eighteenYearsAgo) }
     val dateDialogState = rememberMaterialDialogState()
-    var nameText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var bioText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-
-    var selectedGenderIndex by rememberSaveable { mutableStateOf(-1) }
-    var selectedOrientationIndex by rememberSaveable { mutableStateOf(-1) }
-
-    val isSignUpEnabled = remember { derivedStateOf { nameText.text.isValidUsername() && uiState.pictures.size > 1 && selectedGenderIndex >= 0 && selectedOrientationIndex >= 0 } }
-    val coroutineScope = rememberCoroutineScope()
-
-    //Update UI state
-
-    LaunchedEffect(key1 = uiState, block = {
-        if(uiState.isUserSignedIn){
-            onNavigateToHome()
-        }
-        if(uiState.errorMessage != null){
-            showErrorDialog = true
-        }
-    })
-
-
-    val startForResult = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { activityResult ->
-            //Transforms the Uris to Bitmaps
-            val gender = if(selectedGenderIndex == 0) Gender.MALE else Gender.FEMALE
-            val orientation = Orientation.values()[selectedOrientationIndex]
-            val profile = CreateUserProfile(nameText.text, birthdate, bioText.text, gender, orientation, uiState.pictures.map { it.bitmap })
-            //Signs up with the information provided
-            signUp(activityResult, profile)
-        }
-    )
+    val isSignUpEnabled = remember { derivedStateOf { uiState.name.text.isValidUsername() && uiState.pictures.size > 1 && uiState.genderIndex >= 0 && uiState.orientationIndex >= 0 } }
 
     //Dialogs
-
-    if (showDeleteConfirmationDialog) {
-        DeleteConfirmationDialog(
-            onDismissRequest = { showDeleteConfirmationDialog = false },
-            onConfirm = {
-                showDeleteConfirmationDialog = false
-                removePictureAt(deleteConfirmationPictureIndex)},
-            onDismiss = { showDeleteConfirmationDialog = false})
+    when(uiState.dialogState) {
+        is SignUpDialogState.DeleteConfirmationDialog -> {
+            DeleteConfirmationDialog(
+                onDismissRequest = onCloseDialogClicked,
+                onConfirm = {
+                    onCloseDialogClicked()
+                    removePictureAt(uiState.dialogState.index)},
+                onDismiss = onCloseDialogClicked)
+        }
+        is SignUpDialogState.ErrorDialog -> {
+            ErrorDialog(
+                errorDescription = uiState.dialogState.message,
+                onDismissRequest = onCloseDialogClicked,
+                onConfirm = onCloseDialogClicked
+            )
+        }
+        SignUpDialogState.Loading -> {
+            LoadingView()
+        }
+        SignUpDialogState.SelectPictureDialog -> {
+            SelectPictureDialog(onCloseClick = onCloseDialogClicked, onReceiveUri = {
+                onCloseDialogClicked()
+                onPictureSelected(it)
+            })
+        }
+        else -> {}
     }
 
-    if(showErrorDialog){
-        ErrorDialog(
-            errorDescription = uiState.errorMessage,
-            onDismissRequest = { showErrorDialog = false },
-            onConfirm = { showErrorDialog = false}
-        )
-    }
-
-    if(showSelectPictureDialog) {
-        SelectPictureDialog(onCloseClick = { showSelectPictureDialog = false }, onReceiveUri = {
-            showSelectPictureDialog = false
-            onPictureSelected(it)
-        })
-    }
-
-    FormDatePickerDialog(dateDialogState, onDateChange = { birthdate = it })
+    FormDatePickerDialog(dateDialogState, onDateChange = onBirthDateChanged)
     
     Surface {
         LazyColumn( modifier = Modifier
@@ -137,11 +102,8 @@ fun SignUpView(
                 PictureGridRow(
                     rowIndex = rowIndex,
                     pictures = uiState.pictures,
-                    onAddPicture = { showSelectPictureDialog = true },
-                    onAddedPictureClicked = {
-                        showDeleteConfirmationDialog = true
-                        deleteConfirmationPictureIndex = it
-                    }
+                    onAddPicture = onSelectPictureClicked,
+                    onAddedPictureClicked = onDeletePictureClicked
                 )
             }
 
@@ -153,11 +115,9 @@ fun SignUpView(
                 Column(Modifier.fillMaxWidth()) {
                     SectionTitle(title = stringResource(id = R.string.personal_information))
                     FormTextField(
-                        value = nameText,
+                        value = uiState.name,
                         placeholder = stringResource(id = R.string.enter_your_name) ,
-                        onValueChange = { newText ->
-                            nameText = newText
-                        }
+                        onValueChange = onNameChanged
                     )
                     Row(
                         modifier = Modifier
@@ -182,7 +142,7 @@ fun SignUpView(
                             )
                         ) {
                             Text(
-                                birthdate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)),
+                                uiState.birthDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)),
                                 color = MaterialTheme.colors.onSurface
                             )
                         }
@@ -191,33 +151,29 @@ fun SignUpView(
                     SectionTitle(title = stringResource(id = R.string.about_me) )
                     FormTextField(
                         modifier = Modifier.height(128.dp),
-                        value = bioText,
+                        value = uiState.bio,
                         placeholder = stringResource(id = R.string.write_something_interesting),
-                        onValueChange = { bioText = it }
+                        onValueChange = onBioChanged
                     )
 
                     SectionTitle(title = stringResource(id = R.string.gender))
                     HorizontalPicker(
                         id = R.array.genders,
-                        selectedIndex = selectedGenderIndex,
-                        onOptionClick = { selectedGenderIndex = it })
+                        selectedIndex = uiState.genderIndex,
+                        onOptionClick = onGenderIndexChanged)
 
                     SectionTitle(title = stringResource(id = R.string.i_am_interested_in))
                     HorizontalPicker(
                         id = R.array.interests,
-                        selectedIndex = selectedOrientationIndex,
-                        onOptionClick = { selectedOrientationIndex = it })
+                        selectedIndex = uiState.orientationIndex,
+                        onOptionClick = onOrientationIndexChanged)
 
                     Spacer(
                         Modifier
                             .fillMaxWidth()
                             .height(32.dp))
 
-                    GradientGoogleButton(enabled = isSignUpEnabled.value) {
-                        coroutineScope.launch {
-                            startForResult.launch(signInClient.signInIntent)
-                        }
-                    }
+                    GradientGoogleButton(enabled = isSignUpEnabled.value, onClick = onSignUpClicked)
                     Spacer(
                         Modifier
                             .fillMaxWidth()
@@ -226,9 +182,25 @@ fun SignUpView(
             }
         }
     }
-
-    if(uiState.isLoading){
-        LoadingView()
-    }
 }
 
+@Preview
+@Composable
+fun SignUpViewPreview() {
+    TinderCloneComposeTheme {
+        SignUpView(
+            uiState = SignUpViewState(),
+            onPictureSelected = {},
+            removePictureAt = {},
+            onSignUpClicked = {},
+            onCloseDialogClicked = {},
+            onSelectPictureClicked = {},
+            onDeletePictureClicked = {},
+            onBirthDateChanged = {},
+            onNameChanged = {},
+            onBioChanged = {},
+            onGenderIndexChanged = {},
+            onOrientationIndexChanged = {}
+        )
+    }
+}

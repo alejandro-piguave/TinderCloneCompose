@@ -19,8 +19,7 @@ import com.apiguave.tinderclonecompose.ui.home.HomeScreen
 import com.apiguave.tinderclonecompose.ui.login.LoginScreen
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListView
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListViewModel
-import com.apiguave.tinderclonecompose.ui.signup.SignUpView
-import com.apiguave.tinderclonecompose.ui.signup.SignUpViewModel
+import com.apiguave.tinderclonecompose.ui.signup.SignUpScreen
 import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -39,36 +38,28 @@ fun MainContent(signInClient: GoogleSignInClient){
                 LoginScreen(
                     signInClient = signInClient,
                     onNavigateToHome = {
-                        navController.navigate(Routes.SignUp)
-                    },
-                    onNavigateToSignUp = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.Login){
                                 inclusive = true
                             }
                         }
+                    },
+                    onNavigateToSignUp = {
+                        navController.navigate(Routes.SignUp)
                     }
                 )
             }
 
             animatedComposable(Routes.SignUp) {
-                val signUpViewModel: SignUpViewModel = koinViewModel()
-                val uiState by signUpViewModel.uiState.collectAsState()
-                SignUpView(
-                    uiState = uiState,
+                SignUpScreen(
                     signInClient = signInClient,
-                    onPictureSelected = {
-                        signUpViewModel.addPicture(it)
-                    },
                     onNavigateToHome = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.SignUp){
                                 inclusive = true
                             }
                         }
-                    },
-                    removePictureAt = signUpViewModel::removePictureAt,
-                    signUp = signUpViewModel::signUp
+                    }
                 )
             }
 
