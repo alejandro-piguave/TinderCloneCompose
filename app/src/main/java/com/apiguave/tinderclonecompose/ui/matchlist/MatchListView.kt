@@ -12,9 +12,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,12 +27,15 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.match.repository.Match
 import com.apiguave.tinderclonecompose.ui.components.AnimatedGradientLogo
-import com.apiguave.tinderclonecompose.ui.components.BlankAppBar
+import com.apiguave.tinderclonecompose.ui.components.CenterAppBar
 import com.apiguave.tinderclonecompose.ui.components.GradientButton
 import com.apiguave.tinderclonecompose.ui.theme.LightLightGray
+import com.apiguave.tinderclonecompose.ui.theme.Orange
+import com.apiguave.tinderclonecompose.ui.theme.Pink
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalTextApi::class)
 @Composable
 fun MatchListView(
     uiState: MatchListUiState,
@@ -39,10 +45,22 @@ fun MatchListView(
 ) {
     Scaffold(
         topBar = {
-            BlankAppBar(
-                text = stringResource(id = R.string.matches),
+            CenterAppBar(
                 onArrowBackPressed = onArrowBackPressed
-            )
+            ) {
+                Text(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    text = stringResource(id = R.string.messages),
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        brush = Brush.linearGradient(
+                            colors = listOf(Pink, Orange)
+                        )
+                    )
+                )
+            }
         }
     ) { padding ->
         if (uiState.isLoading) {
@@ -108,7 +126,7 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
             contentDescription = null,
             modifier = Modifier
                 .padding(horizontal = 8.dp)
-                .size(72.dp)
+                .size(60.dp)
                 .clip(CircleShape)
         )
 

@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,11 +21,9 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.match.repository.Match
 import com.apiguave.tinderclonecompose.data.message.repository.Message
-import com.apiguave.tinderclonecompose.ui.extension.withLinearGradient
+import com.apiguave.tinderclonecompose.ui.components.CenterAppBar
 import com.apiguave.tinderclonecompose.ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
-import com.apiguave.tinderclonecompose.ui.theme.Orange
-import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
 
 @Composable
@@ -71,34 +68,18 @@ fun ChatView(
 
 @Composable
 fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
-    Surface(elevation = AppBarDefaults.TopAppBarElevation){
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
-            Box(Modifier.weight(1f)){
-                IconButton(modifier = Modifier.height(IntrinsicSize.Max),onClick = onArrowBackPressed) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_chevron_left_24),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .withLinearGradient(Pink, Orange)
-                            .align(Alignment.TopCenter)
-                    )
-                }
-            }
-
-            Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
-                AsyncImage(
-                    model = match.userPicture,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .size(40.dp)
-                        .clip(CircleShape)
-                )
-                Text(text = match.userName, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
-            }
-            Spacer(Modifier.weight(1f))
+    CenterAppBar(onArrowBackPressed = onArrowBackPressed) {
+        Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
+            AsyncImage(
+                model = match.userPicture,
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+            )
+            Text(text = match.userName, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
         }
     }
 }
