@@ -13,7 +13,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     signInClient: GoogleSignInClient,
     onNavigateToSignUp: () -> Unit,
-    onNavigateToHome: () -> Unit, ) {
+    onNavigateToHome: () -> Unit) {
     val loginViewModel: LoginViewModel = koinViewModel()
     val uiState by loginViewModel.uiState.collectAsState()
 
