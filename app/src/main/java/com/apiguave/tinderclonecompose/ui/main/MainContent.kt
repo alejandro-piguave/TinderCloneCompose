@@ -16,8 +16,7 @@ import com.apiguave.tinderclonecompose.ui.chat.ChatView
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileScreen
 import com.apiguave.tinderclonecompose.ui.home.HomeScreen
-import com.apiguave.tinderclonecompose.ui.login.LoginView
-import com.apiguave.tinderclonecompose.ui.login.LoginViewModel
+import com.apiguave.tinderclonecompose.ui.login.LoginScreen
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListView
 import com.apiguave.tinderclonecompose.ui.matchlist.MatchListViewModel
 import com.apiguave.tinderclonecompose.ui.signup.SignUpView
@@ -34,28 +33,21 @@ import org.koin.androidx.compose.koinViewModel
 fun MainContent(signInClient: GoogleSignInClient){
     TinderCloneComposeTheme {
         val navController = rememberAnimatedNavController()
-
         val chatViewModel: ChatViewModel = getViewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
             animatedComposable(Routes.Login) {
-                val loginViewModel: LoginViewModel = koinViewModel()
-                val uiState by loginViewModel.uiState.collectAsState()
-
-                LoginView(
+                LoginScreen(
                     signInClient = signInClient,
-                    uiState = uiState,
-                    onNavigateToSignUp = {
+                    onNavigateToHome = {
                         navController.navigate(Routes.SignUp)
                     },
-                    onNavigateToHome = {
+                    onNavigateToSignUp = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.Login){
                                 inclusive = true
                             }
                         }
-                    },
-                    onSignIn = loginViewModel::signIn
-
+                    }
                 )
             }
 

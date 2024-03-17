@@ -1,8 +1,5 @@
 package com.apiguave.tinderclonecompose.ui.login
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +10,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -22,30 +18,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.ui.components.AnimatedLogo
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 
 @Composable
-fun LoginView(signInClient: GoogleSignInClient,
-              uiState: LoginViewState,
+fun LoginView(uiState: LoginViewState,
               onNavigateToSignUp: () -> Unit,
-              onNavigateToHome: () -> Unit,
-              onSignIn: (ActivityResult) -> Unit,
-              ) {
-    val startForResult = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = onSignIn
-    )
-
-    LaunchedEffect(key1 = uiState, block = {
-        if(uiState.isUserSignedIn){
-            onNavigateToHome()
-        }
-    })
+              onSignInClicked: () -> Unit) {
 
     Column(
         modifier = Modifier
@@ -97,9 +81,7 @@ fun LoginView(signInClient: GoogleSignInClient,
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .alpha(if (uiState.isLoading) 0f else 1f),
-                onClick = {
-                    startForResult.launch(signInClient.signInIntent)
-                },
+                onClick = onSignInClicked,
                 contentPadding = PaddingValues(
                     start = 20.dp,
                     top = 12.dp,
@@ -121,5 +103,17 @@ fun LoginView(signInClient: GoogleSignInClient,
             }
             Spacer(modifier = Modifier.height(44.dp))
         }
+    }
+}
+
+@Preview
+@Composable
+fun LoginViewPreview() {
+    TinderCloneComposeTheme {
+        LoginView(
+            uiState = LoginViewState(false, false, null),
+            onNavigateToSignUp = { },
+            onSignInClicked = {}
+        )
     }
 }
