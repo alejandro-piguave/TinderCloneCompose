@@ -6,7 +6,7 @@
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
 </p>
 
-Tinder clone application written with Jetpack Compose and Firebase, following the MVVM architechture pattern with Kotlin coroutines, flows and dependency injection with Koin.
+Tinder clone application written with Jetpack Compose and Firebase, using Clean Architecture and MVVM with Kotlin coroutines, flows and dependency injection with Koin.
 
 Note: The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project.
 Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
@@ -50,9 +50,8 @@ Additionally, if you turn on the "allowProfileGeneration" flag from the "Generat
 In this screen the user can modify the same fields as in the "create profile" screen except for the name and birth date. Their design is almost identical.
 
 <p float="left">
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_1.png" width="250" />
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_2.png" width="250" /> 
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.png" width="250" />
+  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen.gif" width="250" />
+  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
 </p>
 
 ## Messages screen
