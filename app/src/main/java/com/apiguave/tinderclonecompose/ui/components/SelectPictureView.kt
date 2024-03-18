@@ -29,15 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
-import com.apiguave.tinderclonecompose.ui.extension.toDevicePicture
 import com.apiguave.tinderclonecompose.ui.fileprovider.ComposeFileProvider
 import com.apiguave.tinderclonecompose.ui.theme.LightPurple
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.Purple
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture) -> Unit){
@@ -45,24 +41,17 @@ fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture) 
         mutableStateOf<Uri?>(null)
     }
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            coroutineScope.launch {
-                val devicePicture = withContext(Dispatchers.IO) {uri?.toDevicePicture(context.contentResolver) }
-                devicePicture?.let { onReceiveUri(it) }
-            }
+            uri?.let { onReceiveUri(DevicePicture(it)) }
         }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             if(success){
-                coroutineScope.launch {
-                    val devicePicture = withContext(Dispatchers.IO) {imageUri?.toDevicePicture(context.contentResolver) }
-                    devicePicture?.let { onReceiveUri(it) }
-                }
+                imageUri?.let { onReceiveUri(DevicePicture(it)) }
             }
         }
     )

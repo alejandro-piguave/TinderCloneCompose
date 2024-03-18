@@ -3,15 +3,13 @@ package com.apiguave.tinderclonecompose.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.home.HomeRepository
-import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
-import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
 import com.apiguave.tinderclonecompose.data.message.repository.MessageRepository
-import com.apiguave.tinderclonecompose.ui.extension.getRandomUserId
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.*
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -74,11 +72,11 @@ class HomeViewModel(
         _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
     }
 
-    fun createProfiles(profiles: List<CreateUserProfile>){
+    fun createProfiles(amount: Int){
         viewModelScope.launch {
             _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
             try {
-                profiles.map { async { profileRepository.createProfile(getRandomUserId(),  it) } }.awaitAll()
+                profileRepository.createRandomProfiles(amount)
                 fetchProfiles()
             } catch (e: Exception) {
                 _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }

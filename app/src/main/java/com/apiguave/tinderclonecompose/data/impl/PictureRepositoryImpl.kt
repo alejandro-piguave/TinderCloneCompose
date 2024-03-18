@@ -1,9 +1,9 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import android.graphics.Bitmap
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureLocalDataSource
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
@@ -35,11 +35,18 @@ class PictureRepositoryImpl(
     }
 
     override suspend fun uploadProfilePictures(
-        pictures: List<Bitmap>
+        pictures: List<DevicePicture>
     ): List<FirebasePicture> {
         val uploadedPictures = pictureRemoteDataSource.uploadUserPictures(authRepository.userId, pictures)
         pictureLocalDataSource.profilePictures = uploadedPictures
         return uploadedPictures
+    }
+
+    override suspend fun uploadPictures(
+        userId: String,
+        pictures: List<DevicePicture>
+    ): List<FirebasePicture> {
+        return pictureRemoteDataSource.uploadUserPictures(userId, pictures)
     }
 
     override suspend fun getPictures(user: User): List<FirebasePicture> {

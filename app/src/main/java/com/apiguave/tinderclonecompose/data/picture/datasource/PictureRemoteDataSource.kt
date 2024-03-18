@@ -1,13 +1,13 @@
 package com.apiguave.tinderclonecompose.data.picture.datasource
 
-import android.graphics.Bitmap
 import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
-import com.apiguave.tinderclonecompose.data.extension.toByteArray
 import com.apiguave.tinderclonecompose.data.user.repository.User
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -37,7 +37,7 @@ class PictureRemoteDataSource {
                         //If the picture was already uploaded, simply return its file name.
                         is FirebasePicture -> it
                         //Otherwise uploaded and return it's new file name
-                        is DevicePicture -> uploadUserPicture(userId, it.bitmap)
+                        is DevicePicture -> uploadUserPicture(userId, it)
                     }
                 }
             }
@@ -58,29 +58,32 @@ class PictureRemoteDataSource {
         FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture.filename).delete().getTaskResult()
     }
 
-    suspend fun uploadUserPictures(userId: String, pictures: List<Bitmap>): List<FirebasePicture>{
+    suspend fun uploadUserPictures(userId: String, pictures: List<DevicePicture>): List<FirebasePicture>{
         return coroutineScope {
             pictures.map { async { uploadUserPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun uploadUserPicture(userId: String, bitmap: Bitmap): FirebasePicture {
+    private suspend fun uploadUserPicture(userId: String, picture: DevicePicture): FirebasePicture {
         val filename = UUID.randomUUID().toString()+".jpg"
         val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(filename)
 
-        pictureRef.putBytes(bitmap.toByteArray()).getTaskResult()
+        pictureRef.putFile(picture.uri).getTaskResult()
 
         return FirebasePicture(pictureRef.downloadUrl.getTaskResult(), filename)
     }
 
     suspend fun getPicturesFromUser(user: User): List<FirebasePicture>{
+        val list = FirebaseStorage.getInstance().reference.child(USERS).child(user.id).listAll().getTaskResult()
+        println("For user ${user.id}:")
+        list.items.forEach { println(it.name) }
         return coroutineScope {
             user.pictures.map { async { getPictureFromUser(user.id, it) } }.awaitAll()
         }
     }
 
     suspend fun getPictureFromUser(userId: String, picture: String): FirebasePicture {
-        val fileRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture)
+        val fileRef = Firebase.storage.reference.child("$USERS/$userId/$picture")
         return FirebasePicture(fileRef.downloadUrl.getTaskResult(), picture)
     }
 }

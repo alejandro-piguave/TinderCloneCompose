@@ -1,12 +1,13 @@
 package com.apiguave.tinderclonecompose.ui.extension
 
+import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
@@ -17,30 +18,37 @@ import java.util.UUID
 
 
 const val allowProfileGeneration = false
-const val maxPictureCount = 7
-const val minPictureCount = 2
+
 val maxBirthdate: LocalDate = LocalDate.of(1970, 1, 1)
 
 suspend fun getRandomProfile(context: Context): CreateUserProfile {
         val isMale = Random.nextBoolean()
-        val pictureCount = getRandomPictureCount()
-        val pictures = coroutineScope { (0 until pictureCount).map { async{ getRandomPicture(context, isMale) } }.awaitAll()  }
+        val pictures = coroutineScope { (0 until 3).map { async { DevicePicture(getRandomPicture(context, isMale)) } }.awaitAll()  }
         val name = getRandomName(isMale)
         val birthdate = getRandomBirthdate()
         val orientation = Orientation.values().random()
 
         return CreateUserProfile(name, birthdate, "", if(isMale) Gender.MALE else Gender.FEMALE, orientation, pictures)
 }
+
 fun getRandomUserId(): String = UUID.randomUUID().toString()
-fun getRandomPictureCount(): Int = minPictureCount + Random.nextInt(maxPictureCount - minPictureCount)
 fun getRandomName(isMale: Boolean): String = if(isMale) maleNames.random() else femaleNames.random()
 fun getRandomBirthdate(): LocalDate{
         val minDay = maxBirthdate.toEpochDay()
         val randomDay: Long = Random.nextLong(minDay, eighteenYearsAgo.toEpochDay())
         return  LocalDate.ofEpochDay(randomDay)
 }
-fun getRandomPicture(context: Context, isMale: Boolean): Bitmap {
-        return BitmapFactory.decodeResource(context.resources, if (isMale) malePictures.random() else femalePictures.random())
+fun getRandomPicture(context: Context, isMale: Boolean): Uri {
+        return context.resourceUri(if (isMale) malePictures.random() else femalePictures.random())
+}
+
+fun Context.resourceUri(resourceId: Int): Uri = with(resources) {
+        Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(getResourcePackageName(resourceId))
+                .appendPath(getResourceTypeName(resourceId))
+                .appendPath(getResourceEntryName(resourceId))
+                .build()
 }
 
 

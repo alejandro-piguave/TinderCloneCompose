@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.data.picture.repository
 
-import android.graphics.Bitmap
 import android.net.Uri
 /*
 *  A class that represents any picture given by the user.
@@ -10,6 +9,6 @@ import android.net.Uri
 sealed class Picture(val uri: Uri)
 
 //A picture retrieved from the device
-class DevicePicture(uri: Uri, val bitmap: Bitmap): Picture(uri)
+class DevicePicture(uri: Uri): Picture(uri)
 //A picture retrieved from Firebase
 class FirebasePicture(uri: Uri, val filename: String): Picture(uri)

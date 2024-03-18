@@ -28,7 +28,7 @@ fun SignUpScreen(
             //Transforms the Uris to Bitmaps
             val gender = if(uiState.genderIndex == 0) Gender.MALE else Gender.FEMALE
             val orientation = Orientation.values()[uiState.genderIndex]
-            val profile = CreateUserProfile(uiState.name.text, uiState.birthDate, uiState.bio.text, gender, orientation, uiState.pictures.map { it.bitmap })
+            val profile = CreateUserProfile(uiState.name.text, uiState.birthDate, uiState.bio.text, gender, orientation, uiState.pictures)
             //Signs up with the information provided
             signUpViewModel.signUp(activityResult, profile)
         }
