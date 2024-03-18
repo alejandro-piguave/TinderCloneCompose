@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -32,13 +33,14 @@ import com.apiguave.tinderclonecompose.ui.components.GradientButton
 import com.apiguave.tinderclonecompose.ui.theme.LightLightGray
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun MatchListView(
-    uiState: MatchListUiState,
+    uiState: MatchListViewState,
     onArrowBackPressed: () -> Unit,
     fetchMatches: () -> Unit,
     navigateToMatch: (Match) -> Unit,
@@ -63,53 +65,57 @@ fun MatchListView(
             }
         }
     ) { padding ->
-        if (uiState.isLoading) {
-            Column {
-                Spacer(Modifier.weight(1f))
-                AnimatedGradientLogo(Modifier.fillMaxWidth())
-                Spacer(Modifier.weight(1f))
-            }
-        } else if (uiState.errorMessage != null) {
-            Column(modifier = Modifier.padding(horizontal = 8.dp),horizontalAlignment = Alignment.CenterHorizontally) {
-                val coroutineScope = rememberCoroutineScope()
-                Spacer(Modifier.weight(1f))
-                Text(text = uiState.errorMessage, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(12.dp))
-                GradientButton(onClick = {
-                    coroutineScope.launch {
-                        delay(200)
-                        fetchMatches()
+        when(uiState) {
+            is MatchListViewState.Error -> {
+                Column(modifier = Modifier.padding(horizontal = 8.dp),horizontalAlignment = Alignment.CenterHorizontally) {
+                    val coroutineScope = rememberCoroutineScope()
+                    Spacer(Modifier.weight(1f))
+                    Text(text = uiState.message, color = Color.Gray, fontSize = 16.sp, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(12.dp))
+                    GradientButton(onClick = {
+                        coroutineScope.launch {
+                            delay(200)
+                            fetchMatches()
+                        }
+                    }) {
+                        Text(stringResource(id = R.string.retry))
                     }
-                }) {
-                    Text(stringResource(id = R.string.retry))
+                    Spacer(Modifier.weight(1f))
                 }
-                Spacer(Modifier.weight(1f))
             }
-
-        } else if (uiState.matchList.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = stringResource(id = R.string.no_matches),
-                    color = Color.Gray,
-                    fontSize = 20.sp
-                )
+            MatchListViewState.Loading -> {
+                Column {
+                    Spacer(Modifier.weight(1f))
+                    AnimatedGradientLogo(Modifier.fillMaxWidth())
+                    Spacer(Modifier.weight(1f))
+                }
             }
-        } else {
-            LazyColumn(
-                Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
-                items(uiState.matchList.size) {
-                    MatchItem(uiState.matchList[it]) {
-                        navigateToMatch(uiState.matchList[it])
+            is MatchListViewState.Success -> {
+                if (uiState.matches.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            textAlign = TextAlign.Center,
+                            text = stringResource(id = R.string.no_matches),
+                            color = Color.Gray,
+                            fontSize = 20.sp
+                        )
+                    }
+                } else {
+                    LazyColumn(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding)
+                    ) {
+                        items(uiState.matches.size) {
+                            MatchItem(uiState.matches[it]) {
+                                navigateToMatch(uiState.matches[it])
+                            }
+                        }
                     }
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -147,9 +153,23 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
                 fontWeight = FontWeight.Light
             )
             Spacer(Modifier.height(20.dp))
-            Spacer(modifier = Modifier.fillMaxWidth().height(1.dp).background(LightLightGray))
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(LightLightGray))
         }
-
     }
+}
 
+@Preview
+@Composable
+fun MatchListViewPreview() {
+    TinderCloneComposeTheme {
+        MatchListView(
+            uiState = MatchListViewState.Loading,
+            onArrowBackPressed = { },
+            fetchMatches = { },
+            navigateToMatch = {}
+        )
+    }
 }
