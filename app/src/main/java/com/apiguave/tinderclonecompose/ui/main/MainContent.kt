@@ -2,20 +2,12 @@ package com.apiguave.tinderclonecompose.ui.main
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.ui.chat.ChatView
+import com.apiguave.tinderclonecompose.ui.chat.ChatScreen
 import com.apiguave.tinderclonecompose.ui.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.ui.editprofile.EditProfileScreen
 import com.apiguave.tinderclonecompose.ui.home.HomeScreen
@@ -101,20 +93,10 @@ fun MainContent(signInClient: GoogleSignInClient){
             }
 
             animatedComposable(Routes.Chat){
-                val chatMatch by chatViewModel.match.collectAsState()
-                chatMatch?.let {
-                    val messages by chatViewModel.getMessages(it.id).collectAsState(
-                        initial = listOf()
-                    )
-                    ChatView(
-                        match = it,
-                        messages = messages,
-                        onArrowBackPressed = navController::popBackStack,
-                        sendMessage = chatViewModel::sendMessage,
-                    )
-                }  ?: run{
-                    Text(modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = stringResource(id = R.string.no_match_value_passed))
-                }
+                ChatScreen(
+                    onArrowBackPressed = navController::popBackStack,
+                    viewModel = chatViewModel
+                )
             }
         }
     }

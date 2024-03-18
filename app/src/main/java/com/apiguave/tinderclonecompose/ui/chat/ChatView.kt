@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -24,6 +25,7 @@ import com.apiguave.tinderclonecompose.data.message.repository.Message
 import com.apiguave.tinderclonecompose.ui.components.CenterAppBar
 import com.apiguave.tinderclonecompose.ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.ui.theme.AntiFlashWhite
+import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 import com.apiguave.tinderclonecompose.ui.theme.UltramarineBlue
 
 @Composable
@@ -33,7 +35,6 @@ fun ChatView(
     sendMessage: (String) -> Unit,
     messages: List<Message>
 ) {
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -127,5 +128,21 @@ fun MessageItem(match: Match, message: Message) {
                     .background(Color.Red))
         }
 
+    }
+}
+
+@Composable
+@Preview
+fun ChatViewPreview() {
+    TinderCloneComposeTheme {
+        ChatView(
+            match = Match("", 20, "", "Alice", "", "24/02/2024", "Hey, how are you doing?"),
+            onArrowBackPressed = { },
+            sendMessage = { },
+            messages = listOf(
+                Message("Whats up!", true),
+                Message("Hey, how are you doing?", false),
+            )
+        )
     }
 }
