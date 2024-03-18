@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.data.home.entity.Profile
-import com.apiguave.tinderclonecompose.ui.extension.allowProfileGeneration
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.components.dialogs.GenerateProfilesDialog
 import com.apiguave.tinderclonecompose.ui.components.dialogs.NewMatchDialog
@@ -45,7 +44,8 @@ fun HomeView(
     onGenerateProfiles: (Int) -> Unit,
     onShowProfileGenerationDialog: () -> Unit,
     onSendMessage: (String, String) -> Unit,
-    onCloseDialog: () -> Unit
+    onCloseDialog: () -> Unit,
+    allowProfileGenerator: Boolean = false
     ) {
     val scope = rememberCoroutineScope()
 
@@ -84,7 +84,7 @@ fun HomeView(
             }
         },
         floatingActionButton = {
-            if (allowProfileGeneration) {
+            if (allowProfileGenerator) {
                 FloatingActionButton(
                     modifier = Modifier.size(40.dp),
                     onClick = onShowProfileGenerationDialog) {

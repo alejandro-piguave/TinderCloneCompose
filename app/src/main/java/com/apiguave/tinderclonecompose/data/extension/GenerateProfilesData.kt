@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.ui.extension
+package com.apiguave.tinderclonecompose.data.extension
 
 import android.content.ContentResolver
 import android.content.Context
@@ -15,9 +15,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.UUID
-
-
-const val allowProfileGeneration = false
 
 val maxBirthdate: LocalDate = LocalDate.of(1970, 1, 1)
 

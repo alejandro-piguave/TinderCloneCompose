@@ -11,8 +11,8 @@ import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
 import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
-import com.apiguave.tinderclonecompose.ui.extension.getRandomProfile
-import com.apiguave.tinderclonecompose.ui.extension.getRandomUserId
+import com.apiguave.tinderclonecompose.data.extension.getRandomProfile
+import com.apiguave.tinderclonecompose.data.extension.getRandomUserId
 
 class ProfileRepositoryImpl(
     private val context: Context,
