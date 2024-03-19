@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.ui.fileprovider.ComposeFileProvider
 import com.apiguave.tinderclonecompose.ui.theme.LightPurple
 import com.apiguave.tinderclonecompose.ui.theme.Orange
@@ -36,7 +36,7 @@ import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.Purple
 
 @Composable
-fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture) -> Unit){
+fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (LocalPicture) -> Unit){
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -44,14 +44,14 @@ fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (DevicePicture) 
 
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { onReceiveUri(DevicePicture(it)) }
+            uri?.let { onReceiveUri(LocalPicture(it)) }
         }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             if(success){
-                imageUri?.let { onReceiveUri(DevicePicture(it)) }
+                imageUri?.let { onReceiveUri(LocalPicture(it)) }
             }
         }
     )

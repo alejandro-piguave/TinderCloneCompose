@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.profile.repository
 
-import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.RemotePicture
 
 data class UserProfile(val id:String="",
                        val name: String="",
@@ -8,5 +8,5 @@ data class UserProfile(val id:String="",
                        val bio: String = "",
                        val gender: Gender,
                        val orientation: Orientation,
-                       val pictures: List<FirebasePicture> = emptyList(),
+                       val pictures: List<RemotePicture> = emptyList(),
 )

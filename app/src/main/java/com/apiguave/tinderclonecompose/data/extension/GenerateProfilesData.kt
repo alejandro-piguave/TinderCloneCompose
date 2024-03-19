@@ -7,7 +7,7 @@ import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
@@ -20,7 +20,7 @@ val maxBirthdate: LocalDate = LocalDate.of(1970, 1, 1)
 
 suspend fun getRandomProfile(context: Context): CreateUserProfile {
         val isMale = Random.nextBoolean()
-        val pictures = coroutineScope { (0 until 3).map { async { DevicePicture(getRandomPicture(context, isMale)) } }.awaitAll()  }
+        val pictures = coroutineScope { (0 until 3).map { async { LocalPicture(getRandomPicture(context, isMale)) } }.awaitAll()  }
         val name = getRandomName(isMale)
         val birthdate = getRandomBirthdate()
         val orientation = Orientation.values().random()

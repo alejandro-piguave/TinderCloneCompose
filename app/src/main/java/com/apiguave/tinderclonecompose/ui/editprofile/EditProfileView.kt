@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.ui.components.ErrorDialog
 import com.apiguave.tinderclonecompose.ui.components.FormDivider
 import com.apiguave.tinderclonecompose.ui.components.FormTextField
@@ -43,7 +43,7 @@ import com.apiguave.tinderclonecompose.ui.theme.TinderCloneComposeTheme
 fun EditProfileView(
     uiState: EditProfileViewState,
     onSignOutClicked: () -> Unit,
-    onPictureSelected: (DevicePicture) -> Unit,
+    onPictureSelected: (LocalPicture) -> Unit,
     removePictureAt: (Int) -> Unit,
     updateProfile: () -> Unit,
     onBioChanged:(TextFieldValue) -> Unit,

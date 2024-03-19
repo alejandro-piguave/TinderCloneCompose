@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.picture.datasource
 
-import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.RemotePicture
 
 class PictureLocalDataSource {
-    var profilePictures: List<FirebasePicture>? = null
+    var profilePictures: List<RemotePicture>? = null
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
 import com.apiguave.tinderclonecompose.ui.extension.filterIndex
 import com.apiguave.tinderclonecompose.ui.extension.toProviderAccount
@@ -60,7 +60,7 @@ class SignUpViewModel(
         _uiState.update { it.copy(pictures = it.pictures.filterIndex(index)) }
     }
 
-    fun addPicture(picture: DevicePicture) {
+    fun addPicture(picture: LocalPicture) {
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
@@ -95,7 +95,7 @@ data class SignUpViewState(
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,
-    val pictures: List<DevicePicture> = emptyList(),
+    val pictures: List<LocalPicture> = emptyList(),
     val isUserSignedIn: Boolean = false,
     val dialogState: SignUpDialogState = SignUpDialogState.NoDialog
 )

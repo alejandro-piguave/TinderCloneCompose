@@ -9,6 +9,6 @@ import android.net.Uri
 sealed class Picture(val uri: Uri)
 
 //A picture retrieved from the device
-class DevicePicture(uri: Uri): Picture(uri)
+class LocalPicture(uri: Uri): Picture(uri)
 //A picture retrieved from Firebase
-class FirebasePicture(uri: Uri, val filename: String): Picture(uri)
+class RemotePicture(uri: Uri, val filename: String): Picture(uri)

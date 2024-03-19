@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.picture.datasource
 
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
-import com.apiguave.tinderclonecompose.data.picture.repository.FirebasePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.repository.RemotePicture
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonecompose.data.user.repository.User
@@ -18,13 +18,13 @@ class PictureRemoteDataSource {
         private const val USERS = "users"
     }
 
-    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<FirebasePicture>, updatedPictures: List<Picture>): List<FirebasePicture>{
+    suspend fun updateProfilePictures(userId: String, outdatedPictures: List<RemotePicture>, updatedPictures: List<Picture>): List<RemotePicture>{
         return coroutineScope {
             //This is a list of the pictures that were already uploaded but that have been removed from the profile.
-            val picturesToDelete: List<FirebasePicture> =
+            val picturesToDelete: List<RemotePicture> =
                 updatedPictures
-                    .filter { it is FirebasePicture && !outdatedPictures.contains(it) }
-                    .map { it as FirebasePicture }
+                    .filter { it is RemotePicture && !outdatedPictures.contains(it) }
+                    .map { it as RemotePicture }
 
             val pictureDeletionResult = async {
                 if(picturesToDelete.isEmpty()) Unit
@@ -35,9 +35,9 @@ class PictureRemoteDataSource {
                 async {
                     when(it){
                         //If the picture was already uploaded, simply return its file name.
-                        is FirebasePicture -> it
+                        is RemotePicture -> it
                         //Otherwise uploaded and return it's new file name
-                        is DevicePicture -> uploadUserPicture(userId, it)
+                        is LocalPicture -> uploadUserPicture(userId, it)
                     }
                 }
             }
@@ -48,32 +48,32 @@ class PictureRemoteDataSource {
         }
     }
 
-    private suspend fun deleteUserPictures(userId: String, pictures: List<FirebasePicture>){
+    private suspend fun deleteUserPictures(userId: String, pictures: List<RemotePicture>){
         return coroutineScope {
             pictures.map { async { deleteUserPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun deleteUserPicture(userId: String, picture: FirebasePicture){
+    private suspend fun deleteUserPicture(userId: String, picture: RemotePicture){
         FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture.filename).delete().getTaskResult()
     }
 
-    suspend fun uploadUserPictures(userId: String, pictures: List<DevicePicture>): List<FirebasePicture>{
+    suspend fun uploadUserPictures(userId: String, pictures: List<LocalPicture>): List<RemotePicture>{
         return coroutineScope {
             pictures.map { async { uploadUserPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun uploadUserPicture(userId: String, picture: DevicePicture): FirebasePicture {
+    private suspend fun uploadUserPicture(userId: String, picture: LocalPicture): RemotePicture {
         val filename = UUID.randomUUID().toString()+".jpg"
         val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(filename)
 
         pictureRef.putFile(picture.uri).getTaskResult()
 
-        return FirebasePicture(pictureRef.downloadUrl.getTaskResult(), filename)
+        return RemotePicture(pictureRef.downloadUrl.getTaskResult(), filename)
     }
 
-    suspend fun getPicturesFromUser(user: User): List<FirebasePicture>{
+    suspend fun getPicturesFromUser(user: User): List<RemotePicture>{
         val list = FirebaseStorage.getInstance().reference.child(USERS).child(user.id).listAll().getTaskResult()
         println("For user ${user.id}:")
         list.items.forEach { println(it.name) }
@@ -82,8 +82,8 @@ class PictureRemoteDataSource {
         }
     }
 
-    suspend fun getPictureFromUser(userId: String, picture: String): FirebasePicture {
+    suspend fun getPictureFromUser(userId: String, picture: String): RemotePicture {
         val fileRef = Firebase.storage.reference.child("$USERS/$userId/$picture")
-        return FirebasePicture(fileRef.downloadUrl.getTaskResult(), picture)
+        return RemotePicture(fileRef.downloadUrl.getTaskResult(), picture)
     }
 }

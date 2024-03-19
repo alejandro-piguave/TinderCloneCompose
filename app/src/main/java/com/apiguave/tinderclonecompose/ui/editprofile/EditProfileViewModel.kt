@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.ui.extension.filterIndex
 import com.apiguave.tinderclonecompose.ui.extension.getTaskResult
@@ -94,7 +94,7 @@ class EditProfileViewModel(
         }
     }
 
-    fun addPicture(picture: DevicePicture){
+    fun addPicture(picture: LocalPicture){
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 

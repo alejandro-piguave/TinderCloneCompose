@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.DevicePicture
+import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
 import com.apiguave.tinderclonecompose.ui.extension.isValidUsername
 import com.apiguave.tinderclonecompose.ui.components.*
 import com.apiguave.tinderclonecompose.ui.components.dialogs.DeleteConfirmationDialog
@@ -35,7 +35,7 @@ import java.time.format.FormatStyle
 @Composable
 fun SignUpView(
     uiState: SignUpViewState,
-    onPictureSelected: (DevicePicture) -> Unit,
+    onPictureSelected: (LocalPicture) -> Unit,
     removePictureAt: (Int) -> Unit,
     onSignUpClicked: () -> Unit,
     onCloseDialogClicked: () -> Unit,
