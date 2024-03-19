@@ -1,20 +1,21 @@
 package com.apiguave.tinderclonecompose.data.home.datasource
 
 import com.apiguave.tinderclonecompose.data.api.picture.PictureApi
+import com.apiguave.tinderclonecompose.data.api.user.FirestoreUser
 import com.apiguave.tinderclonecompose.data.api.user.UserApi
 import com.apiguave.tinderclonecompose.data.extension.toProfile
 import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
 import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.user.repository.User
+import com.apiguave.tinderclonecompose.data.profile.repository.UserProfile
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 class HomeRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
 
-    suspend fun getProfiles(user: User): List<Profile> {
-        val users = userApi.getCompatibleUsers(user)
+    suspend fun getProfiles(user: UserProfile): List<Profile> {
+        val users = userApi.getCompatibleUsers(user.id, user.gender, user.orientation, user.liked, user.passed)
         val profiles = coroutineScope {
             val profiles = users.map { async { getProfile(it) } }
             profiles.awaitAll()
@@ -22,7 +23,7 @@ class HomeRemoteDataSource(private val userApi: UserApi, private val pictureApi:
         return profiles
     }
 
-    private suspend fun getProfile(user: User): Profile {
+    private suspend fun getProfile(user: FirestoreUser): Profile {
         val pictures = pictureApi.getPictures(user.id, user.pictures)
         return user.toProfile(pictures.map { it.uri })
     }

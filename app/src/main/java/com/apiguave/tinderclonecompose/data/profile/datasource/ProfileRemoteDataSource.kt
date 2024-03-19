@@ -25,6 +25,8 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
             currentUser.bio,
             if(currentUser.male!!) Gender.MALE else Gender.FEMALE,
             currentUser.orientation!!.toOrientation(),
+            currentUser.liked,
+            currentUser.passed,
             profilePictures
         )
     }

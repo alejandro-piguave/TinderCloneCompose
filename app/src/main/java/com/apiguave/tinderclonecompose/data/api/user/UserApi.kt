@@ -6,11 +6,9 @@ import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toTimestamp
-import com.apiguave.tinderclonecompose.data.extension.toUser
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
-import com.apiguave.tinderclonecompose.data.user.datasource.exception.FirestoreException
-import com.apiguave.tinderclonecompose.data.user.repository.User
+import com.apiguave.tinderclonecompose.data.api.user.exception.FirestoreException
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -51,30 +49,36 @@ class UserApi {
         return snapshot.toObject<FirestoreUser>() ?: throw FirestoreException("Document doesn't exist")
     }
 
-    suspend fun getCompatibleUsers(user: User): List<User> {
-        val excludedUserIds = user.liked + user.passed + user.id
+    suspend fun getCompatibleUsers(
+        userId: String,
+        gender: Gender,
+        orientation: Orientation,
+        liked: List<String>,
+        passed: List<String>
+    ): List<FirestoreUser> {
+        val excludedUserIds = liked + passed + userId
 
         //Build query
         val searchQuery: Query = kotlin.run {
             val query = FirebaseFirestore.getInstance().collection(USERS)
                 .whereNotEqualTo(
                     FirestoreUserProperties.orientation,
-                    when (user.gender) {
+                    when (gender) {
                         Gender.MALE -> FirestoreOrientation.women.name
                         Gender.FEMALE -> FirestoreOrientation.men.name
-                    })
-            if (user.orientation != Orientation.BOTH) {
+                    }
+                )
+            if (orientation != Orientation.BOTH) {
                 query.whereEqualTo(
                     FirestoreUserProperties.isMale,
-                    user.orientation == Orientation.MEN
+                    orientation == Orientation.MEN
                 )
             } else query
         }
 
         val result = searchQuery.get().getTaskResult()
         //Filter documents
-        val compatibleUsers: List<FirestoreUser> = result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject() }
-        return compatibleUsers.map { it.toUser() }
+        return result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject<FirestoreUser>() }
     }
 
     suspend fun swipeUser(userId: String, swipedUserId: String, isLike: Boolean): FirestoreMatch? {

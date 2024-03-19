@@ -8,5 +8,7 @@ data class UserProfile(val id:String="",
                        val bio: String = "",
                        val gender: Gender,
                        val orientation: Orientation,
+                       val liked: List<String>,
+                       val passed: List<String>,
                        val pictures: List<RemotePicture> = emptyList(),
 )

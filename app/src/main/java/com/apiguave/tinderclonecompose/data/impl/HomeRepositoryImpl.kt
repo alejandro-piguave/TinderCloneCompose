@@ -7,16 +7,16 @@ import com.apiguave.tinderclonecompose.data.home.datasource.HomeRemoteDataSource
 import com.apiguave.tinderclonecompose.data.home.repository.HomeRepository
 import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
 import com.apiguave.tinderclonecompose.data.home.repository.Profile
-import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 
 class HomeRepositoryImpl(
     private val context: Context,
-    private val userRepository: UserRepository,
+    private val profileRepository: ProfileRepository,
     private val homeRemoteDataSource: HomeRemoteDataSource
 ): HomeRepository {
 
     override suspend fun likeProfile(profile: Profile): NewMatch? {
-        val currentUser = userRepository.getCurrentUser()
+        val currentUser = profileRepository.getProfile()
         val matchModel = homeRemoteDataSource.likeProfile(currentUser.id, profile)
         return matchModel?.let { model ->
             NewMatch(model.id, profile.id, profile.name, profile.pictures)
@@ -24,12 +24,12 @@ class HomeRepositoryImpl(
     }
 
     override suspend fun passProfile(profile: Profile) {
-        val currentUser = userRepository.getCurrentUser()
+        val currentUser = profileRepository.getProfile()
         homeRemoteDataSource.passProfile(currentUser.id, profile)
     }
 
     override suspend fun getProfiles(): List<Profile> {
-        val currentUser = userRepository.getCurrentUser()
+        val currentUser = profileRepository.getProfile()
         return homeRemoteDataSource.getProfiles(currentUser)
     }
 
