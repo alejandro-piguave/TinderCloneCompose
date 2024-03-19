@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.data.extension
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import com.apiguave.tinderclonecompose.ui.components.dialogs.eighteenYearsAgo
+import com.apiguave.tinderclonecompose.presentation.components.dialogs.eighteenYearsAgo
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
