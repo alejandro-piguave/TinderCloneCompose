@@ -1,38 +1,31 @@
 package com.apiguave.tinderclonecompose.data.impl
 
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
-import com.apiguave.tinderclonecompose.data.extension.toUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.UserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
-import com.apiguave.tinderclonecompose.data.picture.repository.Picture
-import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
-import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
+import com.apiguave.tinderclonecompose.data.picture.Picture
+import com.apiguave.tinderclonecompose.data.profile.datasource.ProfileLocalDataSource
+import com.apiguave.tinderclonecompose.data.profile.datasource.ProfileRemoteDataSource
 
 class ProfileRepositoryImpl(
-    private val pictureRepository: PictureRepository,
-    private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
+    private val profileLocalDataSource: ProfileLocalDataSource,
+    private val profileRemoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
-        val currentUser = userRepository.getCurrentUser()
-        val currentPictures = pictureRepository.getProfilePictures()
-        return currentUser.toUserProfile(currentPictures)
+        return profileLocalDataSource.currentUser ?: kotlin.run {
+            val currentUser = profileRemoteDataSource.getUserProfile(authRepository.userId)
+            profileLocalDataSource.currentUser = currentUser
+            currentUser
+        }
     }
 
     override suspend fun createProfile(profile: CreateUserProfile) {
-        val filenames = pictureRepository.uploadProfilePictures(profile.pictures)
-        userRepository.createUser(
-            authRepository.userId,
-            profile.name,
-            profile.birthdate,
-            profile.bio,
-            profile.gender,
-            profile.orientation,
-            filenames.map { it.filename })
+        profileRemoteDataSource.createProfile(authRepository.userId, profile)
     }
 
     override suspend fun updateProfile(
@@ -41,22 +34,8 @@ class ProfileRepositoryImpl(
         orientation: Orientation,
         pictures: List<Picture>
     ): UserProfile {
-        val currentProfile = getProfile()
-        val arePicturesEqual = currentProfile.pictures == pictures
-
-        when {
-            arePicturesEqual -> {
-                userRepository.updateCurrentUser(bio, gender, orientation, currentProfile.pictures.map { it.filename })
-            }
-            !arePicturesEqual -> {
-                val filenames = pictureRepository.updateProfilePictures(
-                    currentProfile.pictures,
-                    pictures
-                )
-                userRepository.updateCurrentUser(bio, gender, orientation, filenames.map { it.filename })
-            }
-        }
-
-        return getProfile()
+        val currentUser = profileRemoteDataSource.updateProfile(getProfile(), bio, gender, orientation, pictures)
+        profileLocalDataSource.currentUser = currentUser
+        return currentUser
     }
 }

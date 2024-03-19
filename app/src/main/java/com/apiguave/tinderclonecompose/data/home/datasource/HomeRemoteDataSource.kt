@@ -23,7 +23,7 @@ class HomeRemoteDataSource(private val userApi: UserApi, private val pictureApi:
     }
 
     private suspend fun getProfile(user: User): Profile {
-        val pictures = if (user.pictures.isEmpty()) emptyList() else pictureApi.getPictures(user)
+        val pictures = pictureApi.getPictures(user.id, user.pictures)
         return user.toProfile(pictures.map { it.uri })
     }
 

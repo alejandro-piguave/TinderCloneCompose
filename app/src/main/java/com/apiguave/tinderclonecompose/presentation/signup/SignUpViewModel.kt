@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import com.apiguave.tinderclonecompose.presentation.components.dialogs.eighteenYearsAgo
 import com.apiguave.tinderclonecompose.presentation.extension.filterIndex
 import com.apiguave.tinderclonecompose.presentation.extension.toProviderAccount

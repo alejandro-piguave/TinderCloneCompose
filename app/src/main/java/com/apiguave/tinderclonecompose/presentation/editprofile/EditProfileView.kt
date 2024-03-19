@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import com.apiguave.tinderclonecompose.presentation.components.ErrorDialog
 import com.apiguave.tinderclonecompose.presentation.components.FormDivider
 import com.apiguave.tinderclonecompose.presentation.components.FormTextField

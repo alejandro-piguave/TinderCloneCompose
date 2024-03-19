@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.presentation.components.dialogs
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import com.apiguave.tinderclonecompose.presentation.components.SelectPictureView
 
 @Composable

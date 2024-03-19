@@ -7,7 +7,7 @@ import com.apiguave.tinderclonecompose.presentation.components.dialogs.eighteenY
 import java.time.LocalDate
 import kotlin.random.Random
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation

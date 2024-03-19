@@ -129,4 +129,8 @@ class UserApi {
             .getTaskResult()
         return result.exists()
     }
+
+    suspend fun updateUser(userId: String, data: Map<String, Any>){
+        FirebaseFirestore.getInstance().collection(USERS).document(userId).update(data).getTaskResult()
+    }
 }

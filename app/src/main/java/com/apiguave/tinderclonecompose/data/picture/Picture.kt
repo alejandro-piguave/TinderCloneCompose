@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.picture.repository
+package com.apiguave.tinderclonecompose.data.picture
 
 import android.net.Uri
 /*

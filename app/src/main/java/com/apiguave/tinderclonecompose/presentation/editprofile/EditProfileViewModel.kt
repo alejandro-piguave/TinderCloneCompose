@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
-import com.apiguave.tinderclonecompose.data.picture.repository.Picture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.Picture
 import com.apiguave.tinderclonecompose.presentation.extension.filterIndex
 import com.apiguave.tinderclonecompose.presentation.extension.getTaskResult
 import com.apiguave.tinderclonecompose.presentation.extension.toGender

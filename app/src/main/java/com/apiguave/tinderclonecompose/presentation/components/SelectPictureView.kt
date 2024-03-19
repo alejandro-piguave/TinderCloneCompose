@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import com.apiguave.tinderclonecompose.presentation.fileprovider.ComposeFileProvider
 import com.apiguave.tinderclonecompose.presentation.theme.LightPurple
 import com.apiguave.tinderclonecompose.presentation.theme.Orange

@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.profile.repository
 
-import com.apiguave.tinderclonecompose.data.picture.repository.LocalPicture
+import com.apiguave.tinderclonecompose.data.picture.LocalPicture
 import java.time.LocalDate
 
 data class CreateUserProfile(val name: String,
