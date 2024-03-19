@@ -3,14 +3,14 @@ package com.apiguave.tinderclonecompose.presentation.login
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.auth.AuthRepository
+import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import com.apiguave.tinderclonecompose.presentation.extension.toProviderAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
+class LoginViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginViewState(
             isLoading = true,
@@ -26,7 +26,7 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
 
     private fun checkLoginState() {
         _uiState.update {
-            if(authRepository.isUserSignedIn){
+            if(profileRepository.isUserSignedIn){
                 it.copy(isUserSignedIn = true)
             } else {
                 it.copy(isLoading = false)
@@ -39,11 +39,11 @@ class LoginViewModel(private val authRepository: AuthRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 val account = activityResult.toProviderAccount()
-                authRepository.signIn(account)
+                profileRepository.signIn(account)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
-                if(authRepository.isUserSignedIn){
-                    authRepository.signOut()
+                if(profileRepository.isUserSignedIn){
+                    profileRepository.signOut()
                 }
                 _uiState.update {
                     it.copy(isLoading = false, errorMessage = e.message)

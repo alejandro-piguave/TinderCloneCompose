@@ -1,14 +1,13 @@
-package com.apiguave.tinderclonecompose.data.auth
+package com.apiguave.tinderclonecompose.data.api.auth
 
-import com.apiguave.tinderclonecompose.data.auth.exception.AuthException
-import com.apiguave.tinderclonecompose.data.auth.entity.Account
+import com.apiguave.tinderclonecompose.data.profile.repository.Account
+import com.apiguave.tinderclonecompose.data.api.auth.exception.AuthException
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-class AuthRemoteDataSource {
-
+class AuthApi {
     val isUserSignedIn: Boolean
         get() = FirebaseAuth.getInstance().currentUser != null
 
@@ -31,4 +30,3 @@ class AuthRemoteDataSource {
         return signInMethods.isEmpty()
     }
 }
-

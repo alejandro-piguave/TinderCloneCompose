@@ -4,7 +4,7 @@ import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.api.match.MatchApi
 import com.apiguave.tinderclonecompose.data.api.picture.PictureApi
 import com.apiguave.tinderclonecompose.data.api.user.UserApi
-import com.apiguave.tinderclonecompose.data.auth.exception.AuthException
+import com.apiguave.tinderclonecompose.data.api.auth.exception.AuthException
 import com.apiguave.tinderclonecompose.data.extension.toAge
 import com.apiguave.tinderclonecompose.data.extension.toShortString
 import com.google.firebase.auth.FirebaseAuth
