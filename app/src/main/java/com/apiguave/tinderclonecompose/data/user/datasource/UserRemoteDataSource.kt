@@ -7,8 +7,11 @@ import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.apiguave.tinderclonecompose.data.extension.toUser
-import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
-import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatchProperties
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatchProperties
+import com.apiguave.tinderclonecompose.data.api.user.FirestoreOrientation
+import com.apiguave.tinderclonecompose.data.api.user.FirestoreUser
+import com.apiguave.tinderclonecompose.data.api.user.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.user.repository.User

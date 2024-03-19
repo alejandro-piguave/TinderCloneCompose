@@ -1,21 +1,43 @@
 package com.apiguave.tinderclonecompose.data.match.datasource
 
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.api.match.MatchApi
+import com.apiguave.tinderclonecompose.data.api.picture.PictureApi
+import com.apiguave.tinderclonecompose.data.api.user.UserApi
 import com.apiguave.tinderclonecompose.data.auth.exception.AuthException
-import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonecompose.data.extension.toAge
+import com.apiguave.tinderclonecompose.data.extension.toShortString
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import com.apiguave.tinderclonecompose.data.match.repository.Match
+import kotlinx.coroutines.awaitAll
 
-class MatchRemoteDataSource {
-    companion object{
-        private const val MATCHES = "matches"
-    }
+class MatchRemoteDataSource(private val matchApi: MatchApi, private val userApi: UserApi, private val pictureApi: PictureApi) {
+
     private val currentUserId: String
         get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
 
-    suspend fun getFirestoreMatchModels(): List<FirestoreMatch> {
-        val query = FirebaseFirestore.getInstance().collection(MATCHES)
-            .whereArrayContains(FirestoreMatchProperties.usersMatched, currentUserId)
-        val result = query.get().getTaskResult()
-        return result.toObjects(FirestoreMatch::class.java)
+    suspend fun getMatches(): List<Match> = coroutineScope {
+        val apiMatches = matchApi.getMatches(currentUserId)
+        val matches = apiMatches.map { async { getMatch(it) }}.awaitAll()
+        matches.filterNotNull()
     }
+
+    private suspend fun getMatch(match: FirestoreMatch): Match? {
+        val userId = match.usersMatched.firstOrNull { it != currentUserId } ?: return null
+        val user = userApi.getUser(userId)
+        val picture = pictureApi.getPicture(user.id, user.pictures.first())
+        return Match(
+            match.id,
+            user.birthDate?.toDate()?.toAge() ?: 0,
+            userId,
+            user.name,
+            picture.uri.toString(),
+            match.timestamp?.toShortString() ?: "",
+            match.lastMessage
+        )
+    }
+
+
 }

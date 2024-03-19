@@ -1,5 +1,8 @@
 package com.apiguave.tinderclonecompose.data.di
 
+import com.apiguave.tinderclonecompose.data.api.match.MatchApi
+import com.apiguave.tinderclonecompose.data.api.picture.PictureApi
+import com.apiguave.tinderclonecompose.data.api.user.UserApi
 import com.apiguave.tinderclonecompose.data.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonecompose.data.picture.datasource.PictureRemoteDataSource
 import com.apiguave.tinderclonecompose.data.impl.AuthRepositoryImpl
@@ -24,6 +27,11 @@ import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
 import org.koin.dsl.module
 
 val dataModule = module {
+
+    //Api
+    single { MatchApi() }
+    single { UserApi() }
+    single { PictureApi() }
 
     //Auth
     single { AuthRemoteDataSource() }
@@ -50,6 +58,6 @@ val dataModule = module {
     single<PictureRepository> { PictureRepositoryImpl(get(), get(), get(), get()) }
 
     //Matches
-    single { MatchRemoteDataSource() }
-    single<MatchRepository> { MatchRepositoryImpl(get(),get(),get(), get()) }
+    single { MatchRemoteDataSource(get(), get(), get()) }
+    single<MatchRepository> { MatchRepositoryImpl(get()) }
 }

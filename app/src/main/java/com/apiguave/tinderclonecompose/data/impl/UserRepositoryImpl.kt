@@ -1,10 +1,10 @@
 package com.apiguave.tinderclonecompose.data.impl
 
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
-import com.apiguave.tinderclonecompose.data.user.datasource.FirestoreUserProperties
+import com.apiguave.tinderclonecompose.data.api.user.FirestoreUserProperties
 import com.apiguave.tinderclonecompose.data.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
-import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.user.datasource.UserLocalDataSource

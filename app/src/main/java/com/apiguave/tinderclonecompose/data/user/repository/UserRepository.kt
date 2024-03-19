@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonecompose.data.user.repository
 
-import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatch
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import java.time.LocalDate

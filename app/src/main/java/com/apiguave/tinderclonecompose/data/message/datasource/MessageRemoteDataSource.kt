@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.message.datasource
 
 import com.apiguave.tinderclonecompose.data.auth.exception.AuthException
-import com.apiguave.tinderclonecompose.data.match.datasource.FirestoreMatchProperties
+import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.message.repository.Message
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
