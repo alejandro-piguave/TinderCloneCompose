@@ -5,6 +5,7 @@ import com.apiguave.tinderclonecompose.data.api.user.UserApi
 import com.apiguave.tinderclonecompose.data.extension.toProfile
 import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
 import com.apiguave.tinderclonecompose.data.home.repository.Profile
+import com.apiguave.tinderclonecompose.data.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonecompose.data.user.repository.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -34,5 +35,17 @@ class HomeRemoteDataSource(private val userApi: UserApi, private val pictureApi:
         return userApi.swipeUser(currentUserId, profile.id, true)?.let { model ->
             NewMatch(model.id, model.id, profile.name, profile.pictures)
         }
+    }
+
+    suspend fun createProfile(userId: String, profile: CreateUserProfile) {
+        val filenames = pictureApi.uploadPictures(userId, profile.pictures)
+        userApi.createUser(
+            userId,
+            profile.name,
+            profile.birthdate,
+            profile.bio,
+            profile.gender,
+            profile.orientation,
+            filenames.map { it.filename })
     }
 }

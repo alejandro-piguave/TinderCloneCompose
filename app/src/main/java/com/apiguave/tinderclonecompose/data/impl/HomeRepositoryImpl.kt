@@ -1,5 +1,8 @@
 package com.apiguave.tinderclonecompose.data.impl
 
+import android.content.Context
+import com.apiguave.tinderclonecompose.data.extension.getRandomProfile
+import com.apiguave.tinderclonecompose.data.extension.getRandomUserId
 import com.apiguave.tinderclonecompose.data.home.datasource.HomeRemoteDataSource
 import com.apiguave.tinderclonecompose.data.home.repository.HomeRepository
 import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
@@ -7,6 +10,7 @@ import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
 
 class HomeRepositoryImpl(
+    private val context: Context,
     private val userRepository: UserRepository,
     private val homeRemoteDataSource: HomeRemoteDataSource
 ): HomeRepository {
@@ -27,5 +31,18 @@ class HomeRepositoryImpl(
     override suspend fun getProfiles(): List<Profile> {
         val currentUser = userRepository.getCurrentUser()
         return homeRemoteDataSource.getProfiles(currentUser)
+    }
+
+    private suspend fun createRandomProfile() {
+        val userId = getRandomUserId()
+        val profile = getRandomProfile(context)
+        homeRemoteDataSource.createProfile(userId, profile)
+    }
+
+    override suspend fun createRandomProfiles(amount: Int) {
+        //Profiles are not created concurrently to avoid memory overhead when loading the images
+        for(i in 0 until amount) {
+            createRandomProfile()
+        }
     }
 }

@@ -6,14 +6,12 @@ import com.apiguave.tinderclonecompose.data.home.repository.HomeRepository
 import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
 import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.data.message.repository.MessageRepository
-import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val profileRepository: ProfileRepository,
     private val homeRepository: HomeRepository,
     private val messageRepository: MessageRepository
 ): ViewModel() {
@@ -76,7 +74,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
             try {
-                profileRepository.createRandomProfiles(amount)
+                homeRepository.createRandomProfiles(amount)
                 fetchProfiles()
             } catch (e: Exception) {
                 _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }

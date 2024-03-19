@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonecompose.data.impl
 
-import android.content.Context
 import com.apiguave.tinderclonecompose.data.auth.AuthRepository
 import com.apiguave.tinderclonecompose.data.extension.toUserProfile
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
@@ -11,11 +10,8 @@ import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
 import com.apiguave.tinderclonecompose.data.picture.repository.Picture
 import com.apiguave.tinderclonecompose.data.picture.repository.PictureRepository
 import com.apiguave.tinderclonecompose.data.user.repository.UserRepository
-import com.apiguave.tinderclonecompose.data.extension.getRandomProfile
-import com.apiguave.tinderclonecompose.data.extension.getRandomUserId
 
 class ProfileRepositoryImpl(
-    private val context: Context,
     private val pictureRepository: PictureRepository,
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
@@ -37,27 +33,6 @@ class ProfileRepositoryImpl(
             profile.gender,
             profile.orientation,
             filenames.map { it.filename })
-    }
-
-    private suspend fun createRandomProfile() {
-        val userId = getRandomUserId()
-        val profile = getRandomProfile(context)
-        val filenames = pictureRepository.uploadPictures(userId, profile.pictures)
-        userRepository.createUser(
-            userId,
-            profile.name,
-            profile.birthdate,
-            profile.bio,
-            profile.gender,
-            profile.orientation,
-            filenames.map { it.filename })
-    }
-
-    override suspend fun createRandomProfiles(amount: Int) {
-        //Profiles are not created concurrently to avoid memory overhead when loading the images
-        for(i in 0 until amount) {
-            createRandomProfile()
-        }
     }
 
     override suspend fun updateProfile(

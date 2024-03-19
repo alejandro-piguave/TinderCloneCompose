@@ -3,6 +3,9 @@ package com.apiguave.tinderclonecompose.data.api.user
 import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatch
 import com.apiguave.tinderclonecompose.data.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonecompose.data.extension.toBoolean
+import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.apiguave.tinderclonecompose.data.extension.toUser
 import com.apiguave.tinderclonecompose.data.profile.repository.Gender
 import com.apiguave.tinderclonecompose.data.profile.repository.Orientation
@@ -12,12 +15,35 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import java.time.LocalDate
 
 class UserApi {
 
     companion object {
         private const val USERS = "users"
         private const val MATCHES = "matches"
+    }
+
+    suspend fun createUser(
+        userId: String,
+        name: String,
+        birthdate: LocalDate,
+        bio: String,
+        gender: Gender,
+        orientation: Orientation,
+        pictures: List<String>
+    ) {
+        val user = FirestoreUser(
+            name = name,
+            birthDate = birthdate.toTimestamp(),
+            bio = bio,
+            male = gender.toBoolean(),
+            orientation = orientation.toFirestoreOrientation(),
+            pictures = pictures,
+            liked = emptyList(),
+            passed = emptyList()
+        )
+        FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
     suspend fun getUser(userId: String): FirestoreUser {

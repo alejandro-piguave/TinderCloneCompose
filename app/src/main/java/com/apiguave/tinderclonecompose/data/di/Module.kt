@@ -40,10 +40,10 @@ val dataModule = module {
 
     //Home
     single { HomeRemoteDataSource(get(), get()) }
-    single<HomeRepository> { HomeRepositoryImpl(get(), get()) }
+    single<HomeRepository> { HomeRepositoryImpl(get(), get(), get()) }
 
     //Profile
-    single<ProfileRepository> { ProfileRepositoryImpl(get(), get(),get(), get()) }
+    single<ProfileRepository> { ProfileRepositoryImpl(get(), get(),get()) }
 
     //Messages
     single { MessageRemoteDataSource() }
