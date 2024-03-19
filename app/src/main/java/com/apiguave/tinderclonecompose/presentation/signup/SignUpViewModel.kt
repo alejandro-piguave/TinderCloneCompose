@@ -67,8 +67,7 @@ class SignUpViewModel(
             _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
             try {
                 val account = activityResult.toProviderAccount()
-                profileRepository.signIn(account)
-                profileRepository.createProfile(profile)
+                profileRepository.signUp(account, profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
                 _uiState.update {

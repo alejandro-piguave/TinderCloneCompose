@@ -27,10 +27,6 @@ class ProfileRepositoryImpl(
         }
     }
 
-    override suspend fun createProfile(profile: CreateUserProfile) {
-        profileRemoteDataSource.createProfile(authApi.userId, profile)
-    }
-
     override suspend fun updateProfile(
         bio: String,
         gender: Gender,
@@ -51,10 +47,11 @@ class ProfileRepositoryImpl(
         else authApi.signInWithGoogle(account)
     }
 
-    override suspend fun signUp(account: Account) {
+    override suspend fun signUp(account: Account, profile: CreateUserProfile) {
         val isNewAccount = authApi.isNewAccount(account)
         if (isNewAccount) authApi.signInWithGoogle(account)
         else throw SignUpException("User already exists")
+        profileRemoteDataSource.createProfile(authApi.userId, profile)
     }
 
     override fun signOut(){
