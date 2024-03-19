@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.home.entity
+package com.apiguave.tinderclonecompose.data.home.repository
 
 
 class Profile(

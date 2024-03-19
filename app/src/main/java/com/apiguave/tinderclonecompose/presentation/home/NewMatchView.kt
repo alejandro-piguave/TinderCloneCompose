@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
+import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
 import com.apiguave.tinderclonecompose.presentation.components.ChatFooter
 import com.apiguave.tinderclonecompose.presentation.theme.Green1
 

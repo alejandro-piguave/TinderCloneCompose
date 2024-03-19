@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonecompose.data.extension
 
 import android.net.Uri
-import com.apiguave.tinderclonecompose.data.home.entity.Profile
+import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.data.picture.repository.RemotePicture
 import com.apiguave.tinderclonecompose.data.profile.repository.UserProfile
 import com.apiguave.tinderclonecompose.data.user.repository.User

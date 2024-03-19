@@ -2,9 +2,9 @@ package com.apiguave.tinderclonecompose.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.data.home.HomeRepository
-import com.apiguave.tinderclonecompose.data.home.entity.NewMatch
-import com.apiguave.tinderclonecompose.data.home.entity.Profile
+import com.apiguave.tinderclonecompose.data.home.repository.HomeRepository
+import com.apiguave.tinderclonecompose.data.home.repository.NewMatch
+import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.data.message.repository.MessageRepository
 import com.apiguave.tinderclonecompose.data.profile.repository.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow

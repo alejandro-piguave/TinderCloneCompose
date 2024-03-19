@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.data.home.entity.Profile
+import com.apiguave.tinderclonecompose.data.home.repository.Profile
 import com.apiguave.tinderclonecompose.presentation.components.*
 import com.apiguave.tinderclonecompose.presentation.components.dialogs.GenerateProfilesDialog
 import com.apiguave.tinderclonecompose.presentation.components.dialogs.NewMatchDialog
