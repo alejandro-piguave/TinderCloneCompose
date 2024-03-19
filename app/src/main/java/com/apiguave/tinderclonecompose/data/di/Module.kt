@@ -2,6 +2,7 @@ package com.apiguave.tinderclonecompose.data.di
 
 import com.apiguave.tinderclonecompose.data.api.auth.AuthApi
 import com.apiguave.tinderclonecompose.data.api.match.MatchApi
+import com.apiguave.tinderclonecompose.data.api.message.MessageApi
 import com.apiguave.tinderclonecompose.data.api.picture.PictureApi
 import com.apiguave.tinderclonecompose.data.api.user.UserApi
 import com.apiguave.tinderclonecompose.data.home.datasource.HomeRemoteDataSource
@@ -26,6 +27,7 @@ val dataModule = module {
     single { UserApi() }
     single { PictureApi() }
     single { AuthApi() }
+    single { MessageApi() }
 
     //Home
     single { HomeRemoteDataSource(get(), get()) }
@@ -37,7 +39,7 @@ val dataModule = module {
     single<ProfileRepository> { ProfileRepositoryImpl(get(), get(), get()) }
 
     //Messages
-    single { MessageRemoteDataSource() }
+    single { MessageRemoteDataSource(get(), get()) }
     single<MessageRepository> { MessageRepositoryImpl(get()) }
 
     //Matches

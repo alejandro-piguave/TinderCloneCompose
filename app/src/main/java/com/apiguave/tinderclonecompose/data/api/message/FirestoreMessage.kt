@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.message.datasource
+package com.apiguave.tinderclonecompose.data.api.message
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
