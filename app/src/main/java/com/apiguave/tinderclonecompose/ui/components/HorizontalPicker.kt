@@ -25,17 +25,23 @@ import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.ui.theme.Orange
 import com.apiguave.tinderclonecompose.ui.theme.Pink
 import com.apiguave.tinderclonecompose.ui.theme.SystemGray4
-import kotlinx.coroutines.launch
 
 @Composable
 fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int) -> Unit) {
     val options = stringArrayResource(id = id)
-    val coroutineScope = rememberCoroutineScope()
     val offsetX = remember { Animatable(0f) }
 
     val density = LocalDensity.current
     var itemWidth by remember { mutableStateOf(0f) }
     var itemHeight by remember { mutableStateOf(0f) }
+
+    LaunchedEffect(key1 = selectedIndex) {
+        if(selectedIndex < 0){
+            offsetX.snapTo(itemWidth * selectedIndex)
+        } else {
+            offsetX.animateTo(itemWidth * selectedIndex)
+        }
+    }
 
     Box {
         Row(
@@ -49,15 +55,9 @@ fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int)
                     )
                 )
                 .onGloballyPositioned {
-                    val firstRender = itemWidth == 0f
                     itemWidth = density.run { (it.size.width / options.size).toDp().value }
                     itemHeight = density.run { it.size.height.toDp() }.value
 
-                    if (firstRender && selectedIndex > 0){
-                        coroutineScope.launch {
-                            offsetX.snapTo(itemWidth * selectedIndex)
-                        }
-                    }
                 }
         ) {
             options.forEachIndexed { index, s ->
@@ -65,13 +65,6 @@ fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int)
                     modifier = Modifier.weight(1.0f),
                     text = s,
                     onClick = {
-                        coroutineScope.launch {
-                            if(selectedIndex < 0){
-                                offsetX.snapTo(itemWidth * index)
-                            } else {
-                                offsetX.animateTo(itemWidth * index)
-                            }
-                        }
                         onOptionClick(index)
                     })
             }
