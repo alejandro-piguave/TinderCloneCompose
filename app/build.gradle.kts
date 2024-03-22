@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.apiguave.tinderclonecompose"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode =  1
         versionName = "1.0"
@@ -59,11 +59,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
-
     implementation(libs.play.services.auth)
 
     testImplementation(libs.junit)
@@ -86,4 +81,6 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    implementation(project(":data"))
 }
