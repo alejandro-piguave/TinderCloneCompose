@@ -9,6 +9,7 @@ import com.apiguave.tinderclonedata.api.user.FirestoreUser
 import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation
 import com.apiguave.tinderclonedata.extension.toProfile
+import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.apiguave.tinderclonedata.profile.model.NewMatch
 import com.apiguave.tinderclonedata.profile.model.Profile
 import com.apiguave.tinderclonedata.picture.Picture
@@ -39,7 +40,7 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
     }
 
     suspend fun createProfile(profile: CreateUserProfile) {
-        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures)
+        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures.map { it.uri })
         userApi.createUser(
             profile.id,
             profile.name,
@@ -63,10 +64,40 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
             if(data != null) userApi.updateUser(currentProfile.id, data)
             newProfile
         } else {
-            val filenames = pictureApi.updatePictures(currentProfile.id, currentProfile.pictures, pictures)
+            val filenames = updatePictures(currentProfile.id, currentProfile.pictures, pictures)
             val (newProfile, data) = currentProfile.getModifiedData(bio, gender, orientation, filenames)
             if(data != null) userApi.updateUser(currentProfile.id, data)
             newProfile
+        }
+    }
+
+    private suspend fun updatePictures(userId: String, outdatedPictures: List<RemotePicture>, updatedPictures: List<Picture>): List<RemotePicture>{
+        return coroutineScope {
+            //This is a list of the pictures that were already uploaded but that have been removed from the profile.
+            val picturesToDelete: List<RemotePicture> =
+                updatedPictures
+                    .filter { it is RemotePicture && !outdatedPictures.contains(it) }
+                    .map { it as RemotePicture }
+
+            val pictureDeletionResult = async {
+                if(picturesToDelete.isEmpty()) Unit
+                else pictureApi.deletePictures(userId, picturesToDelete)
+            }
+
+            val pictureUploadResult = updatedPictures.map {
+                async {
+                    when(it){
+                        //If the picture was already uploaded, simply return its file name.
+                        is RemotePicture -> it
+                        //Otherwise uploaded and return it's new file name
+                        is LocalPicture -> pictureApi.uploadPicture(userId, it.uri)
+                    }
+                }
+            }
+
+            pictureDeletionResult.await()
+            //Returns a list of the new filenames
+            pictureUploadResult.awaitAll()
         }
     }
 

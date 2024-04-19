@@ -1,8 +1,7 @@
 package com.apiguave.tinderclonedata.api.picture
 
+import android.net.Uri
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
-import com.apiguave.tinderclonedata.picture.LocalPicture
-import com.apiguave.tinderclonedata.picture.Picture
 import com.apiguave.tinderclonedata.picture.RemotePicture
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -28,58 +27,28 @@ class PictureApi {
         }
     }
 
-    suspend fun uploadPictures(userId: String, pictures: List<LocalPicture>): List<RemotePicture>{
+    suspend fun uploadPictures(userId: String, pictures: List<Uri>): List<RemotePicture>{
         return coroutineScope {
             pictures.map { async { uploadPicture(userId, it) } }.awaitAll()
         }
     }
 
-    private suspend fun uploadPicture(userId: String, picture: LocalPicture): RemotePicture {
+    suspend fun uploadPicture(userId: String, picture: Uri): RemotePicture {
         val filename = UUID.randomUUID().toString()+".jpg"
         val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(filename)
 
-        pictureRef.putFile(picture.uri).getTaskResult()
+        pictureRef.putFile(picture).getTaskResult()
 
         return RemotePicture(pictureRef.downloadUrl.getTaskResult(), filename)
     }
 
-    suspend fun updatePictures(userId: String, outdatedPictures: List<RemotePicture>, updatedPictures: List<Picture>): List<RemotePicture>{
+    suspend fun deletePictures(userId: String, pictures: List<RemotePicture>){
         return coroutineScope {
-            //This is a list of the pictures that were already uploaded but that have been removed from the profile.
-            val picturesToDelete: List<RemotePicture> =
-                updatedPictures
-                    .filter { it is RemotePicture && !outdatedPictures.contains(it) }
-                    .map { it as RemotePicture }
-
-            val pictureDeletionResult = async {
-                if(picturesToDelete.isEmpty()) Unit
-                else deleteUserPictures(userId, picturesToDelete)
-            }
-
-            val pictureUploadResult = updatedPictures.map {
-                async {
-                    when(it){
-                        //If the picture was already uploaded, simply return its file name.
-                        is RemotePicture -> it
-                        //Otherwise uploaded and return it's new file name
-                        is LocalPicture -> uploadPicture(userId, it)
-                    }
-                }
-            }
-
-            pictureDeletionResult.await()
-            //Returns a list of the new filenames
-            pictureUploadResult.awaitAll()
+            pictures.map { async { deletePicture(userId, it.filename) } }.awaitAll()
         }
     }
 
-    private suspend fun deleteUserPictures(userId: String, pictures: List<RemotePicture>){
-        return coroutineScope {
-            pictures.map { async { deleteUserPicture(userId, it) } }.awaitAll()
-        }
-    }
-
-    private suspend fun deleteUserPicture(userId: String, picture: RemotePicture){
-        FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture.filename).delete().getTaskResult()
+    private suspend fun deletePicture(userId: String, picture: String){
+        FirebaseStorage.getInstance().reference.child(USERS).child(userId).child(picture).delete().getTaskResult()
     }
 }
