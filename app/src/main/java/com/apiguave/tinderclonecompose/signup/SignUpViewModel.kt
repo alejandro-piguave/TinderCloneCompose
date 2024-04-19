@@ -6,12 +6,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.filterIndex
+import com.apiguave.tinderclonecompose.extension.toGender
+import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
 import com.apiguave.tinderclonedata.account.repository.AccountRepository
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
 import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
-import com.apiguave.tinderclonedata.profile.model.Gender
-import com.apiguave.tinderclonedata.profile.model.Orientation
 import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,17 +66,16 @@ class SignUpViewModel(
         _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
-    fun signUp(
-        activityResult: ActivityResult,
-        name: String,
-        birthdate: LocalDate,
-        bio: String,
-        gender: Gender,
-        orientation: Orientation,
-        pictures: List<Uri>) {
+    fun signUp(activityResult: ActivityResult) {
         viewModelScope.launch {
             _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
             try {
+                val name = _uiState.value.name.text
+                val birthdate = _uiState.value.birthDate
+                val bio = _uiState.value.bio.text
+                val gender = _uiState.value.genderIndex.toGender()
+                val orientation = _uiState.value.orientationIndex.toOrientation()
+                val pictures = _uiState.value.pictures
                 //TODO: move this logic to a use case
                 val account = activityResult.toProviderAccount()
                 accountRepository.signUp(account)
