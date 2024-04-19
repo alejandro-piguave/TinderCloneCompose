@@ -40,7 +40,7 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
     }
 
     suspend fun createProfile(profile: CreateUserProfile) {
-        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures.map { it.uri })
+        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures)
         userApi.createUser(
             profile.id,
             profile.name,

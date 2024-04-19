@@ -9,7 +9,6 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
 import com.apiguave.tinderclonedata.account.repository.AccountRepository
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
-import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
 import com.apiguave.tinderclonedata.profile.model.Gender
 import com.apiguave.tinderclonedata.profile.model.Orientation
@@ -64,7 +63,7 @@ class SignUpViewModel(
     }
 
     fun addPicture(picture: Uri) {
-        _uiState.update { it.copy(pictures = it.pictures + LocalPicture(picture)) }
+        _uiState.update { it.copy(pictures = it.pictures + picture) }
     }
 
     fun signUp(
@@ -74,7 +73,7 @@ class SignUpViewModel(
         bio: String,
         gender: Gender,
         orientation: Orientation,
-        pictures: List<LocalPicture>) {
+        pictures: List<Uri>) {
         viewModelScope.launch {
             _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
             try {
@@ -109,7 +108,7 @@ data class SignUpViewState(
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,
-    val pictures: List<LocalPicture> = emptyList(),
+    val pictures: List<Uri> = emptyList(),
     val isUserSignedIn: Boolean = false,
     val dialogState: SignUpDialogState = SignUpDialogState.NoDialog
 )

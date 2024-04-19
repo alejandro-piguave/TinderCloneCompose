@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.profile.model
 
-import com.apiguave.tinderclonedata.picture.LocalPicture
+import android.net.Uri
 import java.time.LocalDate
 
 data class CreateUserProfile(val id: String,
@@ -9,5 +9,5 @@ data class CreateUserProfile(val id: String,
                              val bio: String,
                              val gender: Gender,
                              val orientation: Orientation,
-                             val pictures: List<LocalPicture>
+                             val pictures: List<Uri>
 )

@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import com.apiguave.tinderclonedata.R
-import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.apiguave.tinderclonedata.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
 import com.apiguave.tinderclonedata.profile.model.Gender
@@ -26,7 +25,7 @@ class ProfileGeneratorImpl(private val context: Context): ProfileGenerator {
 
     private suspend fun getRandomProfile(context: Context): CreateUserProfile {
         val isMale = Random.nextBoolean()
-        val pictures = coroutineScope { (0 until 3).map { async { LocalPicture(getRandomPicture(context, isMale)) } }.awaitAll()  }
+        val pictures = coroutineScope { (0 until 3).map { async { getRandomPicture(context, isMale) } }.awaitAll()  }
         val name = getRandomName(isMale)
         val birthdate = getRandomBirthdate()
         val orientation = Orientation.values().random()
