@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.apiguave.tinderclonedata.home.repository.Profile
+import com.apiguave.tinderclonedata.profile.model.Profile
 
 @Composable
 fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModifier: Modifier = Modifier){

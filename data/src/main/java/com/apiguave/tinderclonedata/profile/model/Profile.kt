@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.home.repository
+package com.apiguave.tinderclonedata.profile.model
 
 
 class Profile(

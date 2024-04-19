@@ -30,7 +30,7 @@ import com.apiguave.tinderclonecompose.theme.Green2
 import com.apiguave.tinderclonecompose.theme.Orange
 import com.apiguave.tinderclonecompose.theme.Pink
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedata.home.repository.Profile
+import com.apiguave.tinderclonedata.profile.model.Profile
 import kotlinx.coroutines.*
 
 @Composable
@@ -45,7 +45,7 @@ fun HomeView(
     onShowProfileGenerationDialog: () -> Unit,
     onSendMessage: (String, String) -> Unit,
     onCloseDialog: () -> Unit,
-    allowProfileGenerator: Boolean = false
+    allowProfileGenerator: Boolean = true
     ) {
     val scope = rememberCoroutineScope()
 

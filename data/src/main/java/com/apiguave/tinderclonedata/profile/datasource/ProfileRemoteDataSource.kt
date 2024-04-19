@@ -5,14 +5,21 @@ import com.apiguave.tinderclonedata.api.user.FirestoreUserProperties
 import com.apiguave.tinderclonedata.api.user.UserApi
 import com.apiguave.tinderclonedata.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonedata.api.user.FirestoreUser
 import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation
+import com.apiguave.tinderclonedata.extension.toProfile
+import com.apiguave.tinderclonedata.profile.model.NewMatch
+import com.apiguave.tinderclonedata.profile.model.Profile
 import com.apiguave.tinderclonedata.picture.Picture
 import com.apiguave.tinderclonedata.picture.RemotePicture
-import com.apiguave.tinderclonedata.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonedata.profile.repository.Gender
-import com.apiguave.tinderclonedata.profile.repository.Orientation
-import com.apiguave.tinderclonedata.profile.repository.UserProfile
+import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
+import com.apiguave.tinderclonedata.profile.model.Gender
+import com.apiguave.tinderclonedata.profile.model.Orientation
+import com.apiguave.tinderclonedata.profile.model.UserProfile
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
     suspend fun getUserProfile(userId: String): UserProfile {
@@ -31,10 +38,10 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         )
     }
 
-    suspend fun createProfile(userId: String, profile: CreateUserProfile) {
-        val filenames = pictureApi.uploadPictures(userId, profile.pictures)
+    suspend fun createProfile(profile: CreateUserProfile) {
+        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures)
         userApi.createUser(
-            userId,
+            profile.id,
             profile.name,
             profile.birthdate,
             profile.bio,
@@ -87,5 +94,30 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
 
         return newUserProfile to (if(data.isEmpty()) null else data)
     }
+
+    suspend fun getProfiles(user: UserProfile): List<Profile> {
+        val users = userApi.getCompatibleUsers(user.id, user.gender, user.orientation, user.liked, user.passed)
+        val profiles = coroutineScope {
+            val profiles = users.map { async { getProfile(it) } }
+            profiles.awaitAll()
+        }
+        return profiles
+    }
+
+    private suspend fun getProfile(user: FirestoreUser): Profile {
+        val pictures = pictureApi.getPictures(user.id, user.pictures)
+        return user.toProfile(pictures.map { it.uri })
+    }
+
+    suspend fun passProfile(currentUserId: String, profile: Profile) {
+        userApi.swipeUser(currentUserId, profile.id, false)
+    }
+
+    suspend fun likeProfile(currentUserId: String, profile: Profile): NewMatch? {
+        return userApi.swipeUser(currentUserId, profile.id, true)?.let { model ->
+            NewMatch(model.id, model.id, profile.name, profile.pictures)
+        }
+    }
+
 
 }

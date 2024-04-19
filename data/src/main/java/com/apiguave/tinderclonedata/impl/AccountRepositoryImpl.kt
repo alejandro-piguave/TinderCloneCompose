@@ -11,6 +11,9 @@ class AccountRepositoryImpl(private val accountRemoteDataSource: AccountRemoteDa
     override val isUserSignedIn: Boolean
         get() = accountRemoteDataSource.isUserSignedIn
 
+    override val userId: String
+        get() = accountRemoteDataSource.userId
+
     override suspend fun signIn(account: Account) {
         val isNewAccount = accountRemoteDataSource.isNewAccount(account)
         if(isNewAccount) throw SignInException("User doesn't exist yet")

@@ -1,24 +1,26 @@
 package com.apiguave.tinderclonedata.impl
 
-import com.apiguave.tinderclonedata.api.auth.AuthApi
+import com.apiguave.tinderclonedata.account.repository.AccountRepository
+import com.apiguave.tinderclonedata.profile.model.NewMatch
+import com.apiguave.tinderclonedata.profile.model.Profile
 import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
-import com.apiguave.tinderclonedata.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonedata.profile.repository.UserProfile
-import com.apiguave.tinderclonedata.profile.repository.Gender
-import com.apiguave.tinderclonedata.profile.repository.Orientation
+import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
+import com.apiguave.tinderclonedata.profile.model.UserProfile
+import com.apiguave.tinderclonedata.profile.model.Gender
+import com.apiguave.tinderclonedata.profile.model.Orientation
 import com.apiguave.tinderclonedata.picture.Picture
 import com.apiguave.tinderclonedata.profile.datasource.ProfileLocalDataSource
 import com.apiguave.tinderclonedata.profile.datasource.ProfileRemoteDataSource
 
 class ProfileRepositoryImpl(
-    private val authApi: AuthApi,
+    private val accountRepository: AccountRepository,
     private val profileLocalDataSource: ProfileLocalDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
         return profileLocalDataSource.currentUser ?: kotlin.run {
-            val currentUser = profileRemoteDataSource.getUserProfile(authApi.userId)
+            val currentUser = profileRemoteDataSource.getUserProfile(accountRepository.userId!!)
             profileLocalDataSource.currentUser = currentUser
             currentUser
         }
@@ -36,7 +38,23 @@ class ProfileRepositoryImpl(
     }
 
     override suspend fun createProfile(createUserProfile: CreateUserProfile) {
-        profileRemoteDataSource.createProfile(authApi.userId, createUserProfile)
+        profileRemoteDataSource.createProfile(createUserProfile)
+    }
+
+    override suspend fun likeProfile(profile: Profile): NewMatch? {
+        val matchModel = profileRemoteDataSource.likeProfile(accountRepository.userId!!, profile)
+        return matchModel?.let { model ->
+            NewMatch(model.id, profile.id, profile.name, profile.pictures)
+        }
+    }
+
+    override suspend fun passProfile(profile: Profile) {
+        profileRemoteDataSource.passProfile(accountRepository.userId!!, profile)
+    }
+
+    override suspend fun getProfiles(): List<Profile> {
+        val currentUser = getProfile()
+        return profileRemoteDataSource.getProfiles(currentUser)
     }
 
 }

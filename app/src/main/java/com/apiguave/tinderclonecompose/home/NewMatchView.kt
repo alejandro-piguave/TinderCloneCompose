@@ -36,7 +36,7 @@ import coil.compose.AsyncImagePainter
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.ChatFooter
 import com.apiguave.tinderclonecompose.theme.Green1
-import com.apiguave.tinderclonedata.home.repository.NewMatch
+import com.apiguave.tinderclonedata.profile.model.NewMatch
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

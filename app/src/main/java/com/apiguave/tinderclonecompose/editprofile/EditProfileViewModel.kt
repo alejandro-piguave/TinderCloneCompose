@@ -7,6 +7,7 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
+import com.apiguave.tinderclonedata.account.repository.AccountRepository
 import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.apiguave.tinderclonedata.picture.Picture
 import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel(
+    private val accountRepository: AccountRepository,
     private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -102,7 +104,7 @@ class EditProfileViewModel(
 
     fun signOut(signInClient: GoogleSignInClient){
         viewModelScope.launch {
-            profileRepository.signOut()
+            accountRepository.signOut()
             signInClient.signOut().getTaskResult()
             _action.emit(EditProfileAction.ON_SIGNED_OUT)
         }

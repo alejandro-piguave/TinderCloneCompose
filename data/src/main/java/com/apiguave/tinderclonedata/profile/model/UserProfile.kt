@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.profile.repository
+package com.apiguave.tinderclonedata.profile.model
 
 import com.apiguave.tinderclonedata.picture.RemotePicture
 

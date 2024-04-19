@@ -6,8 +6,8 @@ import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonedata.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toTimestamp
-import com.apiguave.tinderclonedata.profile.repository.Gender
-import com.apiguave.tinderclonedata.profile.repository.Orientation
+import com.apiguave.tinderclonedata.profile.model.Gender
+import com.apiguave.tinderclonedata.profile.model.Orientation
 import com.apiguave.tinderclonedata.api.user.exception.FirestoreException
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

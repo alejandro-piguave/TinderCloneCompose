@@ -2,17 +2,19 @@ package com.apiguave.tinderclonecompose.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonedata.home.repository.HomeRepository
-import com.apiguave.tinderclonedata.home.repository.NewMatch
-import com.apiguave.tinderclonedata.home.repository.Profile
+import com.apiguave.tinderclonedata.profile.model.NewMatch
+import com.apiguave.tinderclonedata.profile.model.Profile
 import com.apiguave.tinderclonedata.message.repository.MessageRepository
+import com.apiguave.tinderclonedata.profile.generator.ProfileGenerator
+import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val homeRepository: HomeRepository,
+    private val profileGenerator: ProfileGenerator,
+    private val profileRepository: ProfileRepository,
     private val messageRepository: MessageRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(HomeViewState(HomeViewDialogState.NoDialog, HomeViewContentState.Loading))
@@ -44,12 +46,12 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 if(isLike) {
-                    val match = homeRepository.likeProfile(profile)
+                    val match = profileRepository.likeProfile(profile)
                     if(match != null){
                         _uiState.update { it.copy(dialogState = HomeViewDialogState.NewMatchDialog(match)) }
                     }
                 } else {
-                    homeRepository.passProfile(profile)
+                    profileRepository.passProfile(profile)
                 }
 
             }catch (e: Exception){
@@ -74,7 +76,11 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
             try {
-                homeRepository.createRandomProfiles(amount)
+                //TODO: move this logic to a use case
+                val profiles = profileGenerator.generateProfiles(amount)
+                profiles.forEach {
+                    profileRepository.createProfile(it)
+                }
                 fetchProfiles()
             } catch (e: Exception) {
                 _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }
@@ -86,7 +92,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
             try {
-                val profiles = homeRepository.getProfiles()
+                val profiles = profileRepository.getProfiles()
                 _uiState.update { it.copy(contentState = HomeViewContentState.Success(profileList = profiles)) }
             }catch (e: Exception){
                 _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }

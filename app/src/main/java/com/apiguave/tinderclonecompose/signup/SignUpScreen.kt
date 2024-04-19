@@ -7,9 +7,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import com.apiguave.tinderclonedata.profile.repository.CreateUserProfile
-import com.apiguave.tinderclonedata.profile.repository.Gender
-import com.apiguave.tinderclonedata.profile.repository.Orientation
+import com.apiguave.tinderclonedata.profile.model.Gender
+import com.apiguave.tinderclonedata.profile.model.Orientation
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -28,9 +27,8 @@ fun SignUpScreen(
             //Transforms the Uris to Bitmaps
             val gender = if(uiState.genderIndex == 0) Gender.MALE else Gender.FEMALE
             val orientation = Orientation.values()[uiState.genderIndex]
-            val profile = CreateUserProfile(uiState.name.text, uiState.birthDate, uiState.bio.text, gender, orientation, uiState.pictures)
             //Signs up with the information provided
-            signUpViewModel.signUp(activityResult, profile)
+            signUpViewModel.signUp(activityResult, uiState.name.text, uiState.birthDate, uiState.bio.text, gender, orientation, uiState.pictures)
         }
     )
 

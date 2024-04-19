@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.apiguave.tinderclonecompose.home.NewMatchView
-import com.apiguave.tinderclonedata.home.repository.NewMatch
+import com.apiguave.tinderclonedata.profile.model.NewMatch
 
 @Composable
 fun NewMatchDialog(
