@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.components
 
+import android.net.Uri
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.theme.*
-import com.apiguave.tinderclonedata.picture.Picture
 
 //Picture Grid components
 
@@ -32,7 +32,7 @@ const val GridItemCount = 9
 const val RowCount = 1 + (GridItemCount -1) / ColumnCount
 
 @Composable
-fun PictureGridRow(rowIndex: Int, pictures: List<Picture>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
+fun PictureGridRow(rowIndex: Int, pictures: List<Uri>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
     Row(
         Modifier
             .fillMaxWidth()
@@ -42,7 +42,7 @@ fun PictureGridRow(rowIndex: Int, pictures: List<Picture>, onAddPicture: () -> U
 
             if(cellIndex < pictures.size){
                 SelectedPictureItem(
-                    imageUri = pictures[cellIndex].uri.toString(),
+                    imageUri = pictures[cellIndex].toString(),
                     modifier = Modifier
                         .weight(1f)
                         .aspectRatio(.6f),

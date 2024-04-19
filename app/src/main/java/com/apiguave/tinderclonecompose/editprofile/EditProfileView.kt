@@ -105,7 +105,7 @@ fun EditProfileView(
             repeat(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    pictures = uiState.pictures,
+                    pictures = uiState.pictures.map { it.uri },
                     onAddPicture = onSelectPictureClicked,
                     onAddedPictureClicked = onDeletePictureClicked
                 )
