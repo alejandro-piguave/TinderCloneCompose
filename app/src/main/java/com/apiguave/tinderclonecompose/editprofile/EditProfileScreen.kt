@@ -29,7 +29,7 @@ fun EditProfileScreen(
 
     EditProfileView(
         uiState = uiState,
-        onPictureSelected = { editProfileViewModel.addPicture(it) },
+        onPictureSelected = editProfileViewModel::addPicture,
         removePictureAt = editProfileViewModel::removePictureAt,
         onSignOutClicked = { editProfileViewModel.signOut(signInClient) },
         updateProfile = editProfileViewModel::updateProfile,

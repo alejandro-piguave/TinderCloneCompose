@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.editprofile
 
+import android.net.Uri
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -94,8 +95,8 @@ class EditProfileViewModel(
         }
     }
 
-    fun addPicture(picture: LocalPicture){
-        _uiState.update { it.copy(pictures = it.pictures + picture) }
+    fun addPicture(picture: Uri){
+        _uiState.update { it.copy(pictures = it.pictures + LocalPicture(picture)) }
     }
 
     fun removePictureAt(index: Int){

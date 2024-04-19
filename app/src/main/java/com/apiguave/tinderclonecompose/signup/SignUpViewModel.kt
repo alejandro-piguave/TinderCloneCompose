@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.signup
 
+import android.net.Uri
 import androidx.activity.result.ActivityResult
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
@@ -62,8 +63,8 @@ class SignUpViewModel(
         _uiState.update { it.copy(pictures = it.pictures.filterIndex(index)) }
     }
 
-    fun addPicture(picture: LocalPicture) {
-        _uiState.update { it.copy(pictures = it.pictures + picture) }
+    fun addPicture(picture: Uri) {
+        _uiState.update { it.copy(pictures = it.pictures + LocalPicture(picture)) }
     }
 
     fun signUp(

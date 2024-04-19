@@ -33,10 +33,9 @@ import com.apiguave.tinderclonecompose.theme.LightPurple
 import com.apiguave.tinderclonecompose.theme.Orange
 import com.apiguave.tinderclonecompose.theme.Pink
 import com.apiguave.tinderclonecompose.theme.Purple
-import com.apiguave.tinderclonedata.picture.LocalPicture
 
 @Composable
-fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (LocalPicture) -> Unit){
+fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -44,14 +43,14 @@ fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (LocalPicture) -
 
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { onReceiveUri(LocalPicture(it)) }
+            uri?.let { onReceiveUri(it) }
         }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             if(success){
-                imageUri?.let { onReceiveUri(LocalPicture(it)) }
+                imageUri?.let { onReceiveUri(it) }
             }
         }
     )

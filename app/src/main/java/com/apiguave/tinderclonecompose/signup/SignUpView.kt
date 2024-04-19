@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.signup
 
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -27,7 +28,6 @@ import com.apiguave.tinderclonecompose.components.dialogs.ErrorDialog
 import com.apiguave.tinderclonecompose.components.dialogs.FormDatePickerDialog
 import com.apiguave.tinderclonecompose.components.dialogs.SelectPictureDialog
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -36,7 +36,7 @@ import java.time.format.FormatStyle
 @Composable
 fun SignUpView(
     uiState: SignUpViewState,
-    onPictureSelected: (LocalPicture) -> Unit,
+    onPictureSelected: (Uri) -> Unit,
     removePictureAt: (Int) -> Unit,
     onSignUpClicked: () -> Unit,
     onCloseDialogClicked: () -> Unit,

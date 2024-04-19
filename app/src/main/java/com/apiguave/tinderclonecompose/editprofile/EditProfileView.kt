@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.editprofile
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,13 +38,12 @@ import com.apiguave.tinderclonecompose.components.TextRow
 import com.apiguave.tinderclonecompose.components.dialogs.DeleteConfirmationDialog
 import com.apiguave.tinderclonecompose.components.dialogs.SelectPictureDialog
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedata.picture.LocalPicture
 
 @Composable
 fun EditProfileView(
     uiState: EditProfileViewState,
     onSignOutClicked: () -> Unit,
-    onPictureSelected: (LocalPicture) -> Unit,
+    onPictureSelected: (Uri) -> Unit,
     removePictureAt: (Int) -> Unit,
     updateProfile: () -> Unit,
     onBioChanged:(TextFieldValue) -> Unit,
