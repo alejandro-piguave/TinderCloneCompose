@@ -1,3 +1,3 @@
-package com.apiguave.tinderclonedata.profile.repository
+package com.apiguave.tinderclonedata.account.repository
 
 data class Account(val email: String, val idToken: String)

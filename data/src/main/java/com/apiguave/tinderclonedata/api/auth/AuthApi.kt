@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonedata.api.auth
 
-import com.apiguave.tinderclonedata.profile.repository.Account
 import com.apiguave.tinderclonedata.api.auth.exception.AuthException
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
@@ -14,8 +13,8 @@ class AuthApi {
     val userId: String
         get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
 
-    suspend fun signInWithGoogle(account: Account): FirebaseUser {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+    suspend fun signInWithGoogle(idToken: String): FirebaseUser {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         val authResult  = FirebaseAuth.getInstance().signInWithCredential(credential).getTaskResult()
         return authResult?.user ?: throw AuthException("User is empty")
     }
@@ -24,8 +23,8 @@ class AuthApi {
         FirebaseAuth.getInstance().signOut()
     }
 
-    suspend fun isNewAccount(account: Account): Boolean {
-        val methods = FirebaseAuth.getInstance().fetchSignInMethodsForEmail(account.email).getTaskResult()
+    suspend fun isNewAccount(email: String): Boolean {
+        val methods = FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).getTaskResult()
         val signInMethods = methods.signInMethods ?: throw AuthException("No sign in methods found")
         return signInMethods.isEmpty()
     }

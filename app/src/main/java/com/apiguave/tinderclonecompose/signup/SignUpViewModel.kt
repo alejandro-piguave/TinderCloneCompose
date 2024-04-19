@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
+import com.apiguave.tinderclonedata.account.repository.AccountRepository
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
 import com.apiguave.tinderclonedata.picture.LocalPicture
 import com.apiguave.tinderclonedata.profile.repository.CreateUserProfile
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class SignUpViewModel(
+    private val accountRepository: AccountRepository,
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpViewState())
@@ -67,7 +69,8 @@ class SignUpViewModel(
             _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
             try {
                 val account = activityResult.toProviderAccount()
-                profileRepository.signUp(account, profile)
+                accountRepository.signUp(account)
+                profileRepository.createProfile(profile)
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
                 _uiState.update {

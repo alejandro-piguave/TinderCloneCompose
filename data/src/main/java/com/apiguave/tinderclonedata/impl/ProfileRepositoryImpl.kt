@@ -1,9 +1,6 @@
 package com.apiguave.tinderclonedata.impl
 
 import com.apiguave.tinderclonedata.api.auth.AuthApi
-import com.apiguave.tinderclonedata.profile.repository.Account
-import com.apiguave.tinderclonedata.api.auth.exception.SignInException
-import com.apiguave.tinderclonedata.api.auth.exception.SignUpException
 import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
 import com.apiguave.tinderclonedata.profile.repository.CreateUserProfile
 import com.apiguave.tinderclonedata.profile.repository.UserProfile
@@ -38,23 +35,8 @@ class ProfileRepositoryImpl(
         return currentUser
     }
 
-    override val isUserSignedIn: Boolean
-        get() = authApi.isUserSignedIn
-
-    override suspend fun signIn(account: Account) {
-        val isNewAccount = authApi.isNewAccount(account)
-        if(isNewAccount) throw SignInException("User doesn't exist yet")
-        else authApi.signInWithGoogle(account)
+    override suspend fun createProfile(createUserProfile: CreateUserProfile) {
+        profileRemoteDataSource.createProfile(authApi.userId, createUserProfile)
     }
 
-    override suspend fun signUp(account: Account, profile: CreateUserProfile) {
-        val isNewAccount = authApi.isNewAccount(account)
-        if (isNewAccount) authApi.signInWithGoogle(account)
-        else throw SignUpException("User already exists")
-        profileRemoteDataSource.createProfile(authApi.userId, profile)
-    }
-
-    override fun signOut(){
-        authApi.signOut()
-    }
 }
