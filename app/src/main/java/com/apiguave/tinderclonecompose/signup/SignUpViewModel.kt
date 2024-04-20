@@ -9,11 +9,9 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedomain.account.AccountRepository
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.LocalPicture
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,8 +19,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class SignUpViewModel(
-    private val accountRepository: AccountRepository,
-    private val profileRepository: ProfileRepository
+    private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpViewState())
     val uiState = _uiState.asStateFlow()
@@ -77,12 +74,9 @@ class SignUpViewModel(
                 val gender = _uiState.value.genderIndex.toGender()
                 val orientation = _uiState.value.orientationIndex.toOrientation()
                 val pictures = _uiState.value.pictures
-                //TODO: move this logic to a use case
+
                 val account = activityResult.toProviderAccount()
-                accountRepository.signUp(account)
-                val userId = accountRepository.userId
-                val profile = CreateUserProfile(userId!!, name, birthdate, bio, gender, orientation, pictures.map { LocalPicture(it.toString()) })
-                profileRepository.createProfile(profile)
+                signUpUseCase(account, name, birthdate, bio, gender, orientation, pictures.map { LocalPicture(it.toString()) })
 
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
