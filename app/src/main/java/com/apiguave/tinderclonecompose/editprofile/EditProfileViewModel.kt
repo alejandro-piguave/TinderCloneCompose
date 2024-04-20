@@ -8,17 +8,19 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
-import com.apiguave.tinderclonedomain.account.AccountRepository
 import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Picture
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
+import com.apiguave.tinderclonedomain.usecase.SignOutUseCase
+import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel(
-    private val accountRepository: AccountRepository,
-    private val profileRepository: ProfileRepository
+    private val signOutUseCase: SignOutUseCase,
+    private val updateProfileUseCase: UpdateProfileUseCase,
+    private val getProfileUseCase: GetProfileUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
         EditProfileViewState()
@@ -52,9 +54,8 @@ class EditProfileViewModel(
         _uiState.update { it.copy(dialogState = EditProfileDialogState.SelectPictureDialog) }
     }
 
-    fun updateUserProfile(){
-        viewModelScope.launch {
-            val currentProfile = profileRepository.getProfile()
+    fun updateUserProfile() = viewModelScope.launch {
+        getProfileUseCase().onSuccess { currentProfile ->
             _uiState.update {
                 it.copy(
                     name = currentProfile.name,
@@ -68,31 +69,28 @@ class EditProfileViewModel(
         }
     }
 
-    fun updateProfile(){
-        viewModelScope.launch {
-            //Otherwise show loading and perform update operations
-            _uiState.update { it.copy(dialogState = EditProfileDialogState.Loading) }
-            try{
-                val currentBio = _uiState.value.bio.text
-                val currentGender = _uiState.value.genderIndex.toGender()
-                val currentOrientation = _uiState.value.orientationIndex.toOrientation()
-                val currentPictures = _uiState.value.pictures
-                val updatedProfile = profileRepository.updateProfile(currentBio, currentGender, currentOrientation, currentPictures)
-                _uiState.update {
-                    it.copy(
-                        dialogState = EditProfileDialogState.Loading,
-                        name = updatedProfile.name,
-                        bio = TextFieldValue(updatedProfile.bio),
-                        genderIndex = updatedProfile.gender.ordinal,
-                        orientationIndex = updatedProfile.orientation.ordinal,
-                        pictures = updatedProfile.pictures
-                    )
-                }
-                _action.emit(EditProfileAction.ON_PROFILE_EDITED)
-            }catch (e: Exception){
-                _uiState.update { it.copy(dialogState = EditProfileDialogState.ErrorDialog(e.message ?: "")) }
+    fun updateProfile() = viewModelScope.launch {
+        _uiState.update { it.copy(dialogState = EditProfileDialogState.Loading) }
+
+        val currentBio = _uiState.value.bio.text
+        val currentGender = _uiState.value.genderIndex.toGender()
+        val currentOrientation = _uiState.value.orientationIndex.toOrientation()
+        val currentPictures = _uiState.value.pictures
+        updateProfileUseCase(currentBio, currentGender, currentOrientation, currentPictures).fold({ updatedProfile ->
+            _uiState.update {
+                it.copy(
+                    dialogState = EditProfileDialogState.Loading,
+                    name = updatedProfile.name,
+                    bio = TextFieldValue(updatedProfile.bio),
+                    genderIndex = updatedProfile.gender.ordinal,
+                    orientationIndex = updatedProfile.orientation.ordinal,
+                    pictures = updatedProfile.pictures
+                )
             }
-        }
+            _action.emit(EditProfileAction.ON_PROFILE_EDITED)
+        }, { e ->
+            _uiState.update { it.copy(dialogState = EditProfileDialogState.ErrorDialog(e.message ?: "")) }
+        })
     }
 
     fun addPicture(picture: Uri){
@@ -103,9 +101,8 @@ class EditProfileViewModel(
         _uiState.update { it.copy(pictures = it.pictures.filterIndex(index)) }
     }
 
-    fun signOut(signInClient: GoogleSignInClient){
-        viewModelScope.launch {
-            accountRepository.signOut()
+    fun signOut(signInClient: GoogleSignInClient) = viewModelScope.launch {
+        signOutUseCase().onSuccess {
             signInClient.signOut().getTaskResult()
             _action.emit(EditProfileAction.ON_SIGNED_OUT)
         }
@@ -122,7 +119,7 @@ sealed class EditProfileDialogState {
 }
 
 data class EditProfileViewState(
-    val name: String="",
+    val name: String = "",
     val birthDate: String = "",
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
