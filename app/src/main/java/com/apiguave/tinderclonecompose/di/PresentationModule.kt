@@ -13,7 +13,7 @@ val presentationModule = module {
 
     //View models
     viewModel { ChatViewModel(get(), get()) }
-    viewModel { EditProfileViewModel(get(), get()) }
+    viewModel { EditProfileViewModel(get(), get(), get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { MatchListViewModel(get()) }
