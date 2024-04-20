@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
@@ -21,4 +22,5 @@ val domainModule = module {
     single { GetMessagesUseCase(get()) }
     single { SignInUseCase(get()) }
     single { IsUserSignedInUseCase(get()) }
+    single { GetMatchesUseCase(get()) }
 }
