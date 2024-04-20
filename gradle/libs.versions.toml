@@ -24,6 +24,7 @@ kotlin-bom = "1.8.0"
 appcompat = "1.6.1"
 android-library = "7.2.2"
 com-google-android-material-material = "1.11.0"
+org-jetbrains-kotlin-jvm = "1.7.10"
 
 [libraries]
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist-navigation-animation" }
@@ -59,3 +60,4 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "android-library" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }

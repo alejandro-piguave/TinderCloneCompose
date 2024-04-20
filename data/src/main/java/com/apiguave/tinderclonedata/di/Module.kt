@@ -1,25 +1,25 @@
 package com.apiguave.tinderclonedata.di
 
-import com.apiguave.tinderclonedata.account.datasource.AccountRemoteDataSource
-import com.apiguave.tinderclonedata.account.repository.AccountRepository
+import com.apiguave.tinderclonedata.account.AccountRemoteDataSource
+import com.apiguave.tinderclonedomain.account.AccountRepository
 import com.apiguave.tinderclonedata.api.auth.AuthApi
 import com.apiguave.tinderclonedata.api.match.MatchApi
 import com.apiguave.tinderclonedata.api.message.MessageApi
 import com.apiguave.tinderclonedata.api.picture.PictureApi
 import com.apiguave.tinderclonedata.api.user.UserApi
-import com.apiguave.tinderclonedata.impl.AccountRepositoryImpl
-import com.apiguave.tinderclonedata.impl.MatchRepositoryImpl
-import com.apiguave.tinderclonedata.impl.MessageRepositoryImpl
-import com.apiguave.tinderclonedata.impl.ProfileGeneratorImpl
-import com.apiguave.tinderclonedata.impl.ProfileRepositoryImpl
-import com.apiguave.tinderclonedata.match.datasource.MatchRemoteDataSource
-import com.apiguave.tinderclonedata.match.repository.MatchRepository
-import com.apiguave.tinderclonedata.message.datasource.MessageRemoteDataSource
-import com.apiguave.tinderclonedata.message.repository.MessageRepository
-import com.apiguave.tinderclonedata.profile.datasource.ProfileLocalDataSource
-import com.apiguave.tinderclonedata.profile.datasource.ProfileRemoteDataSource
-import com.apiguave.tinderclonedata.profile.generator.ProfileGenerator
-import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
+import com.apiguave.tinderclonedata.account.AccountRepositoryImpl
+import com.apiguave.tinderclonedata.match.MatchRepositoryImpl
+import com.apiguave.tinderclonedata.message.MessageRepositoryImpl
+import com.apiguave.tinderclonedata.profile.ProfileGeneratorImpl
+import com.apiguave.tinderclonedata.profile.ProfileRepositoryImpl
+import com.apiguave.tinderclonedata.match.MatchRemoteDataSource
+import com.apiguave.tinderclonedomain.match.MatchRepository
+import com.apiguave.tinderclonedata.message.MessageRemoteDataSource
+import com.apiguave.tinderclonedomain.message.MessageRepository
+import com.apiguave.tinderclonedata.profile.ProfileLocalDataSource
+import com.apiguave.tinderclonedata.profile.ProfileRemoteDataSource
+import com.apiguave.tinderclonedomain.profile.ProfileGenerator
+import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import org.koin.dsl.module
 
 val dataModule = module {

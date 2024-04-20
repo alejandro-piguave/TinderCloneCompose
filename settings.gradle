@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "TinderCloneCompose"
 include ':app'
 include ':data'
+include ':domain'

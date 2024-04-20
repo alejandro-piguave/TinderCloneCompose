@@ -50,7 +50,7 @@ fun SignUpView(
 ) {
 
     val dateDialogState = rememberMaterialDialogState()
-    val isSignUpEnabled = remember { derivedStateOf { uiState.name.text.isValidUsername() && uiState.pictures.size > 1 && uiState.genderIndex >= 0 && uiState.orientationIndex >= 0 } }
+    val isSignUpEnabled = remember(uiState) { derivedStateOf { uiState.name.text.isValidUsername() && uiState.pictures.size > 1 && uiState.genderIndex >= 0 && uiState.orientationIndex >= 0 } }
 
     //Dialogs
     when(uiState.dialogState) {
@@ -102,7 +102,7 @@ fun SignUpView(
             items(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    pictures = uiState.pictures,
+                    pictures = uiState.pictures.map { it.toString() },
                     onAddPicture = onSelectPictureClicked,
                     onAddedPictureClicked = onDeletePictureClicked
                 )

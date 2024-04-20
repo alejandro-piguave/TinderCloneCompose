@@ -9,10 +9,11 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedata.account.repository.AccountRepository
+import com.apiguave.tinderclonedomain.account.AccountRepository
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
-import com.apiguave.tinderclonedata.profile.model.CreateUserProfile
-import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
+import com.apiguave.tinderclonedomain.profile.CreateUserProfile
+import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -80,7 +81,7 @@ class SignUpViewModel(
                 val account = activityResult.toProviderAccount()
                 accountRepository.signUp(account)
                 val userId = accountRepository.userId
-                val profile = CreateUserProfile(userId!!, name, birthdate, bio, gender, orientation, pictures)
+                val profile = CreateUserProfile(userId!!, name, birthdate, bio, gender, orientation, pictures.map { LocalPicture(it.toString()) })
                 profileRepository.createProfile(profile)
 
                 _uiState.update { it.copy(isUserSignedIn = true) }

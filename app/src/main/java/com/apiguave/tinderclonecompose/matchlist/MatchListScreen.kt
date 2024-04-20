@@ -3,7 +3,7 @@ package com.apiguave.tinderclonecompose.matchlist
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.apiguave.tinderclonedata.match.repository.Match
+import com.apiguave.tinderclonedomain.match.Match
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

@@ -4,14 +4,15 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedata.account.repository.AccountRepository
+import com.apiguave.tinderclonedomain.account.AccountRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val accountRepository: AccountRepository): ViewModel() {
+    private val accountRepository: AccountRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginViewState(
             isLoading = true,

@@ -25,8 +25,8 @@ import com.apiguave.tinderclonecompose.components.ChatFooter
 import com.apiguave.tinderclonecompose.theme.AntiFlashWhite
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
 import com.apiguave.tinderclonecompose.theme.UltramarineBlue
-import com.apiguave.tinderclonedata.match.repository.Match
-import com.apiguave.tinderclonedata.message.repository.Message
+import com.apiguave.tinderclonedomain.match.Match
+import com.apiguave.tinderclonedomain.message.Message
 
 @Composable
 fun ChatView(

@@ -2,10 +2,8 @@ package com.apiguave.tinderclonedata.api.picture
 
 import android.net.Uri
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
-import com.apiguave.tinderclonedata.picture.RemotePicture
-import com.google.firebase.ktx.Firebase
+import com.apiguave.tinderclonedomain.profile.RemotePicture
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -14,11 +12,16 @@ import java.util.UUID
 class PictureApi {
     companion object{
         private const val USERS = "users"
+        private const val PROJECT_ID = "tinderclone-e07fc"
     }
 
-    suspend fun getPicture(userId: String, picture: String): RemotePicture {
-        val fileRef = Firebase.storage.reference.child("$USERS/$userId/$picture")
-        return RemotePicture(fileRef.downloadUrl.getTaskResult(), picture)
+    fun getPicture(userId: String, picture: String): RemotePicture {
+        return RemotePicture(getPictureUrl(userId,picture), picture)
+    }
+
+    private fun getPictureUrl(userId: String, fileName: String): String {
+        val storagePath = "$USERS%2F$userId%2F$fileName"
+        return "https://firebasestorage.googleapis.com/v0/b/$PROJECT_ID.appspot.com/o/$storagePath?alt=media"
     }
 
     suspend fun getPictures(userId: String, pictures: List<String>): List<RemotePicture> {
@@ -39,12 +42,12 @@ class PictureApi {
 
         pictureRef.putFile(picture).getTaskResult()
 
-        return RemotePicture(pictureRef.downloadUrl.getTaskResult(), filename)
+        return RemotePicture(getPictureUrl(userId, filename), filename)
     }
 
-    suspend fun deletePictures(userId: String, pictures: List<RemotePicture>){
+    suspend fun deletePictures(userId: String, pictures: List<String>){
         return coroutineScope {
-            pictures.map { async { deletePicture(userId, it.filename) } }.awaitAll()
+            pictures.map { async { deletePicture(userId, it) } }.awaitAll()
         }
     }
 

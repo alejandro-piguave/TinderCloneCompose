@@ -8,10 +8,10 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
-import com.apiguave.tinderclonedata.account.repository.AccountRepository
-import com.apiguave.tinderclonedata.picture.LocalPicture
-import com.apiguave.tinderclonedata.picture.Picture
-import com.apiguave.tinderclonedata.profile.repository.ProfileRepository
+import com.apiguave.tinderclonedomain.account.AccountRepository
+import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.profile.Picture
+import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -96,7 +96,7 @@ class EditProfileViewModel(
     }
 
     fun addPicture(picture: Uri){
-        _uiState.update { it.copy(pictures = it.pictures + LocalPicture(picture)) }
+        _uiState.update { it.copy(pictures = it.pictures + LocalPicture(picture.toString())) }
     }
 
     fun removePictureAt(index: Int){

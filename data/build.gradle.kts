@@ -50,4 +50,6 @@ dependencies {
 
     implementation(libs.datetime)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(project(":domain"))
 }

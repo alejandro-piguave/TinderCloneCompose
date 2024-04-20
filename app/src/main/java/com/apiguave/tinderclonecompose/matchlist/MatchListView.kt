@@ -33,7 +33,7 @@ import com.apiguave.tinderclonecompose.theme.LightLightGray
 import com.apiguave.tinderclonecompose.theme.Orange
 import com.apiguave.tinderclonecompose.theme.Pink
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedata.match.repository.Match
+import com.apiguave.tinderclonedomain.match.Match
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.extension
 
-import com.apiguave.tinderclonedata.profile.model.Gender
+import com.apiguave.tinderclonedomain.profile.Gender
 
 fun Gender.toBoolean() = when(this) {
     Gender.MALE -> true
