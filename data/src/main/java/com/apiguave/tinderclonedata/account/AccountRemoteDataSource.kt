@@ -7,7 +7,7 @@ class AccountRemoteDataSource(private val authApi: AuthApi) {
     val isUserSignedIn: Boolean
         get() = authApi.isUserSignedIn
 
-    val userId: String
+    val userId: String?
         get() = authApi.userId
 
     suspend fun isNewAccount(account: Account): Boolean = authApi.isNewAccount(account.email)

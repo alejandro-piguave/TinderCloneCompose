@@ -11,7 +11,7 @@ class AccountRepositoryImpl(private val accountRemoteDataSource: AccountRemoteDa
     override val isUserSignedIn: Boolean
         get() = accountRemoteDataSource.isUserSignedIn
 
-    override val userId: String
+    override val userId: String?
         get() = accountRemoteDataSource.userId
 
     override suspend fun signIn(account: Account) {

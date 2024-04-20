@@ -10,8 +10,8 @@ class AuthApi {
     val isUserSignedIn: Boolean
         get() = FirebaseAuth.getInstance().currentUser != null
 
-    val userId: String
-        get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw AuthException("User not logged in")
+    val userId: String?
+        get() = FirebaseAuth.getInstance().currentUser?.uid
 
     suspend fun signInWithGoogle(idToken: String): FirebaseUser {
         val credential = GoogleAuthProvider.getCredential(idToken, null)

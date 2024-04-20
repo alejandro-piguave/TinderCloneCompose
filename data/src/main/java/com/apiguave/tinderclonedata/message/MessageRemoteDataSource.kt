@@ -17,6 +17,6 @@ class MessageRemoteDataSource(private val messageApi: MessageApi, private val au
     }
 
     suspend fun sendMessage(matchId: String, text: String){
-        messageApi.sendMessage(authApi.userId, matchId, text)
+        messageApi.sendMessage(authApi.userId!!, matchId, text)
     }
 }

@@ -4,14 +4,16 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedomain.account.AccountRepository
+import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
+import com.apiguave.tinderclonedomain.usecase.SignInUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val accountRepository: AccountRepository
+    private val isUserSignedInUseCase: IsUserSignedInUseCase,
+    private val signInUseCase: SignInUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginViewState(
@@ -28,7 +30,7 @@ class LoginViewModel(
 
     private fun checkLoginState() {
         _uiState.update {
-            if(accountRepository.isUserSignedIn){
+            if(isUserSignedInUseCase()){
                 it.copy(isUserSignedIn = true)
             } else {
                 it.copy(isLoading = false)
@@ -36,23 +38,18 @@ class LoginViewModel(
         }
     }
 
-    fun signIn(activityResult: ActivityResult){
+    fun signIn(activityResult: ActivityResult) = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            try {
-                val account = activityResult.toProviderAccount()
-                accountRepository.signIn(account)
-                _uiState.update { it.copy(isUserSignedIn = true) }
-            } catch (e: Exception) {
-                if(accountRepository.isUserSignedIn){
-                    accountRepository.signOut()
-                }
-                _uiState.update {
-                    it.copy(isLoading = false, errorMessage = e.message)
-                }
+        val account = activityResult.toProviderAccount()
+        signInUseCase(account).fold({
+            _uiState.update { it.copy(isUserSignedIn = true) }
+        }, { e ->
+            _uiState.update {
+                it.copy(isLoading = false, errorMessage = e.message)
             }
-        }
+        })
     }
+
 }
 
 data class LoginViewState(val isLoading: Boolean, val isUserSignedIn: Boolean, val errorMessage: String?)
