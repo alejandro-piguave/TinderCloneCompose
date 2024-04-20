@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
@@ -15,4 +16,5 @@ val domainModule = module {
     single { LikeProfileUseCase(get()) }
     single { PassProfileUseCase(get()) }
     single { SendMessageUseCase(get()) }
+    single { GetMessagesUseCase(get()) }
 }

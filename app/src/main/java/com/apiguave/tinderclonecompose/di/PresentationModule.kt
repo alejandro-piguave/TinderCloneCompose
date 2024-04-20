@@ -12,7 +12,7 @@ import org.koin.dsl.module
 val presentationModule = module {
 
     //View models
-    viewModel { ChatViewModel(get()) }
+    viewModel { ChatViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get(), get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { LoginViewModel(get()) }

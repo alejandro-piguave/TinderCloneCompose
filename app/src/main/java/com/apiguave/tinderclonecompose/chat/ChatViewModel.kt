@@ -3,25 +3,24 @@ package com.apiguave.tinderclonecompose.chat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonedomain.match.Match
-import com.apiguave.tinderclonedomain.message.MessageRepository
+import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
+import com.apiguave.tinderclonedomain.usecase.SendMessageUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChatViewModel(private val messageRepository: MessageRepository): ViewModel() {
+class ChatViewModel(
+    private val getMessagesUseCase: GetMessagesUseCase,
+    private val sendMessageUseCase: SendMessageUseCase): ViewModel() {
     private val _match = MutableStateFlow<Match?>(null)
     val match = _match.asStateFlow()
 
-    fun getMessages(matchId: String) = messageRepository.getMessages(matchId)
+    fun getMessages(matchId: String) = getMessagesUseCase(matchId)
 
     fun sendMessage(text: String){
         val matchId = _match.value?.id ?: return
         viewModelScope.launch {
-            try {
-                messageRepository.sendMessage(matchId, text)
-            }catch (e: Exception){
-                //Delete the message from the displayed list
-            }
+            sendMessageUseCase(matchId, text)
         }
     }
 
