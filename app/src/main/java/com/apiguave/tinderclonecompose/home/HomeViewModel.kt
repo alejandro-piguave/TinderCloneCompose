@@ -4,23 +4,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.message.MessageRepository
-import com.apiguave.tinderclonedomain.profile.ProfileGenerator
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
+import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
+import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
+import com.apiguave.tinderclonedomain.usecase.SendMessageUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val profileGenerator: ProfileGenerator,
-    private val profileRepository: ProfileRepository,
-    private val messageRepository: MessageRepository
+    private val generateProfilesUseCase: GenerateProfilesUseCase,
+    private val getProfilesUseCase: GetProfilesUseCase,
+    private val likeProfileUseCase: LikeProfileUseCase,
+    private val passProfileUseCase: PassProfileUseCase,
+    private val sendMessageUseCase: SendMessageUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(HomeViewState(HomeViewDialogState.NoDialog, HomeViewContentState.Loading))
     val uiState = _uiState.asStateFlow()
 
-    init{ fetchProfiles() }
+    init { fetchProfiles() }
 
     fun showProfileGenerationDialog() {
         _uiState.update { it.copy(dialogState = HomeViewDialogState.GenerateProfilesDialog) }
@@ -32,31 +36,20 @@ class HomeViewModel(
         }
     }
 
-    fun sendMessage(matchId: String, text: String){
-        viewModelScope.launch {
-            try {
-                messageRepository.sendMessage(matchId, text)
-            }catch (e: Exception){
-                //Show the message as unsent?
-            }
-        }
+    fun sendMessage(matchId: String, text: String) = viewModelScope.launch {
+        sendMessageUseCase(matchId, text)
     }
 
-    fun swipeUser(profile: Profile, isLike: Boolean){
-        viewModelScope.launch {
-            try {
-                if(isLike) {
-                    val match = profileRepository.likeProfile(profile)
-                    if(match != null){
-                        _uiState.update { it.copy(dialogState = HomeViewDialogState.NewMatchDialog(match)) }
-                    }
-                } else {
-                    profileRepository.passProfile(profile)
-                }
 
-            }catch (e: Exception){
-                //Bringing the profile card back to the profile deck?
+    fun swipeUser(profile: Profile, isLike: Boolean) = viewModelScope.launch {
+        if (isLike) {
+            likeProfileUseCase(profile).onSuccess {
+                it?.let { newMatch ->
+                    _uiState.update { it.copy(dialogState = HomeViewDialogState.NewMatchDialog(newMatch)) }
+                }
             }
+        } else {
+            passProfileUseCase(profile)
         }
     }
 
@@ -72,32 +65,23 @@ class HomeViewModel(
         _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
     }
 
-    fun createProfiles(amount: Int){
-        viewModelScope.launch {
-            _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
-            try {
-                //TODO: move this logic to a use case
-                val profiles = profileGenerator.generateProfiles(amount)
-                profiles.forEach {
-                    profileRepository.createProfile(it)
-                }
-                fetchProfiles()
-            } catch (e: Exception) {
-                _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }
-            }
-        }
+    fun generateProfiles(amount: Int) = viewModelScope.launch {
+        _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
+        generateProfilesUseCase(amount).fold({
+            fetchProfiles()
+        }, {error ->
+            _uiState.update { it.copy(contentState = HomeViewContentState.Error(error.message ?: "")) }
+        })
     }
 
-    fun fetchProfiles(){
-        viewModelScope.launch {
-            _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
-            try {
-                val profiles = profileRepository.getProfiles()
-                _uiState.update { it.copy(contentState = HomeViewContentState.Success(profileList = profiles)) }
-            }catch (e: Exception){
-                _uiState.update { it.copy(contentState = HomeViewContentState.Error(e.message ?: "")) }
-            }
-        }
+
+    fun fetchProfiles() = viewModelScope.launch {
+        _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
+        getProfilesUseCase().fold({profiles ->
+            _uiState.update { it.copy(contentState = HomeViewContentState.Success(profileList = profiles)) }
+        }, { error ->
+            _uiState.update { it.copy(contentState = HomeViewContentState.Error(error.message ?: "")) }
+        })
     }
 
 }

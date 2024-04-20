@@ -24,7 +24,7 @@ fun HomeScreen(
         onGenerateProfiles = { profileCount ->
             homeViewModel.closeDialog()
             homeViewModel.setLoading()
-            homeViewModel.createProfiles(profileCount)
+            homeViewModel.generateProfiles(profileCount)
         },
 
     )
