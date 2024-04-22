@@ -2,7 +2,6 @@ package com.apiguave.tinderclonedomain.usecase
 
 import com.apiguave.tinderclonedomain.account.Account
 import com.apiguave.tinderclonedomain.account.AccountRepository
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.picture.PictureRepository
@@ -28,8 +27,7 @@ class SignUpUseCase(
             accountRepository.signUp(account)
             val userId = accountRepository.userId!!
             val remotePictures = pictureRepository.uploadPictures(userId, pictures)
-            val profile = CreateUserProfile(userId, name, birthdate, bio, gender, orientation, remotePictures.map { it.filename })
-            profileRepository.createProfile(profile)
+            profileRepository.createProfile(userId, name, birthdate, bio, gender, orientation, remotePictures.map { it.filename })
         }
     }
 }

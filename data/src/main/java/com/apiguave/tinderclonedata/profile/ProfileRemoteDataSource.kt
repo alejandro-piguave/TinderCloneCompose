@@ -6,6 +6,7 @@ import com.apiguave.tinderclonedata.api.user.FirestoreUserProperties
 import com.apiguave.tinderclonedata.api.user.UserApi
 import com.apiguave.tinderclonedata.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.apiguave.tinderclonedata.api.user.FirestoreUser
 import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation
@@ -15,13 +16,13 @@ import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.picture.Picture
 import com.apiguave.tinderclonedomain.picture.RemotePicture
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.time.LocalDate
 
 class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
     suspend fun getUserProfile(userId: String): UserProfile {
@@ -41,15 +42,21 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         )
     }
 
-    suspend fun createProfile(profile: CreateUserProfile) {
+    suspend fun createProfile(id: String,
+                              name: String,
+                              birthdate: LocalDate,
+                              bio: String,
+                              gender: Gender,
+                              orientation: Orientation,
+                              pictures: List<String>) {
         userApi.createUser(
-            profile.id,
-            profile.name,
-            profile.birthdate,
-            profile.bio,
-            profile.gender,
-            profile.orientation,
-            profile.pictures
+            id,
+            name,
+            birthdate.toTimestamp(),
+            bio,
+            gender.toBoolean(),
+            orientation.toFirestoreOrientation(),
+            pictures
         )
     }
 
