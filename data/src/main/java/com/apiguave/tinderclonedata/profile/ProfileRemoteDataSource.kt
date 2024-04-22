@@ -145,7 +145,7 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
 
     private suspend fun getProfile(user: FirestoreUser): Profile {
         val pictures = pictureApi.getPictures(user.id, user.pictures)
-        return user.toProfile(pictures.map { it.uri })
+        return user.toProfile(pictures)
     }
 
     suspend fun passProfile(profile: Profile) {

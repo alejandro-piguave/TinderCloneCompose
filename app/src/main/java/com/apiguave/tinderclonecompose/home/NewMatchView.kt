@@ -56,7 +56,7 @@ fun NewMatchView(
             //Picture
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                model = matchModel.userPictures[currentIndex].uri,
+                model = matchModel.profile.pictures[currentIndex].uri,
                 contentScale = ContentScale.Crop,
                 onState = {
                     if(it is AsyncImagePainter.State.Success && isFirstTime){
@@ -120,7 +120,7 @@ fun NewMatchView(
                     Modifier
                         .fillMaxWidth()
                         .padding(6.dp)) {
-                    repeat(matchModel.userPictures.size){ index ->
+                    repeat(matchModel.profile.pictures.size){ index ->
                         Box(
                             Modifier
                                 .weight(1f)
@@ -149,7 +149,7 @@ fun NewMatchView(
                             interactionSource = interactionSource,
                             indication = null
                         ) {
-                            if (currentIndex < matchModel.userPictures.size - 1) currentIndex++
+                            if (currentIndex < matchModel.profile.pictures.size - 1) currentIndex++
                             isTextVisible = false
                         }
                     )
