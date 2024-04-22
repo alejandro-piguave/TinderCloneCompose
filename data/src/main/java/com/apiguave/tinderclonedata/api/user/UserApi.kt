@@ -3,14 +3,17 @@ package com.apiguave.tinderclonedata.api.user
 import com.apiguave.tinderclonedata.api.match.FirestoreMatch
 import com.apiguave.tinderclonedata.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonedata.extension.toBoolean
+import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonecompose.data.extension.toTimestamp
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedata.api.user.exception.FirestoreException
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import java.time.LocalDate
 
 class UserApi {
 
@@ -22,18 +25,18 @@ class UserApi {
     suspend fun createUser(
         userId: String,
         name: String,
-        birthdate: Timestamp,
+        birthdate: LocalDate,
         bio: String,
-        gender: Boolean,
-        orientation: FirestoreOrientation,
+        gender: Gender,
+        orientation: Orientation,
         pictures: List<String>
     ) {
         val user = FirestoreUser(
             name = name,
-            birthDate = birthdate,
+            birthDate = birthdate.toTimestamp(),
             bio = bio,
-            male = gender,
-            orientation = orientation,
+            male = gender.toBoolean(),
+            orientation = orientation.toFirestoreOrientation(),
             pictures = pictures,
             liked = emptyList(),
             passed = emptyList()

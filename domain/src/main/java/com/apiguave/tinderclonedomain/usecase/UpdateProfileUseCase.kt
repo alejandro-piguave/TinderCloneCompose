@@ -2,7 +2,7 @@ package com.apiguave.tinderclonedomain.usecase
 
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.picture.Picture
+import com.apiguave.tinderclonedomain.profile.Picture
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import com.apiguave.tinderclonedomain.profile.UserProfile
 

@@ -15,8 +15,8 @@ import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    single { SignUpUseCase(get(), get(), get()) }
-    single { GenerateProfilesUseCase(get(), get(), get(), get()) }
+    single { SignUpUseCase(get(), get()) }
+    single { GenerateProfilesUseCase(get(), get()) }
     single { GetProfilesUseCase(get()) }
     single { LikeProfileUseCase(get()) }
     single { PassProfileUseCase(get()) }

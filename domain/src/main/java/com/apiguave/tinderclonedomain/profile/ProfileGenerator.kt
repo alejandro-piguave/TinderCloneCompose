@@ -2,5 +2,6 @@ package com.apiguave.tinderclonedomain.profile
 
 
 interface ProfileGenerator {
-    fun generateProfile(): GeneratedProfile
+    suspend fun generateProfile(): CreateUserProfile
+    suspend fun generateProfiles(amount: Int): List<CreateUserProfile>
 }

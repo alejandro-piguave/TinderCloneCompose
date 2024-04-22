@@ -1,7 +1,5 @@
 package com.apiguave.tinderclonedomain.profile
 
-import com.apiguave.tinderclonedomain.picture.RemotePicture
-
 data class UserProfile(val id:String="",
                        val name: String="",
                        val birthDate: String = "",

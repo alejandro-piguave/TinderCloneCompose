@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedomain.picture
+package com.apiguave.tinderclonedomain.profile
 
 /*
 *  A class that represents any picture given by the user.
