@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonedata.api.picture
 
 import android.net.Uri
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.apiguave.tinderclonedata.api.user.UserApi
 import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedomain.profile.LocalPicture

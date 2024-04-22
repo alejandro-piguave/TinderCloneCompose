@@ -3,7 +3,7 @@ package com.apiguave.tinderclonedata.di
 import com.apiguave.tinderclonedata.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedata.api.auth.AuthApi
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.apiguave.tinderclonedata.api.match.MatchApi
 import com.apiguave.tinderclonedata.api.message.MessageApi
 import com.apiguave.tinderclonedata.api.picture.PictureApi

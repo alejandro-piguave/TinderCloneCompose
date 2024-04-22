@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.message
 
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.apiguave.tinderclonedata.api.message.MessageApi
 import com.apiguave.tinderclonedomain.message.Message
 import kotlinx.coroutines.flow.Flow

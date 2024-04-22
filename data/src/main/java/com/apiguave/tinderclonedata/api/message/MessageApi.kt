@@ -2,7 +2,7 @@ package com.apiguave.tinderclonedata.api.message
 
 import com.apiguave.tinderclonedata.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonedata.extension.getTaskResult
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.async

@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.match
 
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.apiguave.tinderclonedata.api.match.FirestoreMatch
 import com.apiguave.tinderclonedata.api.match.MatchApi
 import com.apiguave.tinderclonedata.api.picture.PictureApi

@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.auth
 
-import com.apiguave.tinderclonedata.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.local.AuthProvider
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthLocalDataSource(private val authProvider: AuthProvider) {

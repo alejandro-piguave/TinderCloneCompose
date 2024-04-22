@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.api.auth
+package com.apiguave.tinderclonedata.local
 
 import com.google.firebase.auth.FirebaseAuth
 
