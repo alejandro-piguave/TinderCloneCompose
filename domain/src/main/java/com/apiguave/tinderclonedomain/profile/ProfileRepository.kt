@@ -3,7 +3,7 @@ package com.apiguave.tinderclonedomain.profile
 import java.time.LocalDate
 
 interface ProfileRepository {
-    suspend fun createProfile(
+    suspend fun addProfile(
         userId: String,
         name: String,
         birthdate: LocalDate,

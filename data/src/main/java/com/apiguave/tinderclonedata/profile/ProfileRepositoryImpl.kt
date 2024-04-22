@@ -33,7 +33,7 @@ class ProfileRepositoryImpl(
         return currentUser
     }
 
-    override suspend fun createProfile(
+    override suspend fun addProfile(
         userId: String,
         name: String,
         birthdate: LocalDate,

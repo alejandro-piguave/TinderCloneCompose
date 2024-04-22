@@ -23,6 +23,6 @@ class SignUpUseCase(
     ) {
         authRepository.signUp(account)
         val userId = authRepository.userId
-        profileRepository.createProfile(userId!!, name, birthdate, bio, gender, orientation, pictures)
+        profileRepository.addProfile(userId!!, name, birthdate, bio, gender, orientation, pictures)
     }
 }
