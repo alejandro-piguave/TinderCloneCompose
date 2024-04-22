@@ -9,8 +9,8 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
 import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,10 +19,17 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class SignUpViewModel(
+    getMaxBirthdateUseCase: GetMaxBirthdateUseCase,
     private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpViewState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        getMaxBirthdateUseCase().let { max ->
+            _uiState.update { it.copy(maxBirthDate = max, birthDate = max) }
+        }
+    }
 
     fun setBirthDate(birthDate: LocalDate) {
         _uiState.update { it.copy(birthDate = birthDate) }
@@ -98,7 +105,8 @@ sealed class SignUpDialogState {
 
 data class SignUpViewState(
     val name: TextFieldValue = TextFieldValue(),
-    val birthDate: LocalDate = eighteenYearsAgo,
+    val maxBirthDate: LocalDate = LocalDate.now(),
+    val birthDate: LocalDate = LocalDate.now(),
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,

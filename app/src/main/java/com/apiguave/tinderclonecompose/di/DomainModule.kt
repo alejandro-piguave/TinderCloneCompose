@@ -2,6 +2,7 @@ package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
     single { SignUpUseCase(get(), get()) }
+    single { GetMaxBirthdateUseCase() }
     single { GenerateProfilesUseCase(get(), get()) }
     single { GetProfilesUseCase(get()) }
     single { LikeProfileUseCase(get(), get()) }

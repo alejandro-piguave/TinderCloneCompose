@@ -9,7 +9,7 @@ import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import java.time.LocalDate
 
 @Composable
-fun FormDatePickerDialog(state: MaterialDialogState, maxDate: LocalDate, onDateChange: (LocalDate) -> Unit){
+fun FormDatePickerDialog(state: MaterialDialogState, date: LocalDate, maxDate: LocalDate, onDateChange: (LocalDate) -> Unit){
     MaterialDialog(
         dialogState = state,
         buttons = {
@@ -18,10 +18,10 @@ fun FormDatePickerDialog(state: MaterialDialogState, maxDate: LocalDate, onDateC
         }
     ) {
         datepicker(
-            initialDate = maxDate,
+            initialDate = date,
             title = stringResource(id = R.string.pick_a_date),
             allowedDateValidator = {
-                it.isBefore(maxDate)
+                it.isBefore(maxDate) || it.isEqual(maxDate)
             },
             onDateChange = onDateChange
         )

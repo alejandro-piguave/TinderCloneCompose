@@ -81,7 +81,7 @@ fun SignUpView(
         else -> {}
     }
 
-    FormDatePickerDialog(dateDialogState, maxDate = uiState.birthDate, onDateChange = onBirthDateChanged)
+    FormDatePickerDialog(dateDialogState, date = uiState.birthDate, maxDate = uiState.maxBirthDate, onDateChange = onBirthDateChanged)
     
     Surface {
         LazyColumn( modifier = Modifier
