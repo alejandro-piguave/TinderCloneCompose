@@ -10,16 +10,11 @@ import com.apiguave.tinderclonedomain.profile.Picture
 import java.time.LocalDate
 
 class ProfileRepositoryImpl(
-    private val profileLocalDataSource: ProfileLocalDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
-        return profileLocalDataSource.currentUser ?: kotlin.run {
-            val currentUser = profileRemoteDataSource.getUserProfile()
-            profileLocalDataSource.currentUser = currentUser
-            currentUser
-        }
+        return profileRemoteDataSource.getUserProfile()
     }
 
     override suspend fun updateProfile(
@@ -28,9 +23,7 @@ class ProfileRepositoryImpl(
         orientation: Orientation,
         pictures: List<Picture>
     ): UserProfile {
-        val currentUser = profileRemoteDataSource.updateProfile(getProfile(), bio, gender, orientation, pictures)
-        profileLocalDataSource.currentUser = currentUser
-        return currentUser
+        return profileRemoteDataSource.updateProfile(bio, gender, orientation, pictures)
     }
 
     override suspend fun addProfile(
@@ -54,8 +47,7 @@ class ProfileRepositoryImpl(
     }
 
     override suspend fun getProfiles(): List<Profile> {
-        val currentUser = getProfile()
-        return profileRemoteDataSource.getProfiles(currentUser)
+        return profileRemoteDataSource.getProfiles()
     }
 
 }

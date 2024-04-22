@@ -18,7 +18,6 @@ import com.apiguave.tinderclonedata.match.MatchRemoteDataSource
 import com.apiguave.tinderclonedomain.match.MatchRepository
 import com.apiguave.tinderclonedata.message.MessageRemoteDataSource
 import com.apiguave.tinderclonedomain.message.MessageRepository
-import com.apiguave.tinderclonedata.profile.ProfileLocalDataSource
 import com.apiguave.tinderclonedata.profile.ProfileRemoteDataSource
 import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
@@ -30,15 +29,14 @@ val dataModule = module {
     single { AuthProvider() }
     single { MatchApi(get()) }
     single { UserApi(get()) }
-    single { PictureApi() }
+    single { PictureApi(get(), get()) }
     single { AuthApi() }
     single { MessageApi(get()) }
 
     //Profile
-    single { ProfileLocalDataSource() }
     single { ProfileRemoteDataSource(get(), get()) }
     single<ProfileGenerator> { ProfileGeneratorImpl(get()) }
-    single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
+    single<ProfileRepository> { ProfileRepositoryImpl(get()) }
 
     //Messages
     single { MessageRemoteDataSource(get(), get()) }
