@@ -5,7 +5,7 @@ import android.content.Context
 import android.net.Uri
 import com.apiguave.tinderclonedata.R
 import com.apiguave.tinderclonedomain.profile.ProfileGenerator
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
+import com.apiguave.tinderclonedomain.profile.GeneratedProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
@@ -17,21 +17,21 @@ import java.util.UUID
 import kotlin.random.Random
 
 class ProfileGeneratorImpl(private val context: Context): ProfileGenerator {
-    override suspend fun generateProfile(): CreateUserProfile = getRandomProfile(context)
+    override suspend fun generateProfile(): GeneratedProfile = getRandomProfile(context)
 
-    override suspend fun generateProfiles(amount: Int): List<CreateUserProfile> = (0 until amount).map { generateProfile() }
+    override suspend fun generateProfiles(amount: Int): List<GeneratedProfile> = (0 until amount).map { generateProfile() }
 
     private val eighteenYearsAgo: LocalDate = LocalDate.now().minusYears(18L)
     private val maxBirthdate: LocalDate = LocalDate.of(1970, 1, 1)
 
-    private suspend fun getRandomProfile(context: Context): CreateUserProfile {
+    private suspend fun getRandomProfile(context: Context): GeneratedProfile {
         val isMale = Random.nextBoolean()
         val pictures = coroutineScope { (0 until 3).map { async { getRandomPicture(context, isMale) } }.awaitAll()  }
         val name = getRandomName(isMale)
         val birthdate = getRandomBirthdate()
         val orientation = Orientation.values().random()
 
-        return CreateUserProfile(getRandomUserId(), name, birthdate, "", if(isMale) Gender.MALE else Gender.FEMALE, orientation, pictures.map { LocalPicture(it.toString()) })
+        return GeneratedProfile(getRandomUserId(), name, birthdate, "", if(isMale) Gender.MALE else Gender.FEMALE, orientation, pictures.map { LocalPicture(it.toString()) })
     }
 
     private fun getRandomUserId(): String = UUID.randomUUID().toString()

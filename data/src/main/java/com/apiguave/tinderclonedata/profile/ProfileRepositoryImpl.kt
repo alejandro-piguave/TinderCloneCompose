@@ -4,11 +4,12 @@ import com.apiguave.tinderclonedomain.account.AccountRepository
 import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
+import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedomain.profile.Picture
+import java.time.LocalDate
 
 class ProfileRepositoryImpl(
     private val accountRepository: AccountRepository,
@@ -35,8 +36,16 @@ class ProfileRepositoryImpl(
         return currentUser
     }
 
-    override suspend fun createProfile(createUserProfile: CreateUserProfile) {
-        profileRemoteDataSource.createProfile(createUserProfile)
+    override suspend fun createProfile(
+        userId: String,
+        name: String,
+        birthdate: LocalDate,
+        bio: String,
+        gender: Gender,
+        orientation: Orientation,
+        pictures: List<LocalPicture>
+    ) {
+        profileRemoteDataSource.createProfile(userId, name, birthdate, bio, gender, orientation, pictures)
     }
 
     override suspend fun likeProfile(profile: Profile): NewMatch? {

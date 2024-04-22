@@ -15,13 +15,13 @@ import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.Picture
 import com.apiguave.tinderclonedomain.profile.RemotePicture
-import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.time.LocalDate
 
 class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
     suspend fun getUserProfile(userId: String): UserProfile {
@@ -40,15 +40,23 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         )
     }
 
-    suspend fun createProfile(profile: CreateUserProfile) {
-        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures.map { Uri.parse(it.uri) })
+    suspend fun createProfile(
+        userId: String,
+        name: String,
+        birthdate: LocalDate,
+        bio: String,
+        gender: Gender,
+        orientation: Orientation,
+        pictures: List<LocalPicture>
+    ) {
+        val filenames = pictureApi.uploadPictures(userId, pictures.map { Uri.parse(it.uri) })
         userApi.createUser(
-            profile.id,
-            profile.name,
-            profile.birthdate,
-            profile.bio,
-            profile.gender,
-            profile.orientation,
+            userId,
+            name,
+            birthdate,
+            bio,
+            gender,
+            orientation,
             filenames.map { it.filename })
     }
 
@@ -150,6 +158,5 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
             NewMatch(model.id, model.id, profile.name, profile.pictures)
         }
     }
-
 
 }
