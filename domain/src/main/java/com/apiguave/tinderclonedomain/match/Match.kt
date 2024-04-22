@@ -1,13 +1,10 @@
 package com.apiguave.tinderclonedomain.match
 
-import com.apiguave.tinderclonedomain.profile.RemotePicture
+import com.apiguave.tinderclonedomain.profile.Profile
 
 data class Match(
     val id: String,
-    val userAge: Int,
-    val userId: String,
-    val userName: String,
-    val userPictures: List<RemotePicture>,
+    val profile: Profile,
     val formattedDate: String,
     val lastMessage: String?
 )

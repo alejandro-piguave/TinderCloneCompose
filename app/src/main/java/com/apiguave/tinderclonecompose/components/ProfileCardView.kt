@@ -41,7 +41,7 @@ fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModi
             //Picture
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                model = profile.pictures[currentIndex],
+                model = profile.pictures[currentIndex].uri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null)
             //Gradient

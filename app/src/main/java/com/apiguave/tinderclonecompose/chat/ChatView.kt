@@ -27,6 +27,7 @@ import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
 import com.apiguave.tinderclonecompose.theme.UltramarineBlue
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.message.Message
+import com.apiguave.tinderclonedomain.profile.Profile
 
 @Composable
 fun ChatView(
@@ -57,7 +58,7 @@ fun ChatView(
                     textAlign = TextAlign.Center,
                     color = Color.Gray,
                     fontSize = 12.sp,
-                    text = stringResource(id = R.string.you_matched_with_on, match.userName, match.formattedDate).uppercase())
+                    text = stringResource(id = R.string.you_matched_with_on, match.profile.name, match.formattedDate).uppercase())
             }
             items(messages.size){ index ->
                 MessageItem(match = match,message = messages[index])
@@ -72,7 +73,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
     CenterAppBar(onArrowBackPressed = onArrowBackPressed) {
         Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
             AsyncImage(
-                model = match.userPictures.first().uri,
+                model = match.profile.pictures.first().uri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -80,7 +81,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
                     .size(40.dp)
                     .clip(CircleShape)
             )
-            Text(text = match.userName, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
+            Text(text = match.profile.name, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
         }
     }
 }
@@ -97,7 +98,7 @@ fun MessageItem(match: Match, message: Message) {
             Spacer(Modifier.fillMaxWidth(.25f))
         } else {
             AsyncImage(
-                model = match.userPictures.first().uri,
+                model = match.profile.pictures.first().uri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -136,7 +137,7 @@ fun MessageItem(match: Match, message: Message) {
 fun ChatViewPreview() {
     TinderCloneComposeTheme {
         ChatView(
-            match = Match("", 20, "", "Alice", listOf(), "24/02/2024", "Hey, how are you doing?"),
+            match = Match("", Profile("", "Alice", 20, emptyList()), "24/02/2024", "Hey, how are you doing?"),
             onArrowBackPressed = { },
             sendMessage = { },
             messages = listOf(

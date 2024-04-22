@@ -10,6 +10,7 @@ import com.apiguave.tinderclonedata.extension.toShortString
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import com.apiguave.tinderclonedomain.match.Match
+import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.awaitAll
 
 class MatchRemoteDataSource(
@@ -30,10 +31,12 @@ class MatchRemoteDataSource(
         val pictures = pictureApi.getPictures(user.id, user.pictures)
         return Match(
             this.id,
-            user.birthDate?.toDate()?.toAge() ?: 0,
-            userId,
-            user.name,
-            pictures,
+            Profile(
+                userId,
+                user.name,
+                user.birthDate?.toDate()?.toAge() ?: 0,
+                pictures,
+            ),
             this.timestamp?.toShortString() ?: "",
             this.lastMessage
         )
