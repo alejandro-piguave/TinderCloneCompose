@@ -57,7 +57,7 @@ fun HomeView(
             )
         }
         is HomeViewDialogState.NewMatchDialog -> {
-            NewMatchDialog(match = uiState.dialogState.newMatch, onSendMessage = { onSendMessage(uiState.dialogState.newMatch.id, it) }, onCloseClicked = onCloseDialog)
+            NewMatchDialog(match = uiState.dialogState.match, onSendMessage = { onSendMessage(uiState.dialogState.match.id, it) }, onCloseClicked = onCloseDialog)
         }
         else -> {}
     }

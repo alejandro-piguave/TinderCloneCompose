@@ -3,6 +3,7 @@ package com.apiguave.tinderclonedata.api.match
 import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 
 class MatchApi(private val authProvider: AuthProvider) {
     companion object{
@@ -14,5 +15,14 @@ class MatchApi(private val authProvider: AuthProvider) {
             .whereArrayContains(FirestoreMatchProperties.usersMatched, authProvider.userId!!)
         val result = query.get().getTaskResult()
         return result.toObjects(FirestoreMatch::class.java)
+    }
+
+    suspend fun getMatch(id: String): FirestoreMatch {
+        return FirebaseFirestore.getInstance()
+            .collection(MATCHES)
+            .document(id)
+            .get()
+            .getTaskResult()
+            .toObject()!!
     }
 }

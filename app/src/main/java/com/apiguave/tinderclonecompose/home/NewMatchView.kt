@@ -36,12 +36,12 @@ import coil.compose.AsyncImagePainter
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.ChatFooter
 import com.apiguave.tinderclonecompose.theme.Green1
-import com.apiguave.tinderclonedomain.profile.NewMatch
+import com.apiguave.tinderclonedomain.match.Match
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NewMatchView(
-    match: NewMatch?,
+    match: Match?,
     onSendMessage: (String) -> Unit,
     onCloseClicked: () -> Unit
 ){
@@ -56,7 +56,7 @@ fun NewMatchView(
             //Picture
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                model = matchModel.userPictures[currentIndex],
+                model = matchModel.userPictures[currentIndex].uri,
                 contentScale = ContentScale.Crop,
                 onState = {
                     if(it is AsyncImagePainter.State.Success && isFirstTime){

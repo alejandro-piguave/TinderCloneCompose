@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonedata.profile
 
-import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import com.apiguave.tinderclonedomain.profile.UserProfile
@@ -46,15 +45,12 @@ class ProfileRepositoryImpl(
         profileRemoteDataSource.createProfile(userId, name, birthdate, bio, gender, orientation, pictures)
     }
 
-    override suspend fun likeProfile(profile: Profile): NewMatch? {
-        val matchModel = profileRemoteDataSource.likeProfile(profile)
-        return matchModel?.let { model ->
-            NewMatch(model.id, profile.id, profile.name, profile.pictures)
-        }
+    override suspend fun likeProfile(profile: Profile): String? {
+        return profileRemoteDataSource.likeProfile(profile)
     }
 
     override suspend fun passProfile(profile: Profile) {
-        profileRemoteDataSource.passProfile(    profile)
+        profileRemoteDataSource.passProfile(profile)
     }
 
     override suspend fun getProfiles(): List<Profile> {

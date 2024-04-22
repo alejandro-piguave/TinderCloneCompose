@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonedomain.profile.NewMatch
+import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
@@ -94,7 +94,7 @@ data class HomeViewState(
 sealed class HomeViewDialogState {
     object NoDialog: HomeViewDialogState()
     object GenerateProfilesDialog: HomeViewDialogState()
-    data class NewMatchDialog(val newMatch: NewMatch): HomeViewDialogState()
+    data class NewMatchDialog(val match: Match): HomeViewDialogState()
 }
 
 sealed class HomeViewContentState {

@@ -1,6 +1,5 @@
 package com.apiguave.tinderclonedata.api.user
 
-import com.apiguave.tinderclonedata.api.match.FirestoreMatch
 import com.apiguave.tinderclonedata.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedata.extension.toBoolean
@@ -84,7 +83,7 @@ class UserApi(private val authProvider: AuthProvider) {
         return result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject<FirestoreUser>() }
     }
 
-    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
+    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): String? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
             .document(authProvider.userId!!)
@@ -109,12 +108,8 @@ class UserApi(private val authProvider: AuthProvider) {
                 .set(data)
                 .getTaskResult()
 
-            val result = FirebaseFirestore.getInstance()
-                .collection(MATCHES)
-                .document(matchId)
-                .get()
-                .getTaskResult()
-            return result.toObject()
+
+            return matchId
         }
         return null
     }

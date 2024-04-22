@@ -9,4 +9,8 @@ class MatchRepositoryImpl(
 
     override suspend fun getMatches(): List<Match> = matchRemoteDataSource.getMatches()
 
+    override suspend fun getMatch(id: String): Match {
+        return matchRemoteDataSource.getMatch(id)
+    }
+
 }

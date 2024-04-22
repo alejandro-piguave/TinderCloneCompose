@@ -18,7 +18,7 @@ val domainModule = module {
     single { SignUpUseCase(get(), get()) }
     single { GenerateProfilesUseCase(get(), get()) }
     single { GetProfilesUseCase(get()) }
-    single { LikeProfileUseCase(get()) }
+    single { LikeProfileUseCase(get(), get()) }
     single { PassProfileUseCase(get()) }
     single { SendMessageUseCase(get()) }
     single { GetMessagesUseCase(get()) }

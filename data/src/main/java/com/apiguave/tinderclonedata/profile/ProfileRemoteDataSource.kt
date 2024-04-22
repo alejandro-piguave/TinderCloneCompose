@@ -11,7 +11,6 @@ import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation
 import com.apiguave.tinderclonedata.extension.toProfile
 import com.apiguave.tinderclonedomain.profile.LocalPicture
-import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.Picture
 import com.apiguave.tinderclonedomain.profile.RemotePicture
@@ -153,10 +152,8 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         userApi.swipeUser(profile.id, false)
     }
 
-    suspend fun likeProfile(profile: Profile): NewMatch? {
-        return userApi.swipeUser(profile.id, true)?.let { model ->
-            NewMatch(model.id, model.id, profile.name, profile.pictures)
-        }
+    suspend fun likeProfile(profile: Profile): String? {
+        return userApi.swipeUser(profile.id, true)
     }
 
 }

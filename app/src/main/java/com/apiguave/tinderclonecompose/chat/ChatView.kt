@@ -72,7 +72,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
     CenterAppBar(onArrowBackPressed = onArrowBackPressed) {
         Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
             AsyncImage(
-                model = match.userPicture,
+                model = match.userPictures.first().uri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -97,7 +97,7 @@ fun MessageItem(match: Match, message: Message) {
             Spacer(Modifier.fillMaxWidth(.25f))
         } else {
             AsyncImage(
-                model = match.userPicture,
+                model = match.userPictures.first().uri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -136,7 +136,7 @@ fun MessageItem(match: Match, message: Message) {
 fun ChatViewPreview() {
     TinderCloneComposeTheme {
         ChatView(
-            match = Match("", 20, "", "Alice", "", "24/02/2024", "Hey, how are you doing?"),
+            match = Match("", 20, "", "Alice", listOf(), "24/02/2024", "Hey, how are you doing?"),
             onArrowBackPressed = { },
             sendMessage = { },
             messages = listOf(

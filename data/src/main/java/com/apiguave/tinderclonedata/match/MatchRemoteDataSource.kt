@@ -20,24 +20,27 @@ class MatchRemoteDataSource(
 
     suspend fun getMatches(): List<Match> = coroutineScope {
         val apiMatches = matchApi.getMatches()
-        val matches = apiMatches.map { async { getMatch(it) }}.awaitAll()
+        val matches = apiMatches.map { async { it.toModel() }}.awaitAll()
         matches.filterNotNull()
     }
 
-    private suspend fun getMatch(match: FirestoreMatch): Match? {
-        val userId = match.usersMatched.firstOrNull { it != authProvider.userId!! } ?: return null
+    private suspend fun FirestoreMatch.toModel(): Match? {
+        val userId = this.usersMatched.firstOrNull { it != authProvider.userId!! } ?: return null
         val user = userApi.getUser(userId)
-        val picture = pictureApi.getPicture(user.id, user.pictures.first())
+        val pictures = pictureApi.getPictures(user.id, user.pictures)
         return Match(
-            match.id,
+            this.id,
             user.birthDate?.toDate()?.toAge() ?: 0,
             userId,
             user.name,
-            picture.uri,
-            match.timestamp?.toShortString() ?: "",
-            match.lastMessage
+            pictures,
+            this.timestamp?.toShortString() ?: "",
+            this.lastMessage
         )
     }
 
+    suspend fun getMatch(id: String): Match {
+        return matchApi.getMatch(id).toModel()!!
+    }
 
 }
