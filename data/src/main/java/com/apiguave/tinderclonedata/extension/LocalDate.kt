@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.extension
+package com.apiguave.tinderclonedata.extension
 
 import com.google.firebase.Timestamp
 import java.time.LocalDate

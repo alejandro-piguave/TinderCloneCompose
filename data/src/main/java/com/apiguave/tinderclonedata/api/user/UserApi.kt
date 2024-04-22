@@ -2,10 +2,10 @@ package com.apiguave.tinderclonedata.api.user
 
 import com.apiguave.tinderclonedata.api.match.FirestoreMatch
 import com.apiguave.tinderclonedata.api.match.FirestoreMatchProperties
-import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedata.extension.toBoolean
-import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
-import com.apiguave.tinderclonecompose.data.extension.toTimestamp
+import com.apiguave.tinderclonedata.extension.toFirestoreOrientation
+import com.apiguave.tinderclonedata.extension.toTimestamp
 import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation

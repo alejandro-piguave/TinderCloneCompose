@@ -5,7 +5,7 @@ import com.apiguave.tinderclonedata.api.picture.PictureApi
 import com.apiguave.tinderclonedata.api.user.FirestoreUserProperties
 import com.apiguave.tinderclonedata.api.user.UserApi
 import com.apiguave.tinderclonedata.extension.toBoolean
-import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
+import com.apiguave.tinderclonedata.extension.toFirestoreOrientation
 import com.apiguave.tinderclonedata.api.user.FirestoreUser
 import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation

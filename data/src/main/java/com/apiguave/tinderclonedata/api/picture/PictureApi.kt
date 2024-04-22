@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonedata.api.picture
 
 import android.net.Uri
-import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedomain.profile.RemotePicture
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async

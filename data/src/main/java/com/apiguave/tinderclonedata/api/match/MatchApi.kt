@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.api.match
 
-import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonedata.extension.getTaskResult
 import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 

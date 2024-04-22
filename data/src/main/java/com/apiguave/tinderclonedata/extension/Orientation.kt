@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.data.extension
+package com.apiguave.tinderclonedata.extension
 
 import com.apiguave.tinderclonedata.api.user.FirestoreOrientation
 import com.apiguave.tinderclonedomain.profile.Orientation
