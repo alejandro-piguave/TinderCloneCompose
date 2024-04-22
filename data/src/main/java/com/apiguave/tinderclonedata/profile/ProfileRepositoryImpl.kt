@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedata.profile
 
-import com.apiguave.tinderclonedomain.account.AccountRepository
+import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
@@ -12,14 +12,14 @@ import com.apiguave.tinderclonedomain.profile.Picture
 import java.time.LocalDate
 
 class ProfileRepositoryImpl(
-    private val accountRepository: AccountRepository,
+    private val authRepository: AuthRepository,
     private val profileLocalDataSource: ProfileLocalDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
         return profileLocalDataSource.currentUser ?: kotlin.run {
-            val currentUser = profileRemoteDataSource.getUserProfile(accountRepository.userId!!)
+            val currentUser = profileRemoteDataSource.getUserProfile(authRepository.userId!!)
             profileLocalDataSource.currentUser = currentUser
             currentUser
         }
@@ -49,14 +49,14 @@ class ProfileRepositoryImpl(
     }
 
     override suspend fun likeProfile(profile: Profile): NewMatch? {
-        val matchModel = profileRemoteDataSource.likeProfile(accountRepository.userId!!, profile)
+        val matchModel = profileRemoteDataSource.likeProfile(authRepository.userId!!, profile)
         return matchModel?.let { model ->
             NewMatch(model.id, profile.id, profile.name, profile.pictures)
         }
     }
 
     override suspend fun passProfile(profile: Profile) {
-        profileRemoteDataSource.passProfile(accountRepository.userId!!, profile)
+        profileRemoteDataSource.passProfile(authRepository.userId!!, profile)
     }
 
     override suspend fun getProfiles(): List<Profile> {

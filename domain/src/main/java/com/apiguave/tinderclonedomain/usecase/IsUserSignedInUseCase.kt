@@ -1,8 +1,8 @@
 package com.apiguave.tinderclonedomain.usecase
 
-import com.apiguave.tinderclonedomain.account.AccountRepository
+import com.apiguave.tinderclonedomain.auth.AuthRepository
 
-class IsUserSignedInUseCase(private val accountRepository: AccountRepository) {
+class IsUserSignedInUseCase(private val authRepository: AuthRepository) {
 
-    operator fun invoke(): Boolean = accountRepository.isUserSignedIn
+    operator fun invoke(): Boolean = authRepository.isUserSignedIn
 }

@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonedomain.account
+package com.apiguave.tinderclonedomain.auth
 
-interface AccountRepository {
+interface AuthRepository {
     val isUserSignedIn: Boolean
     val userId: String?
     suspend fun signIn(account: Account)

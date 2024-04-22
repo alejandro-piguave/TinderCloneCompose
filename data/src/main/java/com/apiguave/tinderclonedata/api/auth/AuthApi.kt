@@ -7,11 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 class AuthApi {
-    val isUserSignedIn: Boolean
-        get() = FirebaseAuth.getInstance().currentUser != null
-
-    val userId: String?
-        get() = FirebaseAuth.getInstance().currentUser?.uid
 
     suspend fun signInWithGoogle(idToken: String): FirebaseUser {
         val credential = GoogleAuthProvider.getCredential(idToken, null)

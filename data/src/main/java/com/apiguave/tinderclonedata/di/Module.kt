@@ -1,13 +1,14 @@
 package com.apiguave.tinderclonedata.di
 
-import com.apiguave.tinderclonedata.account.AccountRemoteDataSource
-import com.apiguave.tinderclonedomain.account.AccountRepository
+import com.apiguave.tinderclonedata.auth.AuthRemoteDataSource
+import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedata.api.auth.AuthApi
 import com.apiguave.tinderclonedata.api.match.MatchApi
 import com.apiguave.tinderclonedata.api.message.MessageApi
 import com.apiguave.tinderclonedata.api.picture.PictureApi
 import com.apiguave.tinderclonedata.api.user.UserApi
-import com.apiguave.tinderclonedata.account.AccountRepositoryImpl
+import com.apiguave.tinderclonedata.auth.AuthLocalDataSource
+import com.apiguave.tinderclonedata.auth.AuthRepositoryImpl
 import com.apiguave.tinderclonedata.match.MatchRepositoryImpl
 import com.apiguave.tinderclonedata.message.MessageRepositoryImpl
 import com.apiguave.tinderclonedata.profile.ProfileGeneratorImpl
@@ -45,7 +46,8 @@ val dataModule = module {
     single { MatchRemoteDataSource(get(), get(), get()) }
     single<MatchRepository> { MatchRepositoryImpl(get()) }
 
-    //Account
-    single { AccountRemoteDataSource(get()) }
-    single<AccountRepository> { AccountRepositoryImpl(get()) }
+    //Auth
+    single { AuthLocalDataSource() }
+    single { AuthRemoteDataSource(get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }

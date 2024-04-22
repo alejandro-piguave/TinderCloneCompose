@@ -1,14 +1,9 @@
-package com.apiguave.tinderclonedata.account
+package com.apiguave.tinderclonedata.auth
 
-import com.apiguave.tinderclonedomain.account.Account
+import com.apiguave.tinderclonedomain.auth.Account
 import com.apiguave.tinderclonedata.api.auth.AuthApi
 
-class AccountRemoteDataSource(private val authApi: AuthApi) {
-    val isUserSignedIn: Boolean
-        get() = authApi.isUserSignedIn
-
-    val userId: String?
-        get() = authApi.userId
+class AuthRemoteDataSource(private val authApi: AuthApi) {
 
     suspend fun isNewAccount(account: Account): Boolean = authApi.isNewAccount(account.email)
 
