@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedomain.profile
+package com.apiguave.tinderclonedomain.profile.generator
 
 
 interface ProfileGenerator {

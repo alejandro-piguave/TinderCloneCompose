@@ -4,8 +4,8 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import com.apiguave.tinderclonedata.R
-import com.apiguave.tinderclonedomain.profile.ProfileGenerator
-import com.apiguave.tinderclonedomain.profile.GeneratedProfile
+import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
+import com.apiguave.tinderclonedomain.profile.generator.GeneratedProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation

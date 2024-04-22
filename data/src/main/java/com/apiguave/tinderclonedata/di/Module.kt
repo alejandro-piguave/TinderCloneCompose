@@ -20,7 +20,7 @@ import com.apiguave.tinderclonedata.message.MessageRemoteDataSource
 import com.apiguave.tinderclonedomain.message.MessageRepository
 import com.apiguave.tinderclonedata.profile.ProfileLocalDataSource
 import com.apiguave.tinderclonedata.profile.ProfileRemoteDataSource
-import com.apiguave.tinderclonedomain.profile.ProfileGenerator
+import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import org.koin.dsl.module
 

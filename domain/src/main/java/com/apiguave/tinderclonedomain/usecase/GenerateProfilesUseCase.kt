@@ -1,6 +1,6 @@
 package com.apiguave.tinderclonedomain.usecase
 
-import com.apiguave.tinderclonedomain.profile.ProfileGenerator
+import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 
 class GenerateProfilesUseCase(
