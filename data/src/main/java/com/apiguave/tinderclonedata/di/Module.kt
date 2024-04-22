@@ -39,8 +39,8 @@ val dataModule = module {
     single<ProfileRepository> { ProfileRepositoryImpl(get(), get(), get()) }
 
     //Messages
-    single { MessageRemoteDataSource(get(), get()) }
-    single<MessageRepository> { MessageRepositoryImpl(get()) }
+    single { MessageRemoteDataSource(get()) }
+    single<MessageRepository> { MessageRepositoryImpl(get(), get()) }
 
     //Matches
     single { MatchRemoteDataSource(get(), get(), get()) }
