@@ -3,6 +3,7 @@ package com.apiguave.tinderclonedata.di
 import com.apiguave.tinderclonedata.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedata.api.auth.AuthApi
+import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.apiguave.tinderclonedata.api.match.MatchApi
 import com.apiguave.tinderclonedata.api.message.MessageApi
 import com.apiguave.tinderclonedata.api.picture.PictureApi
@@ -26,28 +27,29 @@ import org.koin.dsl.module
 val dataModule = module {
 
     //Api
-    single { MatchApi() }
-    single { UserApi() }
+    single { AuthProvider() }
+    single { MatchApi(get()) }
+    single { UserApi(get()) }
     single { PictureApi() }
     single { AuthApi() }
-    single { MessageApi() }
+    single { MessageApi(get()) }
 
     //Profile
     single { ProfileLocalDataSource() }
     single { ProfileRemoteDataSource(get(), get()) }
     single<ProfileGenerator> { ProfileGeneratorImpl(get()) }
-    single<ProfileRepository> { ProfileRepositoryImpl(get(), get(), get()) }
+    single<ProfileRepository> { ProfileRepositoryImpl(get(), get()) }
 
     //Messages
-    single { MessageRemoteDataSource(get()) }
-    single<MessageRepository> { MessageRepositoryImpl(get(), get()) }
+    single { MessageRemoteDataSource(get(), get()) }
+    single<MessageRepository> { MessageRepositoryImpl(get()) }
 
     //Matches
-    single { MatchRemoteDataSource(get(), get(), get()) }
+    single { MatchRemoteDataSource(get(), get(), get(), get()) }
     single<MatchRepository> { MatchRepositoryImpl(get()) }
 
     //Auth
-    single { AuthLocalDataSource() }
+    single { AuthLocalDataSource(get()) }
     single { AuthRemoteDataSource(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }

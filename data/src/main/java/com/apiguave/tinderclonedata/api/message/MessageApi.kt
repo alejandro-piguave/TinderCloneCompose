@@ -2,6 +2,7 @@ package com.apiguave.tinderclonedata.api.message
 
 import com.apiguave.tinderclonedata.api.match.FirestoreMatchProperties
 import com.apiguave.tinderclonecompose.data.extension.getTaskResult
+import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.async
@@ -10,7 +11,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class MessageApi {
+class MessageApi(private val authProvider: AuthProvider) {
 
     companion object {
         private const val MATCHES = "matches"
@@ -48,8 +49,8 @@ class MessageApi {
         awaitClose { subscription?.remove() }
     }
 
-    suspend fun sendMessage(currentUserId: String, matchId: String, text: String){
-        val data = FirestoreMessageProperties.toData(currentUserId, text)
+    suspend fun sendMessage(matchId: String, text: String){
+        val data = FirestoreMessageProperties.toData(authProvider.userId!!, text)
         coroutineScope {
             val newMessageResult = async {
                 FirebaseFirestore.getInstance()

@@ -24,8 +24,8 @@ import kotlinx.coroutines.coroutineScope
 import java.time.LocalDate
 
 class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
-    suspend fun getUserProfile(userId: String): UserProfile {
-        val currentUser = userApi.getUser(userId)
+    suspend fun getUserProfile(): UserProfile {
+        val currentUser = userApi.getUser()
         val profilePictures = pictureApi.getPictures(currentUser.id, currentUser.pictures)
         return UserProfile(
             currentUser.id,
@@ -149,12 +149,12 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         return user.toProfile(pictures.map { it.uri })
     }
 
-    suspend fun passProfile(currentUserId: String, profile: Profile) {
-        userApi.swipeUser(currentUserId, profile.id, false)
+    suspend fun passProfile(profile: Profile) {
+        userApi.swipeUser(profile.id, false)
     }
 
-    suspend fun likeProfile(currentUserId: String, profile: Profile): NewMatch? {
-        return userApi.swipeUser(currentUserId, profile.id, true)?.let { model ->
+    suspend fun likeProfile(profile: Profile): NewMatch? {
+        return userApi.swipeUser(profile.id, true)?.let { model ->
             NewMatch(model.id, model.id, profile.name, profile.pictures)
         }
     }

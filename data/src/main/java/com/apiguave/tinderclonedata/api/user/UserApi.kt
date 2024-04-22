@@ -6,6 +6,7 @@ import com.apiguave.tinderclonecompose.data.extension.getTaskResult
 import com.apiguave.tinderclonedata.extension.toBoolean
 import com.apiguave.tinderclonecompose.data.extension.toFirestoreOrientation
 import com.apiguave.tinderclonecompose.data.extension.toTimestamp
+import com.apiguave.tinderclonedata.api.auth.AuthProvider
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedata.api.user.exception.FirestoreException
@@ -15,7 +16,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import java.time.LocalDate
 
-class UserApi {
+class UserApi(private val authProvider: AuthProvider) {
 
     companion object {
         private const val USERS = "users"
@@ -43,6 +44,8 @@ class UserApi {
         )
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
+
+    suspend fun getUser(): FirestoreUser = getUser(authProvider.userId!!)
 
     suspend fun getUser(userId: String): FirestoreUser {
         val snapshot = FirebaseFirestore.getInstance().collection(USERS).document(userId).get().getTaskResult()
@@ -81,25 +84,25 @@ class UserApi {
         return result.filter { !excludedUserIds.contains(it.id) }.mapNotNull { it.toObject<FirestoreUser>() }
     }
 
-    suspend fun swipeUser(userId: String, swipedUserId: String, isLike: Boolean): FirestoreMatch? {
+    suspend fun swipeUser(swipedUserId: String, isLike: Boolean): FirestoreMatch? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(userId)
+            .document(authProvider.userId!!)
             .update(mapOf((if (isLike) FirestoreUserProperties.liked else FirestoreUserProperties.passed) to FieldValue.arrayUnion(swipedUserId)))
             .getTaskResult()
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(userId)
+            .document(authProvider.userId!!)
             .collection(FirestoreUserProperties.liked)
             .document(swipedUserId)
             .set(mapOf("exists" to true))
             .getTaskResult()
 
-        val hasUserLikedBack = hasUserLikedBack(userId, swipedUserId)
+        val hasUserLikedBack = hasUserLikedBack(authProvider.userId!!, swipedUserId)
         if(hasUserLikedBack){
-            val matchId = getMatchId(userId, swipedUserId)
+            val matchId = getMatchId(authProvider.userId!!, swipedUserId)
             FieldValue.serverTimestamp()
-            val data = FirestoreMatchProperties.toData(swipedUserId, userId)
+            val data = FirestoreMatchProperties.toData(swipedUserId, authProvider.userId!!)
             FirebaseFirestore.getInstance()
                 .collection(MATCHES)
                 .document(matchId)
