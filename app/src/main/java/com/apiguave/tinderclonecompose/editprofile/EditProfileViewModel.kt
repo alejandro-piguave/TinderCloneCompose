@@ -8,8 +8,8 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
-import com.apiguave.tinderclonedomain.profile.LocalPicture
-import com.apiguave.tinderclonedomain.profile.Picture
+import com.apiguave.tinderclonedomain.picture.LocalPicture
+import com.apiguave.tinderclonedomain.picture.Picture
 import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.SignOutUseCase
 import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase

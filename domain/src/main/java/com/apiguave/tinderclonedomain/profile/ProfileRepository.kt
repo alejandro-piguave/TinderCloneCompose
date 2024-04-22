@@ -1,5 +1,7 @@
 package com.apiguave.tinderclonedomain.profile
 
+import com.apiguave.tinderclonedomain.picture.Picture
+
 interface ProfileRepository {
     suspend fun createProfile(createUserProfile: CreateUserProfile)
     suspend fun updateProfile(bio: String, gender: Gender, orientation: Orientation, pictures: List<Picture>): UserProfile

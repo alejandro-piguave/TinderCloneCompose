@@ -8,7 +8,7 @@ import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Picture
+import com.apiguave.tinderclonedomain.picture.Picture
 
 class ProfileRepositoryImpl(
     private val accountRepository: AccountRepository,

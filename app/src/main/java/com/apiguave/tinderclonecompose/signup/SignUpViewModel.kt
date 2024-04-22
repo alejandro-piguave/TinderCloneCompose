@@ -10,7 +10,7 @@ import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
 import com.apiguave.tinderclonedata.extension.eighteenYearsAgo
-import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

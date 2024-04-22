@@ -8,5 +8,5 @@ data class CreateUserProfile(val id: String,
                              val bio: String,
                              val gender: Gender,
                              val orientation: Orientation,
-                             val pictures: List<LocalPicture>
+                             val pictures: List<String>
 )

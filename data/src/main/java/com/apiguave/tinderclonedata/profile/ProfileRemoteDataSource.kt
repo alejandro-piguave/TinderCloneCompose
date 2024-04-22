@@ -10,11 +10,11 @@ import com.apiguave.tinderclonedata.api.user.FirestoreUser
 import com.apiguave.tinderclonedata.extension.toLongString
 import com.apiguave.tinderclonedata.extension.toOrientation
 import com.apiguave.tinderclonedata.extension.toProfile
-import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.profile.NewMatch
 import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.Picture
-import com.apiguave.tinderclonedomain.profile.RemotePicture
+import com.apiguave.tinderclonedomain.picture.Picture
+import com.apiguave.tinderclonedomain.picture.RemotePicture
 import com.apiguave.tinderclonedomain.profile.CreateUserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
@@ -26,6 +26,7 @@ import kotlinx.coroutines.coroutineScope
 class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureApi: PictureApi) {
     suspend fun getUserProfile(userId: String): UserProfile {
         val currentUser = userApi.getUser(userId)
+        //TODO: migrate picture logic to picture repository
         val profilePictures = pictureApi.getPictures(currentUser.id, currentUser.pictures)
         return UserProfile(
             currentUser.id,
@@ -41,7 +42,6 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
     }
 
     suspend fun createProfile(profile: CreateUserProfile) {
-        val filenames = pictureApi.uploadPictures(profile.id, profile.pictures.map { Uri.parse(it.uri) })
         userApi.createUser(
             profile.id,
             profile.name,
@@ -49,7 +49,8 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
             profile.bio,
             profile.gender,
             profile.orientation,
-            filenames.map { it.filename })
+            profile.pictures
+        )
     }
 
     suspend fun updateProfile(
@@ -72,6 +73,7 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
         }
     }
 
+    //TODO: migrate picture logic to picture repository
     private suspend fun updatePictures(userId: String, outdatedPictures: List<RemotePicture>, updatedPictures: List<Picture>): List<RemotePicture>{
         return coroutineScope {
             //This is a list of the pictures that were already uploaded but that have been removed from the profile.
@@ -137,6 +139,7 @@ class ProfileRemoteDataSource(private val userApi: UserApi, private val pictureA
     }
 
     private suspend fun getProfile(user: FirestoreUser): Profile {
+        //TODO: migrate picture logic to picture repository
         val pictures = pictureApi.getPictures(user.id, user.pictures)
         return user.toProfile(pictures.map { it.uri })
     }
