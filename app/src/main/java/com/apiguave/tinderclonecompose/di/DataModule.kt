@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.di
+package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonedata.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedomain.auth.AuthRepository

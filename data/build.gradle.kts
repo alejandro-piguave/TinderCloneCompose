@@ -45,9 +45,6 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
 
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-
     implementation(libs.datetime)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
