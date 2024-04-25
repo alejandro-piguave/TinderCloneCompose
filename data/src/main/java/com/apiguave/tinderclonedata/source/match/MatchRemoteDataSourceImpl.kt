@@ -14,23 +14,18 @@ import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.awaitAll
 
-class MatchRemoteDataSourceImpl(
-    private val authProvider: AuthProvider,
-    private val matchApi: MatchApi,
-    private val userApi: UserApi,
-    private val pictureApi: PictureApi
-): MatchRemoteDataSource {
+class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
 
     override suspend fun getMatches(): List<Match> = coroutineScope {
-        val apiMatches = matchApi.getMatches()
+        val apiMatches = MatchApi.getMatches()
         val matches = apiMatches.map { async { it.toModel() }}.awaitAll()
         matches.filterNotNull()
     }
 
     private suspend fun FirestoreMatch.toModel(): Match? {
-        val userId = this.usersMatched.firstOrNull { it != authProvider.userId!! } ?: return null
-        val user = userApi.getUser(userId)
-        val pictures = pictureApi.getPictures(user.id, user.pictures)
+        val userId = this.usersMatched.firstOrNull { it != AuthProvider.userId!! } ?: return null
+        val user = UserApi.getUser(userId) ?: return null
+        val pictures = PictureApi.getPictures(user.id, user.pictures)
         return Match(
             this.id,
             Profile(
@@ -45,7 +40,7 @@ class MatchRemoteDataSourceImpl(
     }
 
     override suspend fun getMatch(id: String): Match {
-        return matchApi.getMatch(id).toModel()!!
+        return MatchApi.getMatch(id).toModel()!!
     }
 
 }

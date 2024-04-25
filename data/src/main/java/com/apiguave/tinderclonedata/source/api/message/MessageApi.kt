@@ -11,12 +11,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class MessageApi(private val authProvider: AuthProvider) {
+object MessageApi {
 
-    companion object {
-        private const val MATCHES = "matches"
-        private const val MESSAGES = "messages"
-    }
+    private const val MATCHES = "matches"
+    private const val MESSAGES = "messages"
 
     fun getMessages(matchId: String): Flow<List<FirestoreMessage>> = callbackFlow {
         // Reference to use in Firestore
@@ -50,7 +48,7 @@ class MessageApi(private val authProvider: AuthProvider) {
     }
 
     suspend fun sendMessage(matchId: String, text: String){
-        val data = FirestoreMessageProperties.toData(authProvider.userId!!, text)
+        val data = FirestoreMessageProperties.toData(AuthProvider.userId!!, text)
         coroutineScope {
             val newMessageResult = async {
                 FirebaseFirestore.getInstance()

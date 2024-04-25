@@ -2,7 +2,7 @@ package com.apiguave.tinderclonedata.source.api.auth
 
 import com.google.firebase.auth.FirebaseAuth
 
-class AuthProvider {
+object AuthProvider {
     val isUserSignedIn: Boolean
         get() = FirebaseAuth.getInstance().currentUser != null
 

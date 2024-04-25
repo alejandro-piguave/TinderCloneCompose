@@ -4,12 +4,6 @@ import com.apiguave.tinderclonedata.repository.auth.AuthLocalDataSource
 import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedata.source.auth.AuthRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.auth.AuthRepository
-import com.apiguave.tinderclonedata.source.api.auth.AuthApi
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
-import com.apiguave.tinderclonedata.source.api.match.MatchApi
-import com.apiguave.tinderclonedata.source.api.message.MessageApi
-import com.apiguave.tinderclonedata.source.api.picture.PictureApi
-import com.apiguave.tinderclonedata.source.api.user.UserApi
 import com.apiguave.tinderclonedata.source.auth.AuthLocalDataSourceImpl
 import com.apiguave.tinderclonedata.repository.auth.AuthRepositoryImpl
 import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
@@ -30,29 +24,21 @@ import org.koin.dsl.module
 
 val dataModule = module {
 
-    //Api
-    single { AuthProvider() }
-    single { MatchApi(get()) }
-    single { UserApi(get()) }
-    single { PictureApi(get(), get()) }
-    single { AuthApi() }
-    single { MessageApi(get()) }
-
     //Profile
-    single<ProfileRemoteDataSource> { ProfileRemoteDataSourceImpl(get(), get()) }
+    single<ProfileRemoteDataSource> { ProfileRemoteDataSourceImpl() }
     single<ProfileGenerator> { ProfileGeneratorImpl(get()) }
     single<ProfileRepository> { ProfileRepositoryImpl(get()) }
 
     //Messages
-    single<MessageRemoteDataSource> { MessageRemoteDataSourceImpl(get(), get()) }
+    single<MessageRemoteDataSource> { MessageRemoteDataSourceImpl() }
     single<MessageRepository> { MessageRepositoryImpl(get()) }
 
     //Matches
-    single<MatchRemoteDataSource> { MatchRemoteDataSourceImpl(get(), get(), get(), get()) }
+    single<MatchRemoteDataSource> { MatchRemoteDataSourceImpl() }
     single<MatchRepository> { MatchRepositoryImpl(get()) }
 
     //Auth
-    single<AuthLocalDataSource> { AuthLocalDataSourceImpl(get()) }
-    single<AuthRemoteDataSource> { AuthRemoteDataSourceImpl(get()) }
+    single<AuthLocalDataSource> { AuthLocalDataSourceImpl() }
+    single<AuthRemoteDataSource> { AuthRemoteDataSourceImpl() }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }

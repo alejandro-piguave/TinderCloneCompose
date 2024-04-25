@@ -7,20 +7,17 @@ import com.apiguave.tinderclonedomain.message.Message
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MessageRemoteDataSourceImpl(
-    private val authProvider: AuthProvider,
-    private val messageApi: MessageApi
-): MessageRemoteDataSource {
+class MessageRemoteDataSourceImpl: MessageRemoteDataSource {
 
-    override fun getMessages(matchId: String): Flow<List<Message>> = messageApi.getMessages(matchId).map { list ->
+    override fun getMessages(matchId: String): Flow<List<Message>> = MessageApi.getMessages(matchId).map { list ->
         list.map {
-            val isSender = it.senderId == authProvider.userId!!
+            val isSender = it.senderId == AuthProvider.userId!!
             val text = it.message
             Message(text, isSender)
         }
     }
 
     override suspend fun sendMessage(matchId: String, text: String){
-        messageApi.sendMessage(matchId, text)
+        MessageApi.sendMessage(matchId, text)
     }
 }

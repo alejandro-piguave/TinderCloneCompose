@@ -8,28 +8,16 @@ import com.apiguave.tinderclonedata.source.extension.toTimestamp
 import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedata.source.api.user.exception.FirestoreException
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import java.time.LocalDate
 
-class UserApi(private val authProvider: AuthProvider) {
+object UserApi {
 
-    companion object {
-        private const val USERS = "users"
-        private const val MATCHES = "matches"
-    }
-
-    /*
-       This property is stored due to the particularities of Firebase.
-       With a traditional backend application, for queries that need the data of the current user,
-       we would already have access to that data inside of the backend so there would be no need to pass it,
-       however, we can't do this with Firebase restrictions, so in order to avoid the cost of performing an extra query
-       we just store it in memory so that it stays available when needed.
-     */
-    private var currentUser: FirestoreUser? = null
+    private const val USERS = "users"
+    private const val MATCHES = "matches"
 
     suspend fun createUser(
         userId: String,
@@ -53,18 +41,12 @@ class UserApi(private val authProvider: AuthProvider) {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
-    //Get the signed in user
-    suspend fun getUser(): FirestoreUser {
-        return currentUser ?: getUser(authProvider.userId!!)
-    }
-
-    suspend fun getUser(userId: String): FirestoreUser {
+    suspend fun getUser(userId: String): FirestoreUser? {
         val snapshot = FirebaseFirestore.getInstance().collection(USERS).document(userId).get().getTaskResult()
-        return snapshot.toObject<FirestoreUser>() ?: throw FirestoreException("Document doesn't exist")
+        return snapshot.toObject<FirestoreUser>()
     }
 
-    suspend fun getCompatibleUsers(): List<FirestoreUser> {
-        val currentUser = getUser()
+    suspend fun getCompatibleUsers(currentUser: FirestoreUser): List<FirestoreUser> {
         val excludedUserIds = currentUser.liked + currentUser.passed + currentUser.id
 
         //Build query
@@ -98,12 +80,12 @@ class UserApi(private val authProvider: AuthProvider) {
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): String? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(authProvider.userId!!)
+            .document(AuthProvider.userId!!)
             .update(mapOf((if (isLike) FirestoreUserProperties.liked else FirestoreUserProperties.passed) to FieldValue.arrayUnion(swipedUserId)))
             .getTaskResult()
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(authProvider.userId!!)
+            .document(AuthProvider.userId!!)
             .collection(FirestoreUserProperties.liked)
             .document(swipedUserId)
             .set(mapOf("exists" to true))
@@ -111,9 +93,9 @@ class UserApi(private val authProvider: AuthProvider) {
 
         val hasUserLikedBack = hasUserLikedBack(swipedUserId)
         if(hasUserLikedBack){
-            val matchId = getMatchId(authProvider.userId!!, swipedUserId)
+            val matchId = getMatchId(AuthProvider.userId!!, swipedUserId)
             FieldValue.serverTimestamp()
-            val data = FirestoreMatchProperties.toData(swipedUserId, authProvider.userId!!)
+            val data = FirestoreMatchProperties.toData(swipedUserId, AuthProvider.userId!!)
             FirebaseFirestore.getInstance()
                 .collection(MATCHES)
                 .document(matchId)
@@ -138,7 +120,7 @@ class UserApi(private val authProvider: AuthProvider) {
             .collection(USERS)
             .document(swipedUserId)
             .collection(FirestoreUserProperties.liked)
-            .document(authProvider.userId!!)
+            .document(AuthProvider.userId!!)
             .get()
             .getTaskResult()
         return result.exists()
@@ -155,7 +137,6 @@ class UserApi(private val authProvider: AuthProvider) {
             FirestoreUserProperties.orientation to orientation,
             FirestoreUserProperties.pictures to pictures
         )
-        FirebaseFirestore.getInstance().collection(USERS).document(authProvider.userId!!).update(data).getTaskResult()
-        currentUser = currentUser?.copy(bio = bio, male = gender, orientation = orientation, pictures = pictures)
+        FirebaseFirestore.getInstance().collection(USERS).document(AuthProvider.userId!!).update(data).getTaskResult()
     }
 }
