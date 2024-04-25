@@ -2,7 +2,7 @@ package com.apiguave.tinderclonedata.source.auth
 
 import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedomain.auth.Account
-import com.apiguave.tinderclonedata.source.api.auth.AuthApi
+import com.apiguave.tinderclonedata.source.firebase.api.AuthApi
 
 class AuthRemoteDataSourceImpl: AuthRemoteDataSource {
 

@@ -1,12 +1,12 @@
 package com.apiguave.tinderclonedata.source.auth
 
 import com.apiguave.tinderclonedata.repository.auth.AuthLocalDataSource
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
+import com.apiguave.tinderclonedata.source.firebase.api.AuthApi
 
 class AuthLocalDataSourceImpl: AuthLocalDataSource {
     override val isUserSignedIn: Boolean
-        get() = AuthProvider.isUserSignedIn
+        get() = AuthApi.isUserSignedIn
 
     override val userId: String?
-        get() = AuthProvider.userId
+        get() = AuthApi.userId
 }

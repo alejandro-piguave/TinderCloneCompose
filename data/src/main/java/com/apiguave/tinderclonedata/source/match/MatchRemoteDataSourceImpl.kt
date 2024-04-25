@@ -1,11 +1,11 @@
 package com.apiguave.tinderclonedata.source.match
 
 import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
-import com.apiguave.tinderclonedata.source.api.match.FirestoreMatch
-import com.apiguave.tinderclonedata.source.api.match.MatchApi
-import com.apiguave.tinderclonedata.source.api.picture.PictureApi
-import com.apiguave.tinderclonedata.source.api.user.UserApi
+import com.apiguave.tinderclonedata.source.firebase.api.AuthApi
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatch
+import com.apiguave.tinderclonedata.source.firebase.api.MatchApi
+import com.apiguave.tinderclonedata.source.firebase.api.PictureApi
+import com.apiguave.tinderclonedata.source.firebase.api.UserApi
 import com.apiguave.tinderclonedata.source.extension.toAge
 import com.apiguave.tinderclonedata.source.extension.toShortString
 import kotlinx.coroutines.async
@@ -23,7 +23,7 @@ class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
     }
 
     private suspend fun FirestoreMatch.toModel(): Match? {
-        val userId = this.usersMatched.firstOrNull { it != AuthProvider.userId!! } ?: return null
+        val userId = this.usersMatched.firstOrNull { it != AuthApi.userId!! } ?: return null
         val user = UserApi.getUser(userId) ?: return null
         val pictures = PictureApi.getPictures(user.id, user.pictures)
         return Match(

@@ -1,18 +1,15 @@
-package com.apiguave.tinderclonedata.source.api.user
+package com.apiguave.tinderclonedata.source.firebase.api
 
-import com.apiguave.tinderclonedata.source.api.match.FirestoreMatchProperties
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatchProperties
 import com.apiguave.tinderclonedata.source.extension.getTaskResult
-import com.apiguave.tinderclonedata.source.extension.toBoolean
-import com.apiguave.tinderclonedata.source.extension.toFirestoreOrientation
-import com.apiguave.tinderclonedata.source.extension.toTimestamp
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUser
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUserProperties
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import java.time.LocalDate
 
 object UserApi {
 
@@ -22,18 +19,18 @@ object UserApi {
     suspend fun createUser(
         userId: String,
         name: String,
-        birthdate: LocalDate,
+        birthdate: Timestamp,
         bio: String,
-        gender: Gender,
-        orientation: Orientation,
+        isMale: Boolean,
+        orientation: FirestoreOrientation,
         pictures: List<String>
     ) {
         val user = FirestoreUser(
             name = name,
-            birthDate = birthdate.toTimestamp(),
+            birthDate = birthdate,
             bio = bio,
-            male = gender.toBoolean(),
-            orientation = orientation.toFirestoreOrientation(),
+            male = isMale,
+            orientation = orientation,
             pictures = pictures,
             liked = emptyList(),
             passed = emptyList()
@@ -80,12 +77,12 @@ object UserApi {
     suspend fun swipeUser(swipedUserId: String, isLike: Boolean): String? {
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(AuthProvider.userId!!)
+            .document(AuthApi.userId!!)
             .update(mapOf((if (isLike) FirestoreUserProperties.liked else FirestoreUserProperties.passed) to FieldValue.arrayUnion(swipedUserId)))
             .getTaskResult()
         FirebaseFirestore.getInstance()
             .collection(USERS)
-            .document(AuthProvider.userId!!)
+            .document(AuthApi.userId!!)
             .collection(FirestoreUserProperties.liked)
             .document(swipedUserId)
             .set(mapOf("exists" to true))
@@ -93,9 +90,9 @@ object UserApi {
 
         val hasUserLikedBack = hasUserLikedBack(swipedUserId)
         if(hasUserLikedBack){
-            val matchId = getMatchId(AuthProvider.userId!!, swipedUserId)
+            val matchId = getMatchId(AuthApi.userId!!, swipedUserId)
             FieldValue.serverTimestamp()
-            val data = FirestoreMatchProperties.toData(swipedUserId, AuthProvider.userId!!)
+            val data = FirestoreMatchProperties.toData(swipedUserId, AuthApi.userId!!)
             FirebaseFirestore.getInstance()
                 .collection(MATCHES)
                 .document(matchId)
@@ -120,7 +117,7 @@ object UserApi {
             .collection(USERS)
             .document(swipedUserId)
             .collection(FirestoreUserProperties.liked)
-            .document(AuthProvider.userId!!)
+            .document(AuthApi.userId!!)
             .get()
             .getTaskResult()
         return result.exists()
@@ -137,6 +134,6 @@ object UserApi {
             FirestoreUserProperties.orientation to orientation,
             FirestoreUserProperties.pictures to pictures
         )
-        FirebaseFirestore.getInstance().collection(USERS).document(AuthProvider.userId!!).update(data).getTaskResult()
+        FirebaseFirestore.getInstance().collection(USERS).document(AuthApi.userId!!).update(data).getTaskResult()
     }
 }

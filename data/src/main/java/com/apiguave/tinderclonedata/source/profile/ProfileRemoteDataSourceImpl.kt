@@ -2,15 +2,16 @@ package com.apiguave.tinderclonedata.source.profile
 
 import android.net.Uri
 import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
-import com.apiguave.tinderclonedata.source.api.picture.PictureApi
-import com.apiguave.tinderclonedata.source.api.user.UserApi
+import com.apiguave.tinderclonedata.source.firebase.api.AuthApi
+import com.apiguave.tinderclonedata.source.firebase.api.PictureApi
+import com.apiguave.tinderclonedata.source.firebase.api.UserApi
 import com.apiguave.tinderclonedata.source.extension.toBoolean
 import com.apiguave.tinderclonedata.source.extension.toFirestoreOrientation
-import com.apiguave.tinderclonedata.source.api.user.FirestoreUser
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUser
 import com.apiguave.tinderclonedata.source.extension.toAge
 import com.apiguave.tinderclonedata.source.extension.toLongString
 import com.apiguave.tinderclonedata.source.extension.toOrientation
+import com.apiguave.tinderclonedata.source.extension.toTimestamp
 import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.Picture
@@ -37,7 +38,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 
     private suspend fun getCurrentUser(): FirestoreUser {
         return currentUser ?: run {
-            val user = UserApi.getUser(AuthProvider.userId!!)!!
+            val user = UserApi.getUser(AuthApi.userId!!)!!
             currentUser = user
             user
         }
@@ -46,7 +47,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
     private suspend fun getCurrentPictures(): List<RemotePicture> {
         return currentPictures ?: run {
             val currentUser = getCurrentUser()
-            val pictures = PictureApi.getPictures(AuthProvider.userId!!, currentUser.pictures)
+            val pictures = PictureApi.getPictures(AuthApi.userId!!, currentUser.pictures)
             currentPictures = pictures
             pictures
         }
@@ -81,10 +82,10 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         UserApi.createUser(
             userId,
             name,
-            birthdate,
+            birthdate.toTimestamp(),
             bio,
-            gender,
-            orientation,
+            gender.toBoolean(),
+            orientation.toFirestoreOrientation(),
             filenames.map { it.filename })
     }
 

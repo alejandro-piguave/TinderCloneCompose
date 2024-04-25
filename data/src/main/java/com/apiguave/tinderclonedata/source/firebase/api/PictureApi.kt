@@ -1,7 +1,6 @@
-package com.apiguave.tinderclonedata.source.api.picture
+package com.apiguave.tinderclonedata.source.firebase.api
 
 import android.net.Uri
-import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
 import com.apiguave.tinderclonedata.source.extension.getTaskResult
 import com.apiguave.tinderclonedomain.profile.RemotePicture
 import com.google.firebase.storage.FirebaseStorage
@@ -35,11 +34,11 @@ object PictureApi {
 
     suspend fun uploadPicture(picture: Uri): RemotePicture {
         val filename = UUID.randomUUID().toString()+".jpg"
-        val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(AuthProvider.userId!!).child(filename)
+        val pictureRef = FirebaseStorage.getInstance().reference.child(USERS).child(AuthApi.userId!!).child(filename)
 
         pictureRef.putFile(picture).getTaskResult()
 
-        return RemotePicture(getPictureUrl(AuthProvider.userId!!, filename), filename)
+        return RemotePicture(getPictureUrl(AuthApi.userId!!, filename), filename)
     }
 
     suspend fun deletePictures(pictures: List<String>){
@@ -49,6 +48,6 @@ object PictureApi {
     }
 
     private suspend fun deletePicture(picture: String){
-        FirebaseStorage.getInstance().reference.child(USERS).child(AuthProvider.userId!!).child(picture).delete().getTaskResult()
+        FirebaseStorage.getInstance().reference.child(USERS).child(AuthApi.userId!!).child(picture).delete().getTaskResult()
     }
 }
