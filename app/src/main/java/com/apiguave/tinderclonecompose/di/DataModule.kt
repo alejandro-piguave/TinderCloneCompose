@@ -5,7 +5,7 @@ import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedata.source.auth.AuthRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedata.source.api.auth.AuthApi
-import com.apiguave.tinderclonedata.source.local.AuthProvider
+import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
 import com.apiguave.tinderclonedata.source.api.match.MatchApi
 import com.apiguave.tinderclonedata.source.api.message.MessageApi
 import com.apiguave.tinderclonedata.source.api.picture.PictureApi

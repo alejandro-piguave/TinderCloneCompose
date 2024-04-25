@@ -5,7 +5,7 @@ import com.apiguave.tinderclonedata.source.extension.getTaskResult
 import com.apiguave.tinderclonedata.source.extension.toBoolean
 import com.apiguave.tinderclonedata.source.extension.toFirestoreOrientation
 import com.apiguave.tinderclonedata.source.extension.toTimestamp
-import com.apiguave.tinderclonedata.source.local.AuthProvider
+import com.apiguave.tinderclonedata.source.api.auth.AuthProvider
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedata.source.api.user.exception.FirestoreException
