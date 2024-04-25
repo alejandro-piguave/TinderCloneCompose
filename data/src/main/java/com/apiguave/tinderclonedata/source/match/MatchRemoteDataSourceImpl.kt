@@ -1,0 +1,51 @@
+package com.apiguave.tinderclonedata.source.match
+
+import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
+import com.apiguave.tinderclonedata.source.local.AuthProvider
+import com.apiguave.tinderclonedata.source.api.match.FirestoreMatch
+import com.apiguave.tinderclonedata.source.api.match.MatchApi
+import com.apiguave.tinderclonedata.source.api.picture.PictureApi
+import com.apiguave.tinderclonedata.source.api.user.UserApi
+import com.apiguave.tinderclonedata.source.extension.toAge
+import com.apiguave.tinderclonedata.source.extension.toShortString
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import com.apiguave.tinderclonedomain.match.Match
+import com.apiguave.tinderclonedomain.profile.Profile
+import kotlinx.coroutines.awaitAll
+
+class MatchRemoteDataSourceImpl(
+    private val authProvider: AuthProvider,
+    private val matchApi: MatchApi,
+    private val userApi: UserApi,
+    private val pictureApi: PictureApi
+): MatchRemoteDataSource {
+
+    override suspend fun getMatches(): List<Match> = coroutineScope {
+        val apiMatches = matchApi.getMatches()
+        val matches = apiMatches.map { async { it.toModel() }}.awaitAll()
+        matches.filterNotNull()
+    }
+
+    private suspend fun FirestoreMatch.toModel(): Match? {
+        val userId = this.usersMatched.firstOrNull { it != authProvider.userId!! } ?: return null
+        val user = userApi.getUser(userId)
+        val pictures = pictureApi.getPictures(user.id, user.pictures)
+        return Match(
+            this.id,
+            Profile(
+                userId,
+                user.name,
+                user.birthDate?.toDate()?.toAge() ?: 0,
+                pictures,
+            ),
+            this.timestamp?.toShortString() ?: "",
+            this.lastMessage
+        )
+    }
+
+    override suspend fun getMatch(id: String): Match {
+        return matchApi.getMatch(id).toModel()!!
+    }
+
+}

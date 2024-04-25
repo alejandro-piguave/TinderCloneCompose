@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonedata.repository.profile
 
+import com.apiguave.tinderclonedata.source.profile.ProfileRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import com.apiguave.tinderclonedomain.profile.UserProfile
@@ -10,7 +11,7 @@ import com.apiguave.tinderclonedomain.profile.Picture
 import java.time.LocalDate
 
 class ProfileRepositoryImpl(
-    private val profileRemoteDataSource: ProfileRemoteDataSource
+    private val profileRemoteDataSource: ProfileRemoteDataSourceImpl
 ): ProfileRepository {
 
     override suspend fun getProfile(): UserProfile {
