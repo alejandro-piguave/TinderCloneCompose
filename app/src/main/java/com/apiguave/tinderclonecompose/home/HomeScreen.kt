@@ -18,14 +18,7 @@ fun HomeScreen(
         removeLastProfile = homeViewModel::removeLastProfile,
         fetchProfiles = homeViewModel::fetchProfiles,
         swipeUser = homeViewModel::swipeUser,
-        onShowProfileGenerationDialog = homeViewModel::showProfileGenerationDialog,
         onCloseDialog = homeViewModel::closeDialog,
         onSendMessage = homeViewModel::sendMessage,
-        onGenerateProfiles = { profileCount ->
-            homeViewModel.closeDialog()
-            homeViewModel.setLoading()
-            homeViewModel.generateProfiles(profileCount)
-        },
-
     )
 }

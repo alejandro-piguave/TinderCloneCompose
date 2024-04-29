@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val generateProfilesUseCase: GenerateProfilesUseCase,
     private val getProfilesUseCase: GetProfilesUseCase,
     private val likeProfileUseCase: LikeProfileUseCase,
     private val passProfileUseCase: PassProfileUseCase,
@@ -25,10 +23,6 @@ class HomeViewModel(
     val uiState = _uiState.asStateFlow()
 
     init { fetchProfiles() }
-
-    fun showProfileGenerationDialog() {
-        _uiState.update { it.copy(dialogState = HomeViewDialogState.GenerateProfilesDialog) }
-    }
 
     fun closeDialog() {
         _uiState.update {
@@ -61,20 +55,6 @@ class HomeViewModel(
         }
     }
 
-    fun setLoading(){
-        _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
-    }
-
-    fun generateProfiles(amount: Int) = viewModelScope.launch {
-        _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
-        generateProfilesUseCase(amount).fold({
-            fetchProfiles()
-        }, {error ->
-            _uiState.update { it.copy(contentState = HomeViewContentState.Error(error.message ?: "")) }
-        })
-    }
-
-
     fun fetchProfiles() = viewModelScope.launch {
         _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
         getProfilesUseCase().fold({profiles ->
@@ -93,7 +73,6 @@ data class HomeViewState(
 
 sealed class HomeViewDialogState {
     object NoDialog: HomeViewDialogState()
-    object GenerateProfilesDialog: HomeViewDialogState()
     data class NewMatchDialog(val match: Match): HomeViewDialogState()
 }
 

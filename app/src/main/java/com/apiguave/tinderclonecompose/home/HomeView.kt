@@ -41,21 +41,11 @@ fun HomeView(
     removeLastProfile: () -> Unit,
     fetchProfiles: () -> Unit,
     swipeUser: (Profile, Boolean) -> Unit,
-    onGenerateProfiles: (Int) -> Unit,
-    onShowProfileGenerationDialog: () -> Unit,
     onSendMessage: (String, String) -> Unit,
-    onCloseDialog: () -> Unit,
-    allowProfileGenerator: Boolean = true
-    ) {
+    onCloseDialog: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     when(uiState.dialogState) {
-        HomeViewDialogState.GenerateProfilesDialog -> {
-            GenerateProfilesDialog(
-                onDismissRequest = onCloseDialog,
-                onGenerate = onGenerateProfiles
-            )
-        }
         is HomeViewDialogState.NewMatchDialog -> {
             NewMatchDialog(match = uiState.dialogState.match, onSendMessage = { onSendMessage(uiState.dialogState.match.id, it) }, onCloseClicked = onCloseDialog)
         }
@@ -82,19 +72,6 @@ fun HomeView(
                     onClick = navigateToMatchList
                 )
             }
-        },
-        floatingActionButton = {
-            if (allowProfileGenerator) {
-                FloatingActionButton(
-                    modifier = Modifier.size(40.dp),
-                    onClick = onShowProfileGenerationDialog) {
-                    Icon(
-                        tint = Color.White,
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null
-                    )
-                }
-            } else Unit
         }
     ) { padding ->
         Column(
@@ -209,8 +186,6 @@ fun HomeViewPreview() {
             swipeUser = { _, _ ->
 
             },
-            onGenerateProfiles = {},
-            onShowProfileGenerationDialog = {},
             onCloseDialog = {},
             onSendMessage = { _, _ ->}
         )
