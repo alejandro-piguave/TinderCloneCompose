@@ -3,20 +3,15 @@ package com.apiguave.tinderclonedata.source.firebase.api
 import com.apiguave.tinderclonedata.source.firebase.exception.AuthException
 import com.apiguave.tinderclonedata.source.extension.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 object AuthApi {
-    val isUserSignedIn: Boolean
-        get() = FirebaseAuth.getInstance().currentUser != null
-
     val userId: String?
         get() = FirebaseAuth.getInstance().currentUser?.uid
 
-    suspend fun signInWithGoogle(idToken: String): FirebaseUser {
+    suspend fun signInWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        val authResult  = FirebaseAuth.getInstance().signInWithCredential(credential).getTaskResult()
-        return authResult?.user ?: throw AuthException("User is empty")
+        FirebaseAuth.getInstance().signInWithCredential(credential).getTaskResult()
     }
 
     fun signOut(){

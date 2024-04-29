@@ -8,11 +8,7 @@ import com.apiguave.tinderclonedata.repository.auth.exception.SignUpException
 class AuthRepositoryImpl(
     private val authLocalDataSource: AuthLocalDataSource,
     private val authRemoteDataSource: AuthRemoteDataSource
-):
-    AuthRepository {
-
-    override val isUserSignedIn: Boolean
-        get() = authLocalDataSource.isUserSignedIn
+): AuthRepository {
 
     override val userId: String?
         get() = authLocalDataSource.userId
