@@ -1,5 +1,6 @@
 package com.apiguave.tinderclonecompose.di
 
+import com.apiguave.tinderclonecompose.BuildConfig
 import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
 import com.apiguave.tinderclonedata.source.AuthRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.auth.AuthRepository
@@ -47,6 +48,6 @@ val mockSourceModule = module {
 }
 
 val dataModule = module {
-    includes(sourceModule)
     includes(repositoryModule)
+    includes(if(BuildConfig.BUILD_TYPE == "mock") mockSourceModule else sourceModule)
 }
