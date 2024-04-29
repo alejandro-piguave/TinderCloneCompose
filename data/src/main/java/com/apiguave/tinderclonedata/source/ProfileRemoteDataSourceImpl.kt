@@ -1,10 +1,10 @@
-package com.apiguave.tinderclonedata.source.profile
+package com.apiguave.tinderclonedata.source
 
 import android.net.Uri
 import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
-import com.apiguave.tinderclonedata.source.firebase.api.AuthApi
-import com.apiguave.tinderclonedata.source.firebase.api.PictureApi
-import com.apiguave.tinderclonedata.source.firebase.api.UserApi
+import com.apiguave.tinderclonedata.source.firebase.AuthApi
+import com.apiguave.tinderclonedata.source.firebase.PictureApi
+import com.apiguave.tinderclonedata.source.firebase.UserApi
 import com.apiguave.tinderclonedata.source.extension.toBoolean
 import com.apiguave.tinderclonedata.source.extension.toFirestoreOrientation
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUser

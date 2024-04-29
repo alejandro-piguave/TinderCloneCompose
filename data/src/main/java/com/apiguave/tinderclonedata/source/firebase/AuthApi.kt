@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.source.firebase.api
+package com.apiguave.tinderclonedata.source.firebase
 
 import com.apiguave.tinderclonedata.source.firebase.exception.AuthException
 import com.apiguave.tinderclonedata.source.extension.getTaskResult
