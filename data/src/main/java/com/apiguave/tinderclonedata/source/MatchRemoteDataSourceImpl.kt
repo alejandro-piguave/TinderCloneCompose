@@ -32,7 +32,7 @@ class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
                 userId,
                 user.name,
                 user.birthDate?.toDate()?.toAge() ?: 0,
-                pictures,
+                pictures.map { it.uri },
             ),
             this.timestamp?.toShortString() ?: "",
             this.lastMessage

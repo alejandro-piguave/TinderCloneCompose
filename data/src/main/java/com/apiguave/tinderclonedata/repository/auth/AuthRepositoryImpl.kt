@@ -6,12 +6,11 @@ import com.apiguave.tinderclonedata.repository.auth.exception.SignInException
 import com.apiguave.tinderclonedata.repository.auth.exception.SignUpException
 
 class AuthRepositoryImpl(
-    private val authLocalDataSource: AuthLocalDataSource,
     private val authRemoteDataSource: AuthRemoteDataSource
 ): AuthRepository {
 
     override val userId: String?
-        get() = authLocalDataSource.userId
+        get() = authRemoteDataSource.userId
 
     override suspend fun signIn(account: Account) {
         val isNewAccount = authRemoteDataSource.isNewAccount(account)

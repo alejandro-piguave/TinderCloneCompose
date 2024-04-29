@@ -4,6 +4,7 @@ import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
 import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
@@ -19,7 +20,7 @@ val domainModule = module {
     single { SignUpUseCase(get(), get()) }
     single { GetMaxBirthdateUseCase() }
     single { GenerateProfilesUseCase(get(), get()) }
-    single { GetProfilesUseCase(get()) }
+    single { GetProfileUseCase(get()) }
     single { LikeProfileUseCase(get(), get()) }
     single { PassProfileUseCase(get()) }
     single { SendMessageUseCase(get()) }

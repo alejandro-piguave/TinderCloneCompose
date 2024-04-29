@@ -152,7 +152,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 
     private fun getProfile(user: FirestoreUser): Profile {
         val pictures = PictureApi.getPictures(user.id, user.pictures)
-        return Profile(user.id, user.name, user.birthDate!!.toDate().toAge(), pictures)
+        return Profile(user.id, user.name, user.birthDate!!.toDate().toAge(), pictures.map { it.uri })
     }
 
     override suspend fun passProfile(profile: Profile) {
