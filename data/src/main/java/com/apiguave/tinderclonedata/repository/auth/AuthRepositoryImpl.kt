@@ -2,8 +2,8 @@ package com.apiguave.tinderclonedata.repository.auth
 
 import com.apiguave.tinderclonedomain.auth.Account
 import com.apiguave.tinderclonedomain.auth.AuthRepository
-import com.apiguave.tinderclonedata.source.firebase.exception.SignInException
-import com.apiguave.tinderclonedata.source.firebase.exception.SignUpException
+import com.apiguave.tinderclonedata.repository.auth.exception.SignInException
+import com.apiguave.tinderclonedata.repository.auth.exception.SignUpException
 
 class AuthRepositoryImpl(
     private val authLocalDataSource: AuthLocalDataSource,
