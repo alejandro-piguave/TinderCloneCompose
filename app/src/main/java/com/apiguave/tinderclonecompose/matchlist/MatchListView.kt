@@ -127,7 +127,7 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = match.profile.pictures.first().uri,
+            model = match.profile.pictures.first(),
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier

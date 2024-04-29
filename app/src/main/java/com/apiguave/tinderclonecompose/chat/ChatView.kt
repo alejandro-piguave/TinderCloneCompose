@@ -73,7 +73,7 @@ fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
     CenterAppBar(onArrowBackPressed = onArrowBackPressed) {
         Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
             AsyncImage(
-                model = match.profile.pictures.first().uri,
+                model = match.profile.pictures.first(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -98,7 +98,7 @@ fun MessageItem(match: Match, message: Message) {
             Spacer(Modifier.fillMaxWidth(.25f))
         } else {
             AsyncImage(
-                model = match.profile.pictures.first().uri,
+                model = match.profile.pictures.first(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier

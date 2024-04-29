@@ -56,7 +56,7 @@ fun NewMatchView(
             //Picture
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
-                model = matchModel.profile.pictures[currentIndex].uri,
+                model = matchModel.profile.pictures[currentIndex],
                 contentScale = ContentScale.Crop,
                 onState = {
                     if(it is AsyncImagePainter.State.Success && isFirstTime){
