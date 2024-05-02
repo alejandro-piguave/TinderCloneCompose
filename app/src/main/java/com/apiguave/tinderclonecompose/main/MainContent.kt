@@ -18,19 +18,17 @@ import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainContent(signInClient: GoogleSignInClient){
+fun MainContent(){
     TinderCloneComposeTheme {
         val navController = rememberAnimatedNavController()
         val chatViewModel: ChatViewModel = getViewModel()
         AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
             animatedComposable(Routes.Login) {
                 LoginScreen(
-                    signInClient = signInClient,
                     onNavigateToHome = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.Login){
@@ -46,7 +44,6 @@ fun MainContent(signInClient: GoogleSignInClient){
 
             animatedComposable(Routes.SignUp) {
                 SignUpScreen(
-                    signInClient = signInClient,
                     onNavigateToHome = {
                         navController.navigate(Routes.Home){
                             popUpTo(Routes.SignUp){
@@ -70,7 +67,6 @@ fun MainContent(signInClient: GoogleSignInClient){
 
             animatedComposable(Routes.EditProfile){
                 EditProfileScreen(
-                    signInClient = signInClient,
                     onProfileEdited = navController::popBackStack,
                     onSignedOut = {
                         navController.navigate(Routes.Login){

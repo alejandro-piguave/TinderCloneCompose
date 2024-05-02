@@ -5,11 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun EditProfileScreen(
-    signInClient: GoogleSignInClient,
     onSignedOut: () -> Unit,
     onProfileEdited: () -> Unit) {
     val editProfileViewModel: EditProfileViewModel = koinViewModel()
@@ -27,6 +27,7 @@ fun EditProfileScreen(
         }
     })
 
+    val signInClient: GoogleSignInClient = get()
     EditProfileView(
         uiState = uiState,
         onPictureSelected = editProfileViewModel::addPicture,

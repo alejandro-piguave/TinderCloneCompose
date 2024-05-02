@@ -7,13 +7,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    signInClient: GoogleSignInClient,
     onNavigateToSignUp: () -> Unit,
     onNavigateToHome: () -> Unit) {
+    val signInClient: GoogleSignInClient = get()
     val loginViewModel: LoginViewModel = koinViewModel()
     val uiState by loginViewModel.uiState.collectAsState()
 

@@ -9,21 +9,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignUpScreen(
-    signInClient: GoogleSignInClient,
     onNavigateToHome: () -> Unit) {
     val signUpViewModel: SignUpViewModel = koinViewModel()
     val uiState by signUpViewModel.uiState.collectAsState()
-
-    val coroutineScope = rememberCoroutineScope()
-    val startForResult = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = signUpViewModel::signUp
-
-    )
 
     LaunchedEffect(key1 = uiState, block = {
         if(uiState.isUserSignedIn){
@@ -31,6 +24,12 @@ fun SignUpScreen(
         }
     })
 
+    val signInClient: GoogleSignInClient = get()
+    val coroutineScope = rememberCoroutineScope()
+    val startForResult = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = signUpViewModel::signUp
+    )
     SignUpView(
         uiState = uiState,
         onPictureSelected = signUpViewModel::addPicture,
