@@ -17,18 +17,18 @@ import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    single { SignUpUseCase(get(), get()) }
-    single { GetMaxBirthdateUseCase() }
-    single { GenerateProfilesUseCase(get(), get()) }
-    single { GetProfileUseCase(get()) }
-    single { LikeProfileUseCase(get(), get()) }
-    single { PassProfileUseCase(get()) }
-    single { SendMessageUseCase(get()) }
-    single { GetMessagesUseCase(get()) }
-    single { SignInUseCase(get()) }
-    single { IsUserSignedInUseCase(get()) }
-    single { GetMatchesUseCase(get()) }
-    single { SignOutUseCase(get()) }
-    single { UpdateProfileUseCase(get()) }
-    single { GetProfilesUseCase(get()) }
+    factory { SignUpUseCase(get(), get()) }
+    factory { GetMaxBirthdateUseCase() }
+    factory { GenerateProfilesUseCase(get(), get()) }
+    factory { GetProfileUseCase(get()) }
+    factory { LikeProfileUseCase(get(), get()) }
+    factory { PassProfileUseCase(get()) }
+    factory { SendMessageUseCase(get()) }
+    factory { GetMessagesUseCase(get()) }
+    factory { SignInUseCase(get()) }
+    factory { IsUserSignedInUseCase(get()) }
+    factory { GetMatchesUseCase(get()) }
+    factory { SignOutUseCase(get()) }
+    factory { UpdateProfileUseCase(get()) }
+    factory { GetProfilesUseCase(get()) }
 }
