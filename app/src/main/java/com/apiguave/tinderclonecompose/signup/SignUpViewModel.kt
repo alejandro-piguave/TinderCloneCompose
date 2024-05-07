@@ -2,6 +2,7 @@ package com.apiguave.tinderclonecompose.signup
 
 import android.net.Uri
 import androidx.activity.result.ActivityResult
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -95,6 +96,7 @@ class SignUpViewModel(
     }
 }
 
+@Immutable
 sealed class SignUpDialogState {
     object NoDialog: SignUpDialogState()
     data class DeleteConfirmationDialog(val index: Int): SignUpDialogState()
@@ -103,6 +105,7 @@ sealed class SignUpDialogState {
     object Loading: SignUpDialogState()
 }
 
+@Immutable
 data class SignUpViewState(
     val name: TextFieldValue = TextFieldValue(),
     val maxBirthDate: LocalDate = LocalDate.now(),

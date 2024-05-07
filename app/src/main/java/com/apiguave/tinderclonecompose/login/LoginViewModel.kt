@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.login
 
 import androidx.activity.result.ActivityResult
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
@@ -52,4 +53,5 @@ class LoginViewModel(
 
 }
 
+@Immutable
 data class LoginViewState(val isLoading: Boolean, val isUserSignedIn: Boolean, val errorMessage: String?)

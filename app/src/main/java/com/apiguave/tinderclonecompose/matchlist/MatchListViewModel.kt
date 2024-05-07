@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.matchlist
 
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.model.MatchState
@@ -66,7 +67,7 @@ class MatchListViewModel(
     }
 }
 
-
+@Immutable
 sealed class MatchListViewState {
     object Loading : MatchListViewState()
     data class Success(val matches: List<MatchState>) : MatchListViewState()

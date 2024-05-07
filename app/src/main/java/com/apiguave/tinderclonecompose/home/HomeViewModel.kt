@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.home
 
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.model.ProfilePictureState
@@ -129,18 +130,22 @@ class HomeViewModel(
 
 }
 
+@Immutable
 data class HomeViewState(
     val dialogState: HomeViewDialogState,
     val contentState: HomeViewContentState
 )
 
+@Immutable
 data class ProfileState(val profile: Profile, val pictureStates: List<ProfilePictureState>)
 
+@Immutable
 sealed class HomeViewDialogState {
     object NoDialog : HomeViewDialogState()
     data class NewMatchDialog(val match: Match, val pictureStates: List<ProfilePictureState>) : HomeViewDialogState()
 }
 
+@Immutable
 sealed class HomeViewContentState {
     object Loading : HomeViewContentState()
     data class Success(val profileStates: List<ProfileState>) : HomeViewContentState()

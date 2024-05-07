@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.editprofile
 
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -143,6 +144,7 @@ class EditProfileViewModel(
 
 }
 
+@Immutable
 sealed class EditProfileDialogState {
     object NoDialog: EditProfileDialogState()
     data class DeleteConfirmationDialog(val index: Int): EditProfileDialogState()
@@ -151,6 +153,7 @@ sealed class EditProfileDialogState {
     object Loading: EditProfileDialogState()
 }
 
+@Immutable
 data class EditProfileViewState(
     val currentProfile: UserProfile? = null,
     val name: String = "",
