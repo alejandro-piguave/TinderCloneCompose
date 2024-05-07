@@ -4,7 +4,6 @@ import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
 import com.apiguave.tinderclonedata.source.firebase.AuthApi
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatch
 import com.apiguave.tinderclonedata.source.firebase.MatchApi
-import com.apiguave.tinderclonedata.source.firebase.PictureApi
 import com.apiguave.tinderclonedata.source.firebase.UserApi
 import com.apiguave.tinderclonedata.source.extension.toAge
 import com.apiguave.tinderclonedata.source.extension.toShortString
@@ -25,14 +24,13 @@ class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
     private suspend fun FirestoreMatch.toModel(): Match? {
         val userId = this.usersMatched.firstOrNull { it != AuthApi.userId!! } ?: return null
         val user = UserApi.getUser(userId) ?: return null
-        val pictures = PictureApi.getPictures(user.id, user.pictures)
         return Match(
             this.id,
             Profile(
                 userId,
                 user.name,
                 user.birthDate?.toDate()?.toAge() ?: 0,
-                pictures.map { it.uri },
+                user.pictures,
             ),
             this.timestamp?.toShortString() ?: "",
             this.lastMessage
