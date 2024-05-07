@@ -11,6 +11,8 @@ Tinder clone application written with Jetpack Compose and Firebase, using Clean 
 Notes:
 - The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. 
 - However, you can test the application with mocked data selecting the "mock" build variant. 
+
+
 Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
 
 ## Login and Create Profile
