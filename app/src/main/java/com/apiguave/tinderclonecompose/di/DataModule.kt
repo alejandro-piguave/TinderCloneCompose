@@ -11,7 +11,6 @@ import com.apiguave.tinderclonedata.repository.message.MessageRemoteDataSource
 import com.apiguave.tinderclonedata.repository.message.MessageRepositoryImpl
 import com.apiguave.tinderclonedata.repository.picture.PictureRemoteDataSource
 import com.apiguave.tinderclonedata.repository.picture.PictureRepositoryImpl
-import com.apiguave.tinderclonedata.repository.profile.ProfileGeneratorImpl
 import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
 import com.apiguave.tinderclonedata.repository.profile.ProfileRepositoryImpl
 import com.apiguave.tinderclonedata.source.MatchRemoteDataSourceImpl
@@ -26,12 +25,10 @@ import com.apiguave.tinderclonedata.source.mock.MessageRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedata.source.mock.PictureRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedata.source.mock.ProfileRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedomain.picture.PictureRepository
-import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<ProfileGenerator> { ProfileGeneratorImpl(get()) }
     single<ProfileRepository> { ProfileRepositoryImpl(get()) }
     single<PictureRepository> { PictureRepositoryImpl(get()) }
     single<MessageRepository> { MessageRepositoryImpl(get()) }
