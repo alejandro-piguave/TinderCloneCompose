@@ -8,7 +8,11 @@
 
 Tinder clone application written with Jetpack Compose and Firebase, using Clean Architecture and MVVM with Kotlin coroutines, flows and dependency injection with Koin.
 
-Note: The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. Additionally, you can test the application with mocked data selecting as a build variant the "mock" variant.
+Notes:
+- The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. 
+- However, you can test the application with mocked data selecting the "mock" build variant. 
+
+
 Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
 
 ## Login and Create Profile
