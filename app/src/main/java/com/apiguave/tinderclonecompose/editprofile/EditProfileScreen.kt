@@ -15,7 +15,7 @@ fun EditProfileScreen(
     val editProfileViewModel: EditProfileViewModel = koinViewModel()
     val uiState by editProfileViewModel.uiState.collectAsState()
     LaunchedEffect(key1 = Unit){
-        editProfileViewModel.updateUserProfile()
+        editProfileViewModel.loadUserProfile()
     }
 
     LaunchedEffect(key1 = Unit, block = {

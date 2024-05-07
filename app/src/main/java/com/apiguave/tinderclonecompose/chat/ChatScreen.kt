@@ -14,13 +14,13 @@ import com.apiguave.tinderclonecompose.R
 fun ChatScreen(
     onArrowBackPressed: () -> Unit,
     viewModel: ChatViewModel) {
-    val chatMatch by viewModel.match.collectAsState()
-    chatMatch?.let {
-        val messages by viewModel.getMessages(it.id).collectAsState(
+    val chatViewState by viewModel.viewState.collectAsState()
+    chatViewState?.let {
+        val messages by viewModel.getMessages(it.match.id).collectAsState(
             initial = listOf()
         )
         ChatView(
-            match = it,
+            state = it,
             messages = messages,
             onArrowBackPressed = onArrowBackPressed,
             sendMessage = viewModel::sendMessage,

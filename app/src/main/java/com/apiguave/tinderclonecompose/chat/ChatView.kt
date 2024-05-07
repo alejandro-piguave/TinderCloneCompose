@@ -22,6 +22,8 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.CenterAppBar
 import com.apiguave.tinderclonecompose.components.ChatFooter
+import com.apiguave.tinderclonecompose.model.MatchState
+import com.apiguave.tinderclonecompose.model.ProfilePictureState
 import com.apiguave.tinderclonecompose.theme.AntiFlashWhite
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
 import com.apiguave.tinderclonecompose.theme.UltramarineBlue
@@ -31,7 +33,7 @@ import com.apiguave.tinderclonedomain.profile.Profile
 
 @Composable
 fun ChatView(
-    match: Match,
+    state: MatchState,
     onArrowBackPressed: () -> Unit,
     sendMessage: (String) -> Unit,
     messages: List<Message>
@@ -39,7 +41,7 @@ fun ChatView(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            ChatAppBar(match = match, onArrowBackPressed = onArrowBackPressed)
+            ChatAppBar(match = state.match, pictureState = state.pictureState, onArrowBackPressed = onArrowBackPressed)
         },
         bottomBar = { ChatFooter(
             onSendClicked = sendMessage
@@ -58,10 +60,10 @@ fun ChatView(
                     textAlign = TextAlign.Center,
                     color = Color.Gray,
                     fontSize = 12.sp,
-                    text = stringResource(id = R.string.you_matched_with_on, match.profile.name, match.formattedDate).uppercase())
+                    text = stringResource(id = R.string.you_matched_with_on, state.match.profile.name, state.match.formattedDate).uppercase())
             }
             items(messages.size){ index ->
-                MessageItem(match = match,message = messages[index])
+                MessageItem(pictureState = state.pictureState, message = messages[index])
             }
         }
     }
@@ -69,25 +71,31 @@ fun ChatView(
 }
 
 @Composable
-fun ChatAppBar(match: Match, onArrowBackPressed: () -> Unit){
+fun ChatAppBar(match: Match, pictureState: ProfilePictureState, onArrowBackPressed: () -> Unit){
     CenterAppBar(onArrowBackPressed = onArrowBackPressed) {
         Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally){
-            AsyncImage(
-                model = match.profile.pictures.first(),
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
+            when(pictureState) {
+                is ProfilePictureState.Loading -> CircularProgressIndicator()
+                is ProfilePictureState.Remote -> {
+                    AsyncImage(
+                        model = pictureState.uri,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                    )
+                }
+            }
+
             Text(text = match.profile.name, fontSize = 13.sp,fontWeight = FontWeight.Light, color = Color.Gray,textAlign = TextAlign.Center)
         }
     }
 }
 
 @Composable
-fun MessageItem(match: Match, message: Message) {
+fun MessageItem(pictureState: ProfilePictureState, message: Message) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,15 +105,20 @@ fun MessageItem(match: Match, message: Message) {
         if(message.isFromSender){
             Spacer(Modifier.fillMaxWidth(.25f))
         } else {
-            AsyncImage(
-                model = match.profile.pictures.first(),
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
+            when(pictureState) {
+                is ProfilePictureState.Loading -> CircularProgressIndicator()
+                is ProfilePictureState.Remote -> {
+                    AsyncImage(
+                        model = pictureState.uri,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                    )
+                }
+            }
         }
 
         Text(
@@ -137,7 +150,10 @@ fun MessageItem(match: Match, message: Message) {
 fun ChatViewPreview() {
     TinderCloneComposeTheme {
         ChatView(
-            match = Match("", Profile("", "Alice", 20, emptyList()), "24/02/2024", "Hey, how are you doing?"),
+            state = MatchState(
+                Match("", Profile("", "Alice", 20, emptyList()), "24/02/2024", "Hey, how are you doing?"),
+                ProfilePictureState.Loading("picture1.png")
+            ),
             onArrowBackPressed = { },
             sendMessage = { },
             messages = listOf(

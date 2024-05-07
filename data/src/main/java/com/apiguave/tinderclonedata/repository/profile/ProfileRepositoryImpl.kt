@@ -4,9 +4,7 @@ import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Picture
 import java.time.LocalDate
 
 class ProfileRepositoryImpl(
@@ -20,10 +18,13 @@ class ProfileRepositoryImpl(
     override suspend fun updateProfile(
         bio: String,
         gender: Gender,
-        orientation: Orientation,
-        pictures: List<Picture>
-    ): UserProfile {
-        return profileRemoteDataSource.updateProfile(bio, gender, orientation, pictures)
+        orientation: Orientation
+    ) {
+        profileRemoteDataSource.updateProfile(bio, gender, orientation)
+    }
+
+    override suspend fun updatePictures(pictureNames: List<String>) {
+        profileRemoteDataSource.updateProfile(pictureNames)
     }
 
     override suspend fun addProfile(
@@ -32,10 +33,9 @@ class ProfileRepositoryImpl(
         birthdate: LocalDate,
         bio: String,
         gender: Gender,
-        orientation: Orientation,
-        pictures: List<LocalPicture>
+        orientation: Orientation
     ) {
-        profileRemoteDataSource.createProfile(userId, name, birthdate, bio, gender, orientation, pictures)
+        profileRemoteDataSource.createProfile(userId, name, birthdate, bio, gender, orientation)
     }
 
     override suspend fun likeProfile(profile: Profile): String? {

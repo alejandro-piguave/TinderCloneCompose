@@ -102,7 +102,7 @@ fun SignUpView(
             items(RowCount){ rowIndex ->
                 PictureGridRow(
                     rowIndex = rowIndex,
-                    pictures = uiState.pictures.map { it.toString() },
+                    pictures = uiState.pictures,
                     onAddPicture = onSelectPictureClicked,
                     onAddedPictureClicked = onDeletePictureClicked
                 )

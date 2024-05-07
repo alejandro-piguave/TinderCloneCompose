@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -20,10 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.apiguave.tinderclonecompose.model.ProfilePictureState
 import com.apiguave.tinderclonedomain.profile.Profile
 
 @Composable
-fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModifier: Modifier = Modifier){
+fun ProfileCardView(profile: Profile, pictures: List<ProfilePictureState>, modifier: Modifier = Modifier, contentModifier: Modifier = Modifier){
     var currentIndex by remember{ mutableStateOf(0) }
 
     val gradient = Brush.verticalGradient(
@@ -39,20 +41,33 @@ fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModi
     ) {
         Box(Modifier.fillMaxSize()) {
             //Picture
-            AsyncImage(
-                modifier = Modifier.fillMaxSize(),
-                model = profile.pictures[currentIndex],
-                contentScale = ContentScale.Crop,
-                contentDescription = null)
+            when(val picture = pictures[currentIndex]) {
+                is ProfilePictureState.Loading -> {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is ProfilePictureState.Remote -> {
+                    AsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        model = picture.uri,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null)
+                }
+            }
+
             //Gradient
-            Spacer(Modifier.fillMaxSize().background(gradient))
+            Spacer(
+                Modifier
+                    .fillMaxSize()
+                    .background(gradient))
             Box(contentModifier.fillMaxSize()){
                 //Upper picture index indicator
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(6.dp)) {
-                    repeat(profile.pictures.size){ index ->
+                    repeat(pictures.size){ index ->
                         Box(
                             Modifier
                                 .weight(1f)
@@ -71,7 +86,7 @@ fun ProfileCardView(profile: Profile, modifier: Modifier = Modifier, contentModi
                     Box(modifier = Modifier
                         .fillMaxHeight()
                         .weight(1f)
-                        .clickable { if (currentIndex < profile.pictures.size - 1) currentIndex++ }
+                        .clickable { if (currentIndex < pictures.size - 1) currentIndex++ }
                     )
                 }
                 //Information

@@ -9,10 +9,10 @@ interface ProfileRepository {
         birthdate: LocalDate,
         bio: String,
         gender: Gender,
-        orientation: Orientation,
-        pictures: List<LocalPicture>
+        orientation: Orientation
     )
-    suspend fun updateProfile(bio: String, gender: Gender, orientation: Orientation, pictures: List<Picture>): UserProfile
+    suspend fun updateProfile(bio: String, gender: Gender, orientation: Orientation)
+    suspend fun updatePictures(pictureNames: List<String>)
     suspend fun getProfile(): UserProfile
 
     suspend fun likeProfile(profile: Profile): String?

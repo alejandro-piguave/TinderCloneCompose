@@ -1,9 +1,12 @@
 package com.apiguave.tinderclonecompose.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apiguave.tinderclonecompose.model.ProfilePictureState
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
+import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
@@ -17,12 +20,16 @@ class HomeViewModel(
     private val getProfilesUseCase: GetProfilesUseCase,
     private val likeProfileUseCase: LikeProfileUseCase,
     private val passProfileUseCase: PassProfileUseCase,
-    private val sendMessageUseCase: SendMessageUseCase
-): ViewModel() {
-    private val _uiState = MutableStateFlow(HomeViewState(HomeViewDialogState.NoDialog, HomeViewContentState.Loading))
+    private val sendMessageUseCase: SendMessageUseCase,
+    private val getPictureUseCase: GetPictureUseCase
+) : ViewModel() {
+    private val _uiState =
+        MutableStateFlow(HomeViewState(HomeViewDialogState.NoDialog, HomeViewContentState.Loading))
     val uiState = _uiState.asStateFlow()
 
-    init { fetchProfiles() }
+    init {
+        fetchProfiles()
+    }
 
     fun closeDialog() {
         _uiState.update {
@@ -35,33 +42,89 @@ class HomeViewModel(
     }
 
 
-    fun swipeUser(profile: Profile, isLike: Boolean) = viewModelScope.launch {
+    fun swipeUser(profileState: ProfileState, isLike: Boolean) = viewModelScope.launch {
         if (isLike) {
-            likeProfileUseCase(profile).onSuccess {
-                it?.let { newMatch ->
-                    _uiState.update { it.copy(dialogState = HomeViewDialogState.NewMatchDialog(newMatch)) }
+            likeProfileUseCase(profileState.profile).onSuccess { result ->
+                result?.let { newMatch ->
+                    _uiState.update {
+                        it.copy(
+                            dialogState = HomeViewDialogState.NewMatchDialog(newMatch, profileState.pictureStates)
+                        )
+                    }
                 }
             }
         } else {
-            passProfileUseCase(profile)
+            passProfileUseCase(profileState.profile)
         }
     }
 
-    fun removeLastProfile(){
+    fun removeLastProfile() {
         _uiState.update {
-            if(it.contentState is HomeViewContentState.Success){
-                it.copy(contentState = it.contentState.copy(profileList = it.contentState.profileList.dropLast(1)))
+            if (it.contentState is HomeViewContentState.Success) {
+                it.copy(
+                    contentState = it.contentState.copy(
+                        profileStates = it.contentState.profileStates.dropLast(
+                            1
+                        )
+                    )
+                )
             } else it
         }
     }
 
     fun fetchProfiles() = viewModelScope.launch {
         _uiState.update { it.copy(contentState = HomeViewContentState.Loading) }
-        getProfilesUseCase().fold({profiles ->
-            _uiState.update { it.copy(contentState = HomeViewContentState.Success(profileList = profiles)) }
+        getProfilesUseCase().fold({ profiles ->
+            _uiState.update { homeViewState ->
+                homeViewState.copy(contentState = HomeViewContentState.Success(profileStates = profiles.map { profile ->
+                    ProfileState(
+                        profile,
+                        profile.pictureNames.map { ProfilePictureState.Loading(it) })
+                }))
+            }
+
+            profiles.forEach { profile ->
+                loadProfilePictures(profile.id, profile.pictureNames)
+            }
+
         }, { error ->
-            _uiState.update { it.copy(contentState = HomeViewContentState.Error(error.message ?: "")) }
+            _uiState.update {
+                it.copy(
+                    contentState = HomeViewContentState.Error(
+                        error.message ?: ""
+                    )
+                )
+            }
         })
+    }
+
+    private suspend fun loadProfilePictures(userId: String, pictureNames: List<String>) {
+        pictureNames.forEach { pictureName ->
+            viewModelScope.launch {
+                getPictureUseCase(userId, pictureName).onSuccess { pictureUrl ->
+                    updatePicturesState(userId, pictureName, Uri.parse(pictureUrl))
+                }
+            }
+        }
+    }
+
+    private fun updatePicturesState(userId: String, pictureName: String, pictureUrl: Uri) {
+        _uiState.update {
+            if (it.contentState is HomeViewContentState.Success) {
+                it.copy(contentState = it.contentState.copy(
+                    profileStates = it.contentState.profileStates.map { profileState ->
+                        if (profileState.profile.id == userId) {
+                            profileState.copy(pictureStates = profileState.pictureStates.map { pictureState ->
+                                if (pictureState is ProfilePictureState.Loading && pictureState.name == pictureName)
+                                    ProfilePictureState.Remote(pictureUrl)
+                                else pictureState
+                            })
+                        } else profileState
+                    }
+                )
+                )
+            } else it
+        }
     }
 
 }
@@ -71,13 +134,15 @@ data class HomeViewState(
     val contentState: HomeViewContentState
 )
 
+data class ProfileState(val profile: Profile, val pictureStates: List<ProfilePictureState>)
+
 sealed class HomeViewDialogState {
-    object NoDialog: HomeViewDialogState()
-    data class NewMatchDialog(val match: Match): HomeViewDialogState()
+    object NoDialog : HomeViewDialogState()
+    data class NewMatchDialog(val match: Match, val pictureStates: List<ProfilePictureState>) : HomeViewDialogState()
 }
 
 sealed class HomeViewContentState {
-    object Loading: HomeViewContentState()
-    data class Success(val profileList: List<Profile>): HomeViewContentState()
-    data class Error(val message: String): HomeViewContentState()
+    object Loading : HomeViewContentState()
+    data class Success(val profileStates: List<ProfileState>) : HomeViewContentState()
+    data class Error(val message: String) : HomeViewContentState()
 }

@@ -7,7 +7,7 @@ import com.apiguave.tinderclonedata.R
 import com.apiguave.tinderclonedomain.profile.generator.ProfileGenerator
 import com.apiguave.tinderclonedomain.profile.generator.GeneratedProfile
 import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

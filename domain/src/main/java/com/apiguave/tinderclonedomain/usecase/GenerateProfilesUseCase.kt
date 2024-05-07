@@ -11,7 +11,14 @@ class GenerateProfilesUseCase(
         return Result.runCatching {
             val profiles = profileGenerator.generateProfiles(amount)
             profiles.forEach {
-                profileRepository.addProfile(it.id, it.name, it.birthdate, it.bio, it.gender, it.orientation, it.pictures)
+                profileRepository.addProfile(
+                    it.id,
+                    it.name,
+                    it.birthdate,
+                    it.bio,
+                    it.gender,
+                    it.orientation
+                )
             }
         }
     }

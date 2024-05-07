@@ -4,6 +4,7 @@ import com.apiguave.tinderclonedomain.usecase.GenerateProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
+import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
@@ -13,11 +14,12 @@ import com.apiguave.tinderclonedomain.usecase.SendMessageUseCase
 import com.apiguave.tinderclonedomain.usecase.SignInUseCase
 import com.apiguave.tinderclonedomain.usecase.SignOutUseCase
 import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
+import com.apiguave.tinderclonedomain.usecase.UpdatePicturesUseCase
 import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { SignUpUseCase(get(), get()) }
+    factory { SignUpUseCase(get(), get(), get()) }
     factory { GetMaxBirthdateUseCase() }
     factory { GenerateProfilesUseCase(get(), get()) }
     factory { GetProfileUseCase(get()) }
@@ -31,4 +33,6 @@ val domainModule = module {
     factory { SignOutUseCase(get()) }
     factory { UpdateProfileUseCase(get()) }
     factory { GetProfilesUseCase(get()) }
+    factory { GetPictureUseCase(get()) }
+    factory { UpdatePicturesUseCase(get(), get()) }
 }

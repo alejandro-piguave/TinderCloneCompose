@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.apiguave.tinderclonecompose.model.PictureState
 import com.apiguave.tinderclonecompose.theme.*
 
 //Picture Grid components
@@ -31,7 +33,7 @@ const val GridItemCount = 9
 const val RowCount = 1 + (GridItemCount -1) / ColumnCount
 
 @Composable
-fun PictureGridRow(rowIndex: Int, pictures: List<String>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
+fun PictureGridRow(rowIndex: Int, pictures: List<PictureState>, onAddPicture: () -> Unit, onAddedPictureClicked: (Int) -> Unit){
     Row(
         Modifier
             .fillMaxWidth()
@@ -41,7 +43,7 @@ fun PictureGridRow(rowIndex: Int, pictures: List<String>, onAddPicture: () -> Un
 
             if(cellIndex < pictures.size){
                 SelectedPictureItem(
-                    imageUri = pictures[cellIndex],
+                    imageState = pictures[cellIndex],
                     modifier = Modifier
                         .weight(1f)
                         .aspectRatio(.6f),
@@ -95,7 +97,7 @@ fun EmptyPictureItem(modifier: Modifier = Modifier, onClick: () -> Unit){
 }
 
 @Composable
-fun SelectedPictureItem(imageUri: String,
+fun SelectedPictureItem(imageState: PictureState,
                         modifier: Modifier = Modifier,
                         onClick: () -> Unit){
     Box(modifier = modifier.clickable(onClick = onClick)) {
@@ -106,15 +108,36 @@ fun SelectedPictureItem(imageUri: String,
                 .aspectRatio(0.6f)
                 .padding(all = 8.dp),
             content = {
-                AsyncImage(
-                    model = imageUri,
-                    modifier = Modifier.fillMaxSize(),
-                    onState = {
+                when(imageState) {
+                    is PictureState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    is PictureState.Local -> {
+                        AsyncImage(
+                            model = imageState.uri,
+                            modifier = Modifier.fillMaxSize(),
+                            onState = {
 
-                    },
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null
-                )
+                            },
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null
+                        )
+                    }
+                    is PictureState.Remote -> {
+                        AsyncImage(
+                            model = imageState.uri,
+                            modifier = Modifier.fillMaxSize(),
+                            onState = {
+
+                            },
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null
+                        )
+                    }
+                }
+
             }
         )
 

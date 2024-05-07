@@ -82,7 +82,7 @@ fun MainContent(){
                 MatchListScreen(
                     onArrowBackPressed = navController::popBackStack,
                     navigateToMatch = {
-                        chatViewModel.setMatch(it)
+                        chatViewModel.setMatchState(it)
                         navController.navigate(Routes.Chat)
                     }
                 )

@@ -12,10 +12,10 @@ import org.koin.dsl.module
 val presentationModule = module {
 
     //View models
-    viewModel { ChatViewModel(get(), get()) }
-    viewModel { EditProfileViewModel(get(), get(), get()) }
+    viewModel { ChatViewModel(get(), get(), get()) }
+    viewModel { EditProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { MatchListViewModel(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { MatchListViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
 }

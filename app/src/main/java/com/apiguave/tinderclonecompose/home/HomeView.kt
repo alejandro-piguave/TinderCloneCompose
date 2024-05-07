@@ -1,13 +1,10 @@
 package com.apiguave.tinderclonecompose.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
@@ -23,14 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.*
-import com.apiguave.tinderclonecompose.components.dialogs.GenerateProfilesDialog
 import com.apiguave.tinderclonecompose.components.dialogs.NewMatchDialog
 import com.apiguave.tinderclonecompose.theme.Green1
 import com.apiguave.tinderclonecompose.theme.Green2
 import com.apiguave.tinderclonecompose.theme.Orange
 import com.apiguave.tinderclonecompose.theme.Pink
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.*
 
 @Composable
@@ -40,14 +35,14 @@ fun HomeView(
     navigateToMatchList: () -> Unit,
     removeLastProfile: () -> Unit,
     fetchProfiles: () -> Unit,
-    swipeUser: (Profile, Boolean) -> Unit,
+    swipeUser: (ProfileState, Boolean) -> Unit,
     onSendMessage: (String, String) -> Unit,
     onCloseDialog: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     when(uiState.dialogState) {
         is HomeViewDialogState.NewMatchDialog -> {
-            NewMatchDialog(match = uiState.dialogState.match, onSendMessage = { onSendMessage(uiState.dialogState.match.id, it) }, onCloseClicked = onCloseDialog)
+            NewMatchDialog(pictureStates = uiState.dialogState.pictureStates, onSendMessage = { onSendMessage(uiState.dialogState.match.id, it) }, onCloseClicked = onCloseDialog)
         }
         else -> {}
     }
@@ -111,14 +106,14 @@ fun HomeView(
                         val localDensity = LocalDensity.current
                         var buttonRowHeightDp by remember { mutableStateOf(0.dp) }
 
-                        val swipeStates = uiState.contentState.profileList.map { rememberSwipeableCardState() }
-                        uiState.contentState.profileList.forEachIndexed { index, profile ->
-                            ProfileCardView(profile,
+                        val swipeStates = uiState.contentState.profileStates.map { rememberSwipeableCardState() }
+                        uiState.contentState.profileStates.forEachIndexed { index, profileState ->
+                            ProfileCardView(profileState.profile, profileState.pictureStates,
                                 modifier = Modifier.swipableCard(
                                     state = swipeStates[index],
                                     onSwiped = {
                                         swipeUser(
-                                            profile,
+                                            profileState,
                                             it == SwipingDirection.Right
                                         )
                                         removeLastProfile()

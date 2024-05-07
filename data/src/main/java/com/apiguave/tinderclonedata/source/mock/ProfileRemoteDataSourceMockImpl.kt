@@ -1,26 +1,16 @@
 package com.apiguave.tinderclonedata.source.mock
 
-import android.content.Context
-import android.net.Uri
-import com.apiguave.tinderclonedata.R
 import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
-import com.apiguave.tinderclonedata.source.mock.extension.resourceUri
 import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Picture
 import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.RemotePicture
 import com.apiguave.tinderclonedomain.profile.UserProfile
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.util.UUID
 import kotlin.random.Random
 
-class ProfileRemoteDataSourceMockImpl(private val context: Context) : ProfileRemoteDataSource {
+class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
     private val userProfile = UserProfile(
         "mock_user",
         "John Doe",
@@ -28,13 +18,9 @@ class ProfileRemoteDataSourceMockImpl(private val context: Context) : ProfileRem
         "A lover of libraries, coffee, and perhaps, you.",
         Gender.MALE,
         Orientation.WOMEN,
+        listOf("man_1.jpg, man_2.jpg", "man_3.jpg"),
         emptyList(),
-        emptyList(),
-        listOf(
-            RemotePicture(context.resourceUri(R.drawable.man_1).toString(), "picture1.jpg"),
-            RemotePicture(context.resourceUri(R.drawable.man_2).toString(), "picture2.jpg"),
-            RemotePicture(context.resourceUri(R.drawable.man_3).toString(), "picture3.jpg")
-        )
+        emptyList()
     )
     override suspend fun getUserProfile(): UserProfile = userProfile
 
@@ -44,8 +30,7 @@ class ProfileRemoteDataSourceMockImpl(private val context: Context) : ProfileRem
         birthdate: LocalDate,
         bio: String,
         gender: Gender,
-        orientation: Orientation,
-        pictures: List<LocalPicture>
+        orientation: Orientation
     ) {
         delay(2000)
     }
@@ -53,15 +38,17 @@ class ProfileRemoteDataSourceMockImpl(private val context: Context) : ProfileRem
     override suspend fun updateProfile(
         bio: String,
         gender: Gender,
-        orientation: Orientation,
-        pictures: List<Picture>
-    ): UserProfile {
+        orientation: Orientation
+    ) {
         delay(2000)
-        return userProfile
+    }
+
+    override suspend fun updateProfile(pictureNames: List<String>) {
+        delay(2000)
     }
 
     override suspend fun getProfiles(): List<Profile> {
-        delay(3000)
+        delay(1000)
         return (0 until 10).map { getRandomProfile(false) }.toList()
     }
 
@@ -69,48 +56,18 @@ class ProfileRemoteDataSourceMockImpl(private val context: Context) : ProfileRem
 
     override suspend fun likeProfile(profile: Profile): String? = null
 
-    private suspend fun getRandomProfile(isMale: Boolean): Profile {
-        val pictures = coroutineScope { (0 until 3).map { async { getRandomPicture(isMale) } }.awaitAll()  }
+    private fun getRandomProfile(isMale: Boolean): Profile {
         val name = getRandomName(isMale)
         val age = getRandomAge()
-        return Profile(getRandomUserId(), name, age, pictures.map { it.toString() })
+        val gender = if (isMale) "man" else "woman"
+        return Profile(getRandomUserId(), name, age, (0..5).map { "${gender}_${Random.nextInt(1, 13)}.jpg" })
     }
 
     private fun getRandomUserId(): String = UUID.randomUUID().toString()
     private fun getRandomName(isMale: Boolean): String = if(isMale) maleNames.random() else femaleNames.random()
     private fun getRandomAge(): Int = Random.nextInt(18, 30)
-    private fun getRandomPicture(isMale: Boolean): Uri {
-        return context.resourceUri(if (isMale) malePictures.random() else femalePictures.random())
-    }
 
-    private val malePictures = listOf(
-        R.drawable.man_1,
-        R.drawable.man_2,
-        R.drawable.man_3,
-        R.drawable.man_4,
-        R.drawable.man_5,
-        R.drawable.man_6,
-        R.drawable.man_7,
-        R.drawable.man_8,
-        R.drawable.man_9,
-        R.drawable.man_10,
-        R.drawable.man_11,
-        R.drawable.man_12,
-    )
-    private val femalePictures = listOf(
-        R.drawable.woman_1,
-        R.drawable.woman_2,
-        R.drawable.woman_3,
-        R.drawable.woman_4,
-        R.drawable.woman_5,
-        R.drawable.woman_6,
-        R.drawable.woman_7,
-        R.drawable.woman_8,
-        R.drawable.woman_9,
-        R.drawable.woman_10,
-        R.drawable.woman_11,
-        R.drawable.woman_12,
-    )
+
     private val maleNames = listOf(
         "Ethan" ,
         "Reagan" ,

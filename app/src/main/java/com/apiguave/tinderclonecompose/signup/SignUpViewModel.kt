@@ -9,7 +9,7 @@ import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.toGender
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonecompose.model.PictureState
 import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,7 +68,7 @@ class SignUpViewModel(
     }
 
     fun addPicture(picture: Uri) {
-        _uiState.update { it.copy(pictures = it.pictures + picture) }
+        _uiState.update { it.copy(pictures = it.pictures + PictureState.Local(picture)) }
     }
 
     fun signUp(activityResult: ActivityResult) {
@@ -83,7 +83,7 @@ class SignUpViewModel(
                 val pictures = _uiState.value.pictures
 
                 val account = activityResult.toProviderAccount()
-                signUpUseCase(account, name, birthdate, bio, gender, orientation, pictures.map { LocalPicture(it.toString()) })
+                signUpUseCase(account, name, birthdate, bio, gender, orientation, pictures.map { it.uri.toString() })
 
                 _uiState.update { it.copy(isUserSignedIn = true) }
             } catch (e: Exception) {
@@ -110,7 +110,7 @@ data class SignUpViewState(
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,
     val orientationIndex: Int = -1,
-    val pictures: List<Uri> = emptyList(),
+    val pictures: List<PictureState.Local> = emptyList(),
     val isUserSignedIn: Boolean = false,
     val dialogState: SignUpDialogState = SignUpDialogState.NoDialog
 )

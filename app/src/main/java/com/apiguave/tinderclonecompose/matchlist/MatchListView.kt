@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -29,11 +30,12 @@ import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.components.CenterAppBar
 import com.apiguave.tinderclonecompose.components.GradientButton
+import com.apiguave.tinderclonecompose.model.MatchState
+import com.apiguave.tinderclonecompose.model.ProfilePictureState
 import com.apiguave.tinderclonecompose.theme.LightLightGray
 import com.apiguave.tinderclonecompose.theme.Orange
 import com.apiguave.tinderclonecompose.theme.Pink
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.apiguave.tinderclonedomain.match.Match
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -43,7 +45,7 @@ fun MatchListView(
     uiState: MatchListViewState,
     onArrowBackPressed: () -> Unit,
     fetchMatches: () -> Unit,
-    navigateToMatch: (Match) -> Unit,
+    navigateToMatch: (MatchState) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -119,22 +121,26 @@ fun MatchListView(
 }
 
 @Composable
-fun MatchItem(match: Match, onClick: () -> Unit) {
+fun MatchItem(matchState: MatchState, onClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = match.profile.pictures.first(),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .size(60.dp)
-                .clip(CircleShape)
-        )
+        Box(Modifier.padding(horizontal = 8.dp).size(60.dp), contentAlignment = Alignment.Center) {
+            when(matchState.pictureState) {
+                is ProfilePictureState.Loading -> CircularProgressIndicator(Modifier.fillMaxSize(.5f))
+                is ProfilePictureState.Remote -> {
+                    AsyncImage(
+                        model = matchState.pictureState.uri,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null,
+                        modifier = Modifier.clip(CircleShape)
+                    )
+                }
+            }
+        }
 
         Column(
             Modifier
@@ -142,12 +148,12 @@ fun MatchItem(match: Match, onClick: () -> Unit) {
                 .padding(start = 8.dp)) {
             Spacer(Modifier.height(20.dp))
             Row(Modifier.fillMaxWidth()) {
-                Text(match.profile.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Text(matchState.match.profile.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(10.dp))
-                Text(match.profile.age.toString(), fontSize = 20.sp)
+                Text(matchState.match.profile.age.toString(), fontSize = 20.sp)
             }
             Text(
-                text = match.lastMessage ?: stringResource(id = R.string.say_something_nice),
+                text = matchState.match.lastMessage ?: stringResource(id = R.string.say_something_nice),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Light

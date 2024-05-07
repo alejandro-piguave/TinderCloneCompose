@@ -22,8 +22,7 @@ object UserApi {
         birthdate: Timestamp,
         bio: String,
         isMale: Boolean,
-        orientation: FirestoreOrientation,
-        pictures: List<String>
+        orientation: FirestoreOrientation
     ) {
         val user = FirestoreUser(
             name = name,
@@ -31,7 +30,7 @@ object UserApi {
             bio = bio,
             male = isMale,
             orientation = orientation,
-            pictures = pictures,
+            pictures = emptyList(),
             liked = emptyList(),
             passed = emptyList()
         )
@@ -126,12 +125,18 @@ object UserApi {
     suspend fun updateUser(
         bio: String,
         gender: Boolean,
-        orientation: FirestoreOrientation,
-        pictures: List<String>) {
+        orientation: FirestoreOrientation) {
         val data = mapOf(
             FirestoreUserProperties.bio to bio,
             FirestoreUserProperties.isMale to gender,
-            FirestoreUserProperties.orientation to orientation,
+            FirestoreUserProperties.orientation to orientation
+        )
+        FirebaseFirestore.getInstance().collection(USERS).document(AuthApi.userId!!).update(data).getTaskResult()
+    }
+
+
+    suspend fun updateUserPictures(pictures: List<String>) {
+        val data = mapOf(
             FirestoreUserProperties.pictures to pictures
         )
         FirebaseFirestore.getInstance().collection(USERS).document(AuthApi.userId!!).update(data).getTaskResult()

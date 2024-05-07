@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonedomain.profile.generator
 
 import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.LocalPicture
+import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.profile.Orientation
 import java.time.LocalDate
 
