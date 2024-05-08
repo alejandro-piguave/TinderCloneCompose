@@ -6,7 +6,4 @@ data class UserProfile(val id:String="",
                        val bio: String = "",
                        val gender: Gender,
                        val orientation: Orientation,
-                       val pictureNames: List<String>,
-                       val liked: List<String>,
-                       val passed: List<String>,
-)
+                       val pictureNames: List<String>)

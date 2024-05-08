@@ -44,9 +44,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
             currentUser.bio,
             if(currentUser.male!!) Gender.MALE else Gender.FEMALE,
             currentUser.orientation!!.toOrientation(),
-            currentUser.pictures,
-            currentUser.liked,
-            currentUser.passed
+            currentUser.pictures
         )
     }
 

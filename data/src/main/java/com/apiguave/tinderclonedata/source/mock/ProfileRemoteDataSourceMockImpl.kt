@@ -18,9 +18,7 @@ class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
         "A lover of libraries, coffee, and perhaps, you.",
         Gender.MALE,
         Orientation.WOMEN,
-        listOf("man_1.jpg, man_2.jpg", "man_3.jpg"),
-        emptyList(),
-        emptyList()
+        listOf("man_1.jpg, man_2.jpg", "man_3.jpg")
     )
     override suspend fun getUserProfile(): UserProfile = userProfile
 
