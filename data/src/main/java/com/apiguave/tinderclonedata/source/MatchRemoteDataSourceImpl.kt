@@ -6,7 +6,7 @@ import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatch
 import com.apiguave.tinderclonedata.source.firebase.MatchApi
 import com.apiguave.tinderclonedata.source.firebase.UserApi
 import com.apiguave.tinderclonedata.source.extension.toAge
-import com.apiguave.tinderclonedata.source.extension.toShortString
+import com.apiguave.tinderclonedata.source.extension.toLocalDate
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import com.apiguave.tinderclonedomain.match.Match
@@ -29,10 +29,10 @@ class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
             Profile(
                 userId,
                 user.name,
-                user.birthDate?.toDate()?.toAge() ?: 0,
+                user.birthDate!!.toAge(),
                 user.pictures,
             ),
-            this.timestamp?.toShortString() ?: "",
+            this.timestamp!!.toLocalDate(),
             this.lastMessage
         )
     }

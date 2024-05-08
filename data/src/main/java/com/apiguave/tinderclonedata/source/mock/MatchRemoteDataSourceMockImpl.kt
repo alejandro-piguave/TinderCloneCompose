@@ -4,73 +4,74 @@ import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.delay
+import java.time.LocalDate
 
 class MatchRemoteDataSourceMockImpl : MatchRemoteDataSource {
     private val matchList = listOf(
         Match(
             "1",
             Profile("1", "Victoria", 19, listOf("woman_1.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "2",
             Profile("2", "Marta", 19, listOf("woman_2.jpg")),
-            "12/12/23",
+            LocalDate.of(23,12,12),
             "Hey!"
         ),
         Match(
             "3",
             Profile("3", "Juliette", 23, listOf("woman_3.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "4",
             Profile("4", "María", 22, listOf("woman_4.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "5",
             Profile("5", "Julia", 18, listOf("woman_5.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "6",
             Profile("6", "Lily", 20, listOf("woman_6.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "7",
             Profile("7", "Christina", 20, listOf("woman_7.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "8",
             Profile("8", "Jana", 20, listOf("woman_8.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "9",
             Profile("9", "Greta", 20, listOf("woman_9.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "10",
             Profile("10", "Violeta", 23, listOf("woman_10.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         ),
         Match(
             "11",
             Profile("11", "Daniela", 19, listOf("woman_11.jpg")),
-            "12/12/22",
+            LocalDate.of(22,12,12),
             "Hey!"
         )
     )

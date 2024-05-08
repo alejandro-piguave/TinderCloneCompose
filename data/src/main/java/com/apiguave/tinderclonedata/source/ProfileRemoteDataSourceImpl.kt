@@ -4,7 +4,7 @@ import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
 import com.apiguave.tinderclonedata.source.extension.toAge
 import com.apiguave.tinderclonedata.source.extension.toBoolean
 import com.apiguave.tinderclonedata.source.extension.toFirestoreOrientation
-import com.apiguave.tinderclonedata.source.extension.toLongString
+import com.apiguave.tinderclonedata.source.extension.toLocalDate
 import com.apiguave.tinderclonedata.source.extension.toOrientation
 import com.apiguave.tinderclonedata.source.extension.toTimestamp
 import com.apiguave.tinderclonedata.source.firebase.AuthApi
@@ -40,7 +40,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         return UserProfile(
             currentUser.id,
             currentUser.name,
-            currentUser.birthDate!!.toDate().toLongString(),
+            currentUser.birthDate!!.toLocalDate(),
             currentUser.bio,
             if(currentUser.male!!) Gender.MALE else Gender.FEMALE,
             currentUser.orientation!!.toOrientation(),
@@ -84,7 +84,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 
     override suspend fun getProfiles(): List<Profile> {
         val users = UserApi.getCompatibleUsers(getCurrentUser())
-        return users.map { Profile(it.id, it.name, it.birthDate!!.toDate().toAge(), it.pictures) }
+        return users.map { Profile(it.id, it.name, it.birthDate!!.toAge(), it.pictures) }
     }
 
     override suspend fun passProfile(profile: Profile) {

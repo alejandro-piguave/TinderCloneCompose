@@ -22,6 +22,7 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.CenterAppBar
 import com.apiguave.tinderclonecompose.components.ChatFooter
+import com.apiguave.tinderclonecompose.extension.toShortString
 import com.apiguave.tinderclonecompose.model.MatchState
 import com.apiguave.tinderclonecompose.model.ProfilePictureState
 import com.apiguave.tinderclonecompose.theme.AntiFlashWhite
@@ -30,6 +31,7 @@ import com.apiguave.tinderclonecompose.theme.UltramarineBlue
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.message.Message
 import com.apiguave.tinderclonedomain.profile.Profile
+import java.time.LocalDate
 
 @Composable
 fun ChatView(
@@ -60,7 +62,7 @@ fun ChatView(
                     textAlign = TextAlign.Center,
                     color = Color.Gray,
                     fontSize = 12.sp,
-                    text = stringResource(id = R.string.you_matched_with_on, state.match.profile.name, state.match.formattedDate).uppercase())
+                    text = stringResource(id = R.string.you_matched_with_on, state.match.profile.name, state.match.creationDate.toShortString()).uppercase())
             }
             items(messages.size){ index ->
                 MessageItem(pictureState = state.pictureState, message = messages[index])
@@ -151,7 +153,7 @@ fun ChatViewPreview() {
     TinderCloneComposeTheme {
         ChatView(
             state = MatchState(
-                Match("", Profile("", "Alice", 20, emptyList()), "24/02/2024", "Hey, how are you doing?"),
+                Match("", Profile("", "Alice", 20, emptyList()), LocalDate.of(2024, 2, 24), "Hey, how are you doing?"),
                 ProfilePictureState.Loading("picture1.png")
             ),
             onArrowBackPressed = { },

@@ -14,7 +14,7 @@ class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
     private val userProfile = UserProfile(
         "mock_user",
         "John Doe",
-        "01/01/2000",
+        LocalDate.of(2000, 1, 1),
         "A lover of libraries, coffee, and perhaps, you.",
         Gender.MALE,
         Orientation.WOMEN,

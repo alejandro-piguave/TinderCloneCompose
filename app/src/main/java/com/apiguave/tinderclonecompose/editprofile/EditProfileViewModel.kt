@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
+import com.apiguave.tinderclonecompose.extension.toLongString
 import com.apiguave.tinderclonecompose.extension.toOrientation
 import com.apiguave.tinderclonecompose.model.PictureState
 import com.apiguave.tinderclonedomain.picture.LocalPicture
@@ -68,7 +69,7 @@ class EditProfileViewModel(
                     currentProfile = currentProfile,
                     name = currentProfile.name,
                     bio = TextFieldValue(currentProfile.bio),
-                    birthDate = currentProfile.birthDate,
+                    birthDate = currentProfile.birthDate.toLongString(),
                     genderIndex = currentProfile.gender.ordinal,
                     orientationIndex = currentProfile.orientation.ordinal,
                     pictures = currentProfile.pictureNames.map { pictureName -> PictureState.Loading(pictureName) }
