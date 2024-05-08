@@ -84,11 +84,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 
     override suspend fun getProfiles(): List<Profile> {
         val users = UserApi.getCompatibleUsers(getCurrentUser())
-        return users.map { getProfile(it) }
-    }
-
-    private fun getProfile(user: FirestoreUser): Profile {
-        return Profile(user.id, user.name, user.birthDate!!.toDate().toAge(), user.pictures)
+        return users.map { Profile(it.id, it.name, it.birthDate!!.toDate().toAge(), it.pictures) }
     }
 
     override suspend fun passProfile(profile: Profile) {
