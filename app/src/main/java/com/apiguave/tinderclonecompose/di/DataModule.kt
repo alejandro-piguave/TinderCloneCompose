@@ -2,7 +2,7 @@ package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonecompose.BuildConfig
 import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
-import com.apiguave.tinderclonedata.source.AuthRemoteDataSourceImpl
+import com.apiguave.tinderclonedata.source.firebase.AuthRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.auth.AuthRepository
 import com.apiguave.tinderclonedata.repository.auth.AuthRepositoryImpl
 import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
@@ -13,12 +13,12 @@ import com.apiguave.tinderclonedata.repository.picture.PictureRemoteDataSource
 import com.apiguave.tinderclonedata.repository.picture.PictureRepositoryImpl
 import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
 import com.apiguave.tinderclonedata.repository.profile.ProfileRepositoryImpl
-import com.apiguave.tinderclonedata.source.MatchRemoteDataSourceImpl
+import com.apiguave.tinderclonedata.source.firebase.MatchRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.match.MatchRepository
-import com.apiguave.tinderclonedata.source.MessageRemoteDataSourceImpl
-import com.apiguave.tinderclonedata.source.PictureRemoteDataSourceImpl
+import com.apiguave.tinderclonedata.source.firebase.MessageRemoteDataSourceImpl
+import com.apiguave.tinderclonedata.source.firebase.PictureRemoteDataSourceImpl
 import com.apiguave.tinderclonedomain.message.MessageRepository
-import com.apiguave.tinderclonedata.source.ProfileRemoteDataSourceImpl
+import com.apiguave.tinderclonedata.source.firebase.ProfileRemoteDataSourceImpl
 import com.apiguave.tinderclonedata.source.mock.AuthRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedata.source.mock.MatchRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedata.source.mock.MessageRemoteDataSourceMockImpl

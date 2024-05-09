@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.source.extension
+package com.apiguave.tinderclonedata.source.firebase.extension
 
 import com.apiguave.tinderclonedomain.profile.Gender
 

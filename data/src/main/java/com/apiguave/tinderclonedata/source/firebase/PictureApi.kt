@@ -1,8 +1,7 @@
 package com.apiguave.tinderclonedata.source.firebase
 
 import android.net.Uri
-import com.apiguave.tinderclonedata.source.extension.getTaskResult
-import com.apiguave.tinderclonedomain.picture.RemotePicture
+import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -11,18 +10,6 @@ import java.util.UUID
 
 object PictureApi {
     private const val USERS = "users"
-
-    private suspend fun getPicture(userId: String, picture: String): RemotePicture {
-        return RemotePicture(fetchPictureUrl(userId,picture), picture)
-    }
-
-    private suspend fun fetchPictureUrl(userId: String, fileName: String): String  =
-        FirebaseStorage.getInstance().reference.child(USERS)
-            .child(userId).child(fileName).downloadUrl.getTaskResult().toString()
-
-    suspend fun getPictures(userId: String, pictures: List<String>): List<RemotePicture> {
-        return pictures.map { getPicture(userId, it) }
-    }
 
     suspend fun getPictureUrl(userId: String, fileName: String): Uri  =
         FirebaseStorage.getInstance().reference.child(USERS)

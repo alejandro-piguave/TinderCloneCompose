@@ -1,8 +1,7 @@
-package com.apiguave.tinderclonedata.source
+package com.apiguave.tinderclonedata.source.firebase
 
 import android.net.Uri
 import com.apiguave.tinderclonedata.repository.picture.PictureRemoteDataSource
-import com.apiguave.tinderclonedata.source.firebase.PictureApi
 
 class PictureRemoteDataSourceImpl: PictureRemoteDataSource {
 

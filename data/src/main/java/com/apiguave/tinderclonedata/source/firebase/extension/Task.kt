@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.source.extension
+package com.apiguave.tinderclonedata.source.firebase.extension
 
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.suspendCancellableCoroutine

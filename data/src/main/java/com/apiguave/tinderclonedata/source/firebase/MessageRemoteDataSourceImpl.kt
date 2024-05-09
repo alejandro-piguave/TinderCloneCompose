@@ -1,8 +1,6 @@
-package com.apiguave.tinderclonedata.source
+package com.apiguave.tinderclonedata.source.firebase
 
 import com.apiguave.tinderclonedata.repository.message.MessageRemoteDataSource
-import com.apiguave.tinderclonedata.source.firebase.AuthApi
-import com.apiguave.tinderclonedata.source.firebase.MessageApi
 import com.apiguave.tinderclonedomain.message.Message
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

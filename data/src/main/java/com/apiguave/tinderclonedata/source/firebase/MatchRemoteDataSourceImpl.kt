@@ -1,12 +1,9 @@
-package com.apiguave.tinderclonedata.source
+package com.apiguave.tinderclonedata.source.firebase
 
 import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
-import com.apiguave.tinderclonedata.source.firebase.AuthApi
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatch
-import com.apiguave.tinderclonedata.source.firebase.MatchApi
-import com.apiguave.tinderclonedata.source.firebase.UserApi
-import com.apiguave.tinderclonedata.source.extension.toAge
-import com.apiguave.tinderclonedata.source.extension.toLocalDate
+import com.apiguave.tinderclonedata.source.firebase.extension.toAge
+import com.apiguave.tinderclonedata.source.firebase.extension.toLocalDate
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import com.apiguave.tinderclonedomain.match.Match

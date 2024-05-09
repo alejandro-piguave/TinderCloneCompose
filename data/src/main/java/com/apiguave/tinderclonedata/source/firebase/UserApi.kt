@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonedata.source.firebase
 
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatchProperties
-import com.apiguave.tinderclonedata.source.extension.getTaskResult
+import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUser
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUserProperties
