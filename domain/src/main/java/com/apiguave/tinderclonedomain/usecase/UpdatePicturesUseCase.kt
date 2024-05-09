@@ -13,37 +13,37 @@ class UpdatePicturesUseCase(private val profileRepository: ProfileRepository, pr
     suspend operator fun invoke(pictures: List<Picture>): Result<List<String>> {
         return Result.runCatching {
             val currentProfile = profileRepository.getProfile()
-            val pictureNames = currentProfile.pictureNames
-
             val remotePictureNames = pictures.mapNotNull { if (it is RemotePicture) it.filename else null }
-            val updatedPictures =  coroutineScope {
-                //This is a list of the pictures that were already uploaded but that have been removed from the profile.
-                val picturesToDelete: List<String> = pictureNames.filter { !remotePictureNames.contains(it) }
 
+            //This is a list of the pictures that were already uploaded but that have been removed from the profile.
+            val picturesToDelete: List<String> = currentProfile.pictureNames.filter { !remotePictureNames.contains(it) }
+
+            coroutineScope {
                 val pictureDeletionResult = async {
                     if(picturesToDelete.isEmpty()) Unit
                     else pictureRepository.deletePictures(picturesToDelete)
                 }
 
-                val pictureUploadResult = pictures.map {
-                    async {
-                        when(it){
-                            //If the picture was already uploaded, simply return its file name.
-                            is RemotePicture -> it.filename
-                            //Otherwise uploaded and return it's new file name
-                            is LocalPicture -> pictureRepository.addPicture(it.uri)
-                        }
-                    }
-                }
+               val pictureUploadResult = async {
+                   val pictureNamesResult = pictures.map {
+                       async {
+                           when (it) {
+                               //If the picture was already uploaded, simply return its file name.
+                               is RemotePicture -> it.filename
+                               //Otherwise upload it and return it's new file name
+                               is LocalPicture -> pictureRepository.addPicture(it.uri)
+                           }
+                       }
+                   }
+                   val pictureNames = pictureNamesResult.awaitAll()
+                   profileRepository.updatePictures(pictureNames)
+                   pictureNames
+               }
 
                 pictureDeletionResult.await()
-                //Returns a list of the new filenames
-                pictureUploadResult.awaitAll()
+                pictureUploadResult.await()
             }
 
-            profileRepository.updatePictures(updatedPictures)
-
-            updatedPictures
         }
     }
 }
