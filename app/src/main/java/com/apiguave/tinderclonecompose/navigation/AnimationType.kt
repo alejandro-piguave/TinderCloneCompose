@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.main
+package com.apiguave.tinderclonecompose.navigation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition

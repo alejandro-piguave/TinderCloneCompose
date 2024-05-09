@@ -1,9 +1,9 @@
-package com.apiguave.tinderclonecompose.main
+package com.apiguave.tinderclonecompose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.apiguave.tinderclonecompose.R
+import com.apiguave.tinderclonecompose.navigation.NavigationGraph
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,6 +24,6 @@ class MainActivity : ComponentActivity() {
         }
 
         loadKoinModules(activityModule)
-        setContent { MainContent() }
+        setContent { NavigationGraph() }
     }
 }

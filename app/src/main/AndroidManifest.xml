@@ -4,7 +4,7 @@
     package="com.apiguave.tinderclonecompose">
 
     <application
-        android:name=".main.MainApp"
+        android:name=".MainApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,7 +24,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TinderCloneCompose">
             <intent-filter>

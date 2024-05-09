@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.main
+package com.apiguave.tinderclonecompose.navigation
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -22,7 +22,7 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainContent(){
+fun NavigationGraph() {
     TinderCloneComposeTheme {
         val navController = rememberAnimatedNavController()
         val chatViewModel: ChatViewModel = getViewModel()

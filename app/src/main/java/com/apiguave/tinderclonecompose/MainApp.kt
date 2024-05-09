@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.main
+package com.apiguave.tinderclonecompose
 
 import android.app.Application
 import com.apiguave.tinderclonecompose.di.appModule

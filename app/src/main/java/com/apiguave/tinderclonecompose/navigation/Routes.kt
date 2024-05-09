@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.main
+package com.apiguave.tinderclonecompose.navigation
 
 object Routes{
     const val Login = "login"
