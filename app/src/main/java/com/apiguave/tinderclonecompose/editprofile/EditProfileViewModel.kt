@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonecompose.editprofile
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
@@ -81,6 +82,7 @@ class EditProfileViewModel(
 
     private suspend fun loadProfilePictures(userId: String, pictureNames: List<String>) {
         pictureNames.forEach { pictureName ->
+            Log.i("EditProfileViewModel", "loadProfilePictures($userId, $pictureName)")
             viewModelScope.launch {
                 getPictureUseCase(userId, pictureName).onSuccess { pictureUrl ->
                     updatePicturesState(pictureName, Uri.parse(pictureUrl))
@@ -121,7 +123,7 @@ class EditProfileViewModel(
             updatePicturesUseCase(currentPictures.mapNotNull { when(it) {
                 is PictureState.Loading -> null
                 is PictureState.Local -> LocalPicture(it.uri.toString())
-                is PictureState.Remote -> RemotePicture(it.name, it.uri.toString())
+                is PictureState.Remote -> RemotePicture(it.uri.toString(), it.name)
             } }).onSuccess {
                 _action.emit(EditProfileAction.ON_PROFILE_EDITED)
             }
