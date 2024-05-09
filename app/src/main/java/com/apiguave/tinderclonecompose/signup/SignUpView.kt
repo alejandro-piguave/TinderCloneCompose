@@ -48,38 +48,8 @@ fun SignUpView(
     onGenderIndexChanged: (Int) -> Unit,
     onOrientationIndexChanged: (Int) -> Unit,
 ) {
-
     val dateDialogState = rememberMaterialDialogState()
     val isSignUpEnabled = remember(uiState) { derivedStateOf { uiState.name.text.isValidUsername() && uiState.pictures.size > 1 && uiState.genderIndex >= 0 && uiState.orientationIndex >= 0 } }
-
-    //Dialogs
-    when(uiState.dialogState) {
-        is SignUpDialogState.DeleteConfirmationDialog -> {
-            DeleteConfirmationDialog(
-                onDismissRequest = onCloseDialogClicked,
-                onConfirm = {
-                    onCloseDialogClicked()
-                    removePictureAt(uiState.dialogState.index)},
-                onDismiss = onCloseDialogClicked)
-        }
-        is SignUpDialogState.ErrorDialog -> {
-            ErrorDialog(
-                errorDescription = uiState.dialogState.message,
-                onDismissRequest = onCloseDialogClicked,
-                onConfirm = onCloseDialogClicked
-            )
-        }
-        SignUpDialogState.Loading -> {
-            LoadingView()
-        }
-        SignUpDialogState.SelectPictureDialog -> {
-            SelectPictureDialog(onCloseClick = onCloseDialogClicked, onReceiveUri = {
-                onCloseDialogClicked()
-                onPictureSelected(it)
-            })
-        }
-        else -> {}
-    }
 
     FormDatePickerDialog(dateDialogState, date = uiState.birthDate, maxDate = uiState.maxBirthDate, onDateChange = onBirthDateChanged)
     
@@ -183,6 +153,36 @@ fun SignUpView(
             }
         }
     }
+
+    //Dialogs
+    when(uiState.dialogState) {
+        is SignUpDialogState.DeleteConfirmationDialog -> {
+            DeleteConfirmationDialog(
+                onDismissRequest = onCloseDialogClicked,
+                onConfirm = {
+                    onCloseDialogClicked()
+                    removePictureAt(uiState.dialogState.index)},
+                onDismiss = onCloseDialogClicked)
+        }
+        is SignUpDialogState.ErrorDialog -> {
+            ErrorDialog(
+                errorDescription = uiState.dialogState.message,
+                onDismissRequest = onCloseDialogClicked,
+                onConfirm = onCloseDialogClicked
+            )
+        }
+        SignUpDialogState.Loading -> {
+            LoadingView()
+        }
+        SignUpDialogState.SelectPictureDialog -> {
+            SelectPictureDialog(onCloseClick = onCloseDialogClicked, onReceiveUri = {
+                onCloseDialogClicked()
+                onPictureSelected(it)
+            })
+        }
+        else -> {}
+    }
+
 }
 
 @Preview

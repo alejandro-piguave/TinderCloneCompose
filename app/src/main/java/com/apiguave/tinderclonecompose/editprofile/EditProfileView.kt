@@ -53,35 +53,6 @@ fun EditProfileView(
     onSelectPictureClicked: () -> Unit,
     onDeletePictureClicked: (Int) -> Unit,
 ) {
-    when(uiState.dialogState) {
-        is EditProfileDialogState.DeleteConfirmationDialog -> {
-            DeleteConfirmationDialog(
-                onDismissRequest = onDialogClosed,
-                onConfirm = {
-                    onDialogClosed()
-                    removePictureAt(uiState.dialogState.index)
-                },
-                onDismiss = onDialogClosed)
-        }
-        is EditProfileDialogState.ErrorDialog -> {
-            ErrorDialog(
-                errorDescription = uiState.dialogState.message,
-                onDismissRequest = onDialogClosed,
-                onConfirm = onDialogClosed
-            )
-        }
-        EditProfileDialogState.Loading -> {
-            LoadingView()
-        }
-        EditProfileDialogState.SelectPictureDialog -> {
-            SelectPictureDialog(onCloseClick = onDialogClosed, onReceiveUri = {
-                onDialogClosed()
-                onPictureSelected(it)
-            })
-        }
-         else -> {}
-    }
-
     Scaffold(
         topBar = {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
@@ -155,6 +126,35 @@ fun EditProfileView(
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
+    }
+
+    when(uiState.dialogState) {
+        is EditProfileDialogState.DeleteConfirmationDialog -> {
+            DeleteConfirmationDialog(
+                onDismissRequest = onDialogClosed,
+                onConfirm = {
+                    onDialogClosed()
+                    removePictureAt(uiState.dialogState.index)
+                },
+                onDismiss = onDialogClosed)
+        }
+        is EditProfileDialogState.ErrorDialog -> {
+            ErrorDialog(
+                errorDescription = uiState.dialogState.message,
+                onDismissRequest = onDialogClosed,
+                onConfirm = onDialogClosed
+            )
+        }
+        EditProfileDialogState.Loading -> {
+            LoadingView()
+        }
+        EditProfileDialogState.SelectPictureDialog -> {
+            SelectPictureDialog(onCloseClick = onDialogClosed, onReceiveUri = {
+                onDialogClosed()
+                onPictureSelected(it)
+            })
+        }
+        else -> {}
     }
 }
 
