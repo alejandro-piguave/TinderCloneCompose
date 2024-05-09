@@ -1,22 +1,19 @@
 package com.apiguave.tinderclonecompose.navigation
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.*
-
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.navigation.NavBackStackEntry
 
 const val SLIDE_TRANSITION_DURATION = 400
 const val FADE_TRANSITION_DURATION = 1000
 
-@OptIn(ExperimentalAnimationApi::class)
-typealias EnterTransitionScope = (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)
-@OptIn(ExperimentalAnimationApi::class)
-typealias ExitTransitionScope = (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)
+typealias EnterTransitionScope = (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)
+typealias ExitTransitionScope = (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)
 
-@OptIn(ExperimentalAnimationApi::class)
 enum class AnimationType(
     val enterTransition: EnterTransitionScope,
     val exitTransition: ExitTransitionScope,
@@ -26,25 +23,25 @@ enum class AnimationType(
     SLIDE(
         enterTransition = {
             slideIntoContainer(
-                towards = AnimatedContentScope.SlideDirection.Left,
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         },
         exitTransition = {
             slideOutOfContainer(
-                towards = AnimatedContentScope.SlideDirection.Left,
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         },
         popEnterTransition = {
             slideIntoContainer(
-                towards = AnimatedContentScope.SlideDirection.Right,
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         },
         popExitTransition = {
             slideOutOfContainer(
-                towards = AnimatedContentScope.SlideDirection.Right,
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         },
@@ -58,27 +55,27 @@ enum class AnimationType(
     HOME(
         enterTransition = {
             slideIntoContainer(
-                towards = AnimatedContentScope.SlideDirection.Left,
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         },
         exitTransition = {
             slideOutOfContainer(
-                towards = AnimatedContentScope.SlideDirection.Left,
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
 
         },
         popEnterTransition = {
             slideIntoContainer(
-                towards = AnimatedContentScope.SlideDirection.Right,
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
 
         },
         popExitTransition = {
             slideOutOfContainer(
-                towards = AnimatedContentScope.SlideDirection.Right,
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(SLIDE_TRANSITION_DURATION)
             )
         }

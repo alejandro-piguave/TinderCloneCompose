@@ -1,12 +1,14 @@
 package com.apiguave.tinderclonecompose.navigation
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.apiguave.tinderclonecompose.chat.ChatScreen
 import com.apiguave.tinderclonecompose.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.editprofile.EditProfileScreen
@@ -15,18 +17,14 @@ import com.apiguave.tinderclonecompose.login.LoginScreen
 import com.apiguave.tinderclonecompose.matchlist.MatchListScreen
 import com.apiguave.tinderclonecompose.signup.SignUpScreen
 import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationGraph() {
     TinderCloneComposeTheme {
-        val navController = rememberAnimatedNavController()
+        val navController = rememberNavController()
         val chatViewModel: ChatViewModel = getViewModel()
-        AnimatedNavHost(navController = navController, startDestination = Routes.Login) {
+        NavHost(navController = navController, startDestination = Routes.Login) {
             animatedComposable(Routes.Login) {
                 LoginScreen(
                     onNavigateToHome = {
@@ -98,7 +96,6 @@ fun NavigationGraph() {
     }
 }
 
-@ExperimentalAnimationApi
 fun NavGraphBuilder.animatedComposable(
     route: String,
     animationType: AnimationType = AnimationType.SLIDE,
