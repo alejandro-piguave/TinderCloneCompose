@@ -8,7 +8,10 @@ class UpdateProfileUseCase(private val profileRepository: ProfileRepository) {
 
     suspend operator fun invoke(bio: String, gender: Gender, orientation: Orientation): Result<Unit> {
         return Result.runCatching {
-            profileRepository.updateProfile(bio, gender, orientation)
+            val profile = profileRepository.getProfile()
+            if(profile.bio != bio || profile.gender != gender || profile.orientation != orientation){
+                profileRepository.updateProfile(bio, gender, orientation)
+            }
         }
     }
 }
