@@ -19,7 +19,7 @@ fun LoginScreen(
     val uiState by loginViewModel.uiState.collectAsState()
 
     LaunchedEffect(key1 = uiState, block = {
-        if(uiState.isUserSignedIn){
+        if(uiState is LoginViewState.SignedIn){
             onNavigateToHome()
         }
     })

@@ -16,13 +16,7 @@ class LoginViewModel(
     private val isUserSignedInUseCase: IsUserSignedInUseCase,
     private val signInUseCase: SignInUseCase
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(
-        LoginViewState(
-            isLoading = true,
-            isUserSignedIn = false,
-            errorMessage = null
-        )
-    )
+    private val _uiState = MutableStateFlow<LoginViewState>(LoginViewState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -32,26 +26,29 @@ class LoginViewModel(
     private fun checkLoginState() {
         _uiState.update {
             if(isUserSignedInUseCase()){
-                it.copy(isUserSignedIn = true)
+                LoginViewState.SignedIn
             } else {
-                it.copy(isLoading = false)
+                LoginViewState.SigningIn
             }
         }
     }
 
     fun signIn(activityResult: ActivityResult) = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { LoginViewState.Loading }
         val account = activityResult.toProviderAccount()
         signInUseCase(account).fold({
-            _uiState.update { it.copy(isUserSignedIn = true) }
-        }, { e ->
-            _uiState.update {
-                it.copy(isLoading = false, errorMessage = e.message)
-            }
+            _uiState.update { LoginViewState.SignedIn }
+        }, { _ ->
+            _uiState.update { LoginViewState.Error }
         })
     }
 
 }
 
 @Immutable
-data class LoginViewState(val isLoading: Boolean, val isUserSignedIn: Boolean, val errorMessage: String?)
+sealed class LoginViewState {
+    object Loading: LoginViewState()
+    object SigningIn: LoginViewState()
+    object SignedIn: LoginViewState()
+    object Error: LoginViewState()
+}

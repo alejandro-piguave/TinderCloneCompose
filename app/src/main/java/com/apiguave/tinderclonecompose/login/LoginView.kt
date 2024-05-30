@@ -49,14 +49,14 @@ fun LoginView(uiState: LoginViewState,
         Spacer(modifier = Modifier.weight(1.0f))
         AnimatedLogo(modifier = Modifier
             .fillMaxWidth(.4f)
-            .padding(bottom = 8.dp), isAnimating = uiState.isLoading)
+            .padding(bottom = 8.dp), isAnimating = uiState is LoginViewState.Loading)
         Column(modifier = Modifier.weight(1.0f)){
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .alpha(if (uiState.isLoading) 0f else 1f),
+                    .alpha(if (uiState is LoginViewState.Loading) 0f else 1f),
                 onClick = onNavigateToSignUp,
                 contentPadding = PaddingValues(
                     start = 20.dp,
@@ -80,7 +80,7 @@ fun LoginView(uiState: LoginViewState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .alpha(if (uiState.isLoading) 0f else 1f),
+                    .alpha(if (uiState is LoginViewState.Loading) 0f else 1f),
                 onClick = onSignInClicked,
                 contentPadding = PaddingValues(
                     start = 20.dp,
@@ -111,7 +111,7 @@ fun LoginView(uiState: LoginViewState,
 fun LoginViewPreview() {
     TinderCloneComposeTheme {
         LoginView(
-            uiState = LoginViewState(false, false, null),
+            uiState = LoginViewState.Loading,
             onNavigateToSignUp = { },
             onSignInClicked = {}
         )
