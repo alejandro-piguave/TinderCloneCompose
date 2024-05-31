@@ -19,11 +19,7 @@ class LoginViewModel(
     private val _uiState = MutableStateFlow<LoginViewState>(LoginViewState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    init {
-        checkLoginState()
-    }
-
-    private fun checkLoginState() {
+    fun initialize() {
         _uiState.update {
             if(isUserSignedInUseCase()){
                 LoginViewState.SignedIn
