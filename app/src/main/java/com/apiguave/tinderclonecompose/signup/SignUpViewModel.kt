@@ -98,11 +98,11 @@ class SignUpViewModel(
 
 @Immutable
 sealed class SignUpDialogState {
-    object NoDialog: SignUpDialogState()
+    data object NoDialog: SignUpDialogState()
     data class DeleteConfirmationDialog(val index: Int): SignUpDialogState()
     data class ErrorDialog(val message: String): SignUpDialogState()
-    object SelectPictureDialog: SignUpDialogState()
-    object Loading: SignUpDialogState()
+    data object SelectPictureDialog: SignUpDialogState()
+    data object Loading: SignUpDialogState()
 }
 
 @Immutable
