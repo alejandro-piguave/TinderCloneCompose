@@ -12,6 +12,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,22 +24,29 @@ class LoginViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val signInUseCase = mockk<SignInUseCase>()
-    private val isUserSignInUseCase = mockk<IsUserSignedInUseCase>()
+    private val isUserSignInUseCase = mockk<IsUserSignedInUseCase> {
+        every { this@mockk.invoke() } returns true
+    }
 
-    private val viewModel = LoginViewModel(isUserSignInUseCase, signInUseCase)
+    private lateinit var viewModel: LoginViewModel
+
+    @Before
+    fun initialize() {
+        viewModel = LoginViewModel(isUserSignInUseCase, signInUseCase)
+    }
 
     @Test
     fun testInitializeSignedIn() {
-        every { isUserSignInUseCase.invoke() } returns true
-        viewModel.initialize()
         assertEquals(LoginViewState.SignedIn, viewModel.uiState.value)
     }
 
     @Test
     fun testInitializeSigningIn() {
-        every { isUserSignInUseCase.invoke() } returns false
-        viewModel.initialize()
-        assertEquals(LoginViewState.SigningIn, viewModel.uiState.value)
+        val isUserSignedInUseCase = mockk<IsUserSignedInUseCase> {
+            every { this@mockk.invoke() } returns false
+        }
+        val userNotSignedInViewModel = LoginViewModel(isUserSignedInUseCase, signInUseCase)
+        assertEquals(LoginViewState.SigningIn, userNotSignedInViewModel.uiState.value)
     }
 
     @Test
