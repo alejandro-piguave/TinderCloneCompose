@@ -43,8 +43,8 @@ class LoginViewModel(
 
 @Immutable
 sealed class LoginViewState {
-    object Loading: LoginViewState()
-    object SigningIn: LoginViewState()
-    object SignedIn: LoginViewState()
-    object Error: LoginViewState()
+    data object Loading: LoginViewState()
+    data object SigningIn: LoginViewState()
+    data object SignedIn: LoginViewState()
+    data object Error: LoginViewState()
 }
