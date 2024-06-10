@@ -33,6 +33,10 @@ class LoginViewModelTest {
     @Before
     fun initialize() {
         viewModel = LoginViewModel(isUserSignInUseCase, signInUseCase)
+
+        val account = Account("john.doe@gmail.com", "123456890")
+        mockkStatic(ActivityResult::toProviderAccount)
+        coEvery { any<ActivityResult>().toProviderAccount() } returns account
     }
 
     @Test
@@ -51,10 +55,7 @@ class LoginViewModelTest {
 
     @Test
     fun testSignInSuccess() {
-        val account = Account("john.doe@gmail.com", "123456890")
         val activityResult: ActivityResult = mockk<ActivityResult>()
-        mockkStatic(ActivityResult::toProviderAccount)
-        coEvery { activityResult.toProviderAccount() } returns account
         coEvery { signInUseCase.invoke(any()) } returns Result.success(Unit)
         viewModel.signIn(activityResult)
         assertEquals(LoginViewState.SignedIn, viewModel.uiState.value)
@@ -62,10 +63,7 @@ class LoginViewModelTest {
 
     @Test
     fun testSignInFailure() {
-        val account = Account("john.doe@gmail.com", "123456890")
         val activityResult: ActivityResult = mockk<ActivityResult>()
-        mockkStatic(ActivityResult::toProviderAccount)
-        coEvery { activityResult.toProviderAccount() } returns account
         coEvery { signInUseCase.invoke(any()) } returns Result.failure(Exception())
         viewModel.signIn(activityResult)
         assertEquals(LoginViewState.Error, viewModel.uiState.value)
