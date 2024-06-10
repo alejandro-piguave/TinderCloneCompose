@@ -24,16 +24,21 @@ class LoginViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val signInUseCase = mockk<SignInUseCase>()
-    private val isUserSignInUseCase = mockk<IsUserSignedInUseCase> {
+    private val userSignedInUseCase = mockk<IsUserSignedInUseCase> {
         every { this@mockk.invoke() } returns true
     }
+    private val userNotSignedInUseCase = mockk<IsUserSignedInUseCase> {
+        every { this@mockk.invoke() } returns false
+    }
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var signedInViewModel: LoginViewModel
+    private lateinit var notSignedInViewModel: LoginViewModel
+
 
     @Before
     fun initialize() {
-        viewModel = LoginViewModel(isUserSignInUseCase, signInUseCase)
-
+        signedInViewModel = LoginViewModel(userSignedInUseCase, signInUseCase)
+        notSignedInViewModel = LoginViewModel(userNotSignedInUseCase, signInUseCase)
         val account = Account("john.doe@gmail.com", "123456890")
         mockkStatic(ActivityResult::toProviderAccount)
         coEvery { any<ActivityResult>().toProviderAccount() } returns account
@@ -41,32 +46,28 @@ class LoginViewModelTest {
 
     @Test
     fun testInitializeSignedIn() {
-        assertEquals(LoginViewState.SignedIn, viewModel.uiState.value)
+        assertEquals(LoginViewState.SignedIn, signedInViewModel.uiState.value)
     }
 
     @Test
     fun testInitializeSigningIn() {
-        val isUserSignedInUseCase = mockk<IsUserSignedInUseCase> {
-            every { this@mockk.invoke() } returns false
-        }
-        val userNotSignedInViewModel = LoginViewModel(isUserSignedInUseCase, signInUseCase)
-        assertEquals(LoginViewState.SigningIn, userNotSignedInViewModel.uiState.value)
+        assertEquals(LoginViewState.SigningIn, notSignedInViewModel.uiState.value)
     }
 
     @Test
     fun testSignInSuccess() {
         val activityResult: ActivityResult = mockk<ActivityResult>()
         coEvery { signInUseCase.invoke(any()) } returns Result.success(Unit)
-        viewModel.signIn(activityResult)
-        assertEquals(LoginViewState.SignedIn, viewModel.uiState.value)
+        signedInViewModel.signIn(activityResult)
+        assertEquals(LoginViewState.SignedIn, signedInViewModel.uiState.value)
     }
 
     @Test
     fun testSignInFailure() {
         val activityResult: ActivityResult = mockk<ActivityResult>()
         coEvery { signInUseCase.invoke(any()) } returns Result.failure(Exception())
-        viewModel.signIn(activityResult)
-        assertEquals(LoginViewState.Error, viewModel.uiState.value)
+        signedInViewModel.signIn(activityResult)
+        assertEquals(LoginViewState.Error, signedInViewModel.uiState.value)
     }
 
 }
