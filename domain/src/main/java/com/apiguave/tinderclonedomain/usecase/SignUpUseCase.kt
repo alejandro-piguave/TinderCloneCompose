@@ -22,11 +22,13 @@ class SignUpUseCase(
         gender: Gender,
         orientation: Orientation,
         pictures: List<String>
-    ) {
-        authRepository.signUp(account)
-        val userId = authRepository.userId
-        profileRepository.addProfile(userId!!, name, birthdate, bio, gender, orientation)
-        val pictureNames = pictureRepository.addPictures(pictures)
-        profileRepository.updatePictures(pictureNames)
+    ): Result<Unit> {
+        return Result.runCatching {
+            authRepository.signUp(account)
+            val userId = authRepository.userId
+            profileRepository.addProfile(userId!!, name, birthdate, bio, gender, orientation)
+            val pictureNames = pictureRepository.addPictures(pictures)
+            profileRepository.updatePictures(pictureNames)
+        }
     }
 }

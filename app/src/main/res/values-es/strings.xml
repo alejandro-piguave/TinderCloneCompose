@@ -39,4 +39,5 @@
     <string name="its_a">It\'s a</string>
     <string name="match">match!</string>
     <string name="done">Hecho</string>
+    <string name="sign_up_error">Se produjo un error durante el registro. Por favor, inténtelo de nuevo más tarde.</string>
 </resources>

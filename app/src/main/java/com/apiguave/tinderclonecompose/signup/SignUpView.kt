@@ -166,7 +166,7 @@ fun SignUpView(
         }
         is SignUpDialogState.ErrorDialog -> {
             ErrorDialog(
-                errorDescription = uiState.dialogState.message,
+                errorDescription = stringResource(id = R.string.sign_up_error),
                 onDismissRequest = onCloseDialogClicked,
                 onConfirm = onCloseDialogClicked
             )

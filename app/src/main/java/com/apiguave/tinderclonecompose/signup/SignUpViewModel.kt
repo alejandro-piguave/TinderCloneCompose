@@ -73,25 +73,24 @@ class SignUpViewModel(
     }
 
     fun signUp(activityResult: ActivityResult) {
+        _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
         viewModelScope.launch {
-            _uiState.update { it.copy(dialogState = SignUpDialogState.Loading) }
-            try {
-                val name = _uiState.value.name.text
-                val birthdate = _uiState.value.birthDate
-                val bio = _uiState.value.bio.text
-                val gender = _uiState.value.genderIndex.toGender()
-                val orientation = _uiState.value.orientationIndex.toOrientation()
-                val pictures = _uiState.value.pictures
+            val name = _uiState.value.name.text
+            val birthdate = _uiState.value.birthDate
+            val bio = _uiState.value.bio.text
+            val gender = _uiState.value.genderIndex.toGender()
+            val orientation = _uiState.value.orientationIndex.toOrientation()
+            val pictures = _uiState.value.pictures
 
-                val account = activityResult.toProviderAccount()
-                signUpUseCase(account, name, birthdate, bio, gender, orientation, pictures.map { it.uri.toString() })
+            val account = activityResult.toProviderAccount()
+            val result = signUpUseCase(account, name, birthdate, bio, gender, orientation, pictures.map { it.uri.toString() })
 
+            result.fold({
                 _uiState.update { it.copy(isUserSignedIn = true) }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(dialogState = SignUpDialogState.ErrorDialog(e.message ?: ""))
-                }
-            }
+            }, { e ->
+                _uiState.update { it.copy(dialogState = SignUpDialogState.ErrorDialog) }
+            })
+
         }
     }
 }
@@ -100,7 +99,7 @@ class SignUpViewModel(
 sealed class SignUpDialogState {
     data object NoDialog: SignUpDialogState()
     data class DeleteConfirmationDialog(val index: Int): SignUpDialogState()
-    data class ErrorDialog(val message: String): SignUpDialogState()
+    data object ErrorDialog: SignUpDialogState()
     data object SelectPictureDialog: SignUpDialogState()
     data object Loading: SignUpDialogState()
 }

@@ -1,11 +1,18 @@
 package com.apiguave.tinderclonecompose.signup
 
+import android.net.Uri
+import androidx.activity.result.ActivityResult
 import androidx.compose.ui.text.input.TextFieldValue
 import com.apiguave.tinderclonecompose.MainDispatcherRule
+import com.apiguave.tinderclonecompose.extension.toProviderAccount
+import com.apiguave.tinderclonecompose.model.PictureState
+import com.apiguave.tinderclonedomain.auth.Account
 import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
 import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -24,11 +31,14 @@ class SignUpViewModelTest {
     private val getMaxBirthdateUseCase: GetMaxBirthdateUseCase = mockk<GetMaxBirthdateUseCase> {
         every<LocalDate> { this@mockk.invoke() } returns LocalDate.of(2000, 1, 1)
     }
+    private val mockAccount = Account("john.doe@gmail.com", "123456890")
     private lateinit var viewModel: SignUpViewModel
 
     @Before
     fun initialize() {
         viewModel = SignUpViewModel(getMaxBirthdateUseCase, signUpUseCase)
+        mockkStatic(ActivityResult::toProviderAccount)
+        coEvery { any<ActivityResult>().toProviderAccount() } returns mockAccount
     }
 
     @Test
@@ -99,4 +109,48 @@ class SignUpViewModelTest {
         val state = viewModel.uiState.value
         assertEquals(SignUpDialogState.SelectPictureDialog, state.dialogState)
     }
+
+    @Test
+    fun testAddPicture() {
+        val testPicture = mockk<Uri>()
+        viewModel.addPicture(testPicture)
+        val state = viewModel.uiState.value
+        assertEquals(listOf(PictureState.Local(testPicture)), state.pictures)
+    }
+
+    @Test
+    fun testRemovePicture() {
+        val testPicture = mockk<Uri>()
+        viewModel.addPicture(testPicture)
+        val state = viewModel.uiState.value
+        assertEquals(listOf(PictureState.Local(testPicture)), state.pictures)
+        viewModel.removePictureAt(0)
+        val newState = viewModel.uiState.value
+        assertEquals(emptyList<Uri>(), newState.pictures)
+    }
+
+    @Test
+    fun testSignUpSuccess() {
+        val activityResult: ActivityResult = mockk<ActivityResult>()
+        coEvery { signUpUseCase.invoke(any(),any(),any(),any(),any(),any(),any()) } returns Result.success(Unit)
+
+        viewModel.setGenderIndex(0)
+        viewModel.setOrientationIndex(0)
+        viewModel.signUp(activityResult)
+        val state = viewModel.uiState.value
+        assertEquals(true, state.isUserSignedIn)
+    }
+
+    @Test
+    fun testSignUpFailure() {
+        val activityResult: ActivityResult = mockk<ActivityResult>()
+        coEvery { signUpUseCase.invoke(any(),any(),any(),any(),any(),any(),any()) } returns Result.failure(Exception())
+
+        viewModel.setGenderIndex(0)
+        viewModel.setOrientationIndex(0)
+        viewModel.signUp(activityResult)
+        val state = viewModel.uiState.value
+        assertEquals(SignUpDialogState.ErrorDialog, state.dialogState)
+    }
+    
 }
