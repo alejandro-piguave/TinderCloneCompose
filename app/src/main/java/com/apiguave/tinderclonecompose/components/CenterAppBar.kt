@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.extension.withLinearGradient
-import com.apiguave.tinderclonecompose.theme.Orange
-import com.apiguave.tinderclonecompose.theme.Pink
+import com.piguave.core_ui.theme.Orange
+import com.piguave.core_ui.theme.Pink
 
 @Composable
 fun CenterAppBar(

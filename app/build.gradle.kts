@@ -58,11 +58,11 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.material)
+    implementation(libs.androidx.compose.material)
 
     implementation(libs.play.services.auth)
 
@@ -90,4 +90,5 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core:ui"))
 }

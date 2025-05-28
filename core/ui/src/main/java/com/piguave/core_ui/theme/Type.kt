@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.theme
+package com.piguave.core_ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

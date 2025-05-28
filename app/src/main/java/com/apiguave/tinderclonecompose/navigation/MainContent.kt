@@ -16,7 +16,7 @@ import com.apiguave.tinderclonecompose.home.HomeScreen
 import com.apiguave.tinderclonecompose.login.LoginScreen
 import com.apiguave.tinderclonecompose.matchlist.MatchListScreen
 import com.apiguave.tinderclonecompose.signup.SignUpScreen
-import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
+import com.piguave.core_ui.theme.TinderCloneComposeTheme
 import org.koin.androidx.compose.getViewModel
 
 @Composable

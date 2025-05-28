@@ -37,7 +37,7 @@ import com.apiguave.tinderclonecompose.components.SectionTitle
 import com.apiguave.tinderclonecompose.components.TextRow
 import com.apiguave.tinderclonecompose.components.dialogs.DeleteConfirmationDialog
 import com.apiguave.tinderclonecompose.components.dialogs.SelectPictureDialog
-import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
+import com.piguave.core_ui.theme.TinderCloneComposeTheme
 
 @Composable
 fun EditProfileView(

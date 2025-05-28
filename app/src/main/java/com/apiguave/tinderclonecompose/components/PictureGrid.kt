@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.model.PictureState
-import com.apiguave.tinderclonecompose.theme.*
+import com.piguave.core_ui.theme.*
 
 //Picture Grid components
 

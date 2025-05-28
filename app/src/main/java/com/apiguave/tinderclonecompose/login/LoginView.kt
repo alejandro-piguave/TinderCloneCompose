@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.AnimatedLogo
-import com.apiguave.tinderclonecompose.theme.Orange
-import com.apiguave.tinderclonecompose.theme.Pink
-import com.apiguave.tinderclonecompose.theme.TinderCloneComposeTheme
+import com.piguave.core_ui.theme.Orange
+import com.piguave.core_ui.theme.Pink
+import com.piguave.core_ui.theme.TinderCloneComposeTheme
 
 @Composable
 fun LoginView(uiState: LoginViewState,

@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.apiguave.tinderclonecompose.theme.Nero
-import com.apiguave.tinderclonecompose.theme.SystemGray4
+import com.piguave.core_ui.theme.Nero
+import com.piguave.core_ui.theme.SystemGray4
 
 @Composable
 fun SectionTitle(title: String) {

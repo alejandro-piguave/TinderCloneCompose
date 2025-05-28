@@ -29,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.fileprovider.ComposeFileProvider
-import com.apiguave.tinderclonecompose.theme.LightPurple
-import com.apiguave.tinderclonecompose.theme.Orange
-import com.apiguave.tinderclonecompose.theme.Pink
-import com.apiguave.tinderclonecompose.theme.Purple
+import com.piguave.core_ui.theme.LightPurple
+import com.piguave.core_ui.theme.Orange
+import com.piguave.core_ui.theme.Pink
+import com.piguave.core_ui.theme.Purple
 
 @Composable
 fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){
