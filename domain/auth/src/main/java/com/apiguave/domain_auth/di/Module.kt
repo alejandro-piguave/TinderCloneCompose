@@ -1,16 +1,14 @@
-package com.apiguave.feature_auth.di
+package com.apiguave.domain_auth.di
 
 import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
 import com.apiguave.domain_auth.usecases.IsUserSignedInUseCase
 import com.apiguave.domain_auth.usecases.SignInUseCase
 import com.apiguave.domain_auth.usecases.SignOutUseCase
-import com.apiguave.domain_profile.usecases.GetProfileUseCase
 import org.koin.dsl.module
 
-val domainModule = module {
+val domainAuthModule = module {
     factory { GetMaxBirthdateUseCase() }
-    factory { GetProfileUseCase(get()) }
-    factory { SignInUseCase(get()) }
     factory { IsUserSignedInUseCase(get()) }
+    factory { SignInUseCase(get()) }
     factory { SignOutUseCase(get()) }
 }

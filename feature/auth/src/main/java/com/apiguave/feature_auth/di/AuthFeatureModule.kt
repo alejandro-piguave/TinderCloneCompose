@@ -1,8 +1,16 @@
 package com.apiguave.feature_auth.di
 
+import com.apiguave.feature_auth.login.LoginViewModel
+import com.apiguave.feature_auth.orchestrators.SignUpUseCase
+import com.apiguave.feature_auth.register.SignUpViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val authFeatureModule = module {
-    includes(domainModule)
-    includes(presentationModule)
+    //View models
+    viewModel { SignUpViewModel(get(), get()) }
+    viewModel { LoginViewModel(get(), get()) }
+
+    //Feature use cases
+    factory { SignUpUseCase(get(), get(), get()) }
 }

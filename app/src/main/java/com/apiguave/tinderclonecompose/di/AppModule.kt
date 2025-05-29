@@ -10,6 +10,11 @@ import com.apiguave.data_picture.di.dataPictureModule
 import com.apiguave.data_picture.di.mockDataPictureModule
 import com.apiguave.data_profile.di.dataProfileModule
 import com.apiguave.data_profile.di.mockDataProfileModule
+import com.apiguave.domain_auth.di.domainAuthModule
+import com.apiguave.domain_match.di.domainMatchModule
+import com.apiguave.domain_message.di.domainMessageModule
+import com.apiguave.domain_picture.di.domainPictureModule
+import com.apiguave.domain_profile.di.domainProfileModule
 import com.apiguave.feature_auth.BuildConfig
 import com.apiguave.feature_auth.di.authFeatureModule
 import com.apiguave.feature_chat.di.chatFeatureModule
@@ -22,6 +27,12 @@ val appModule = module {
     includes(homeFeatureModule)
     includes(chatFeatureModule)
     includes(profileFeatureModule)
+
+    includes(domainAuthModule)
+    includes(domainMatchModule)
+    includes(domainMessageModule)
+    includes(domainPictureModule)
+    includes(domainProfileModule)
 
     if(BuildConfig.BUILD_TYPE == "mock") {
         includes(mockDataAuthModule)
