@@ -6,7 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.auth_ui.extensions.filterIndex
+import com.apiguave.feature_auth.extensions.filterIndex
 import com.apiguave.auth_ui.extensions.toGender
 import com.apiguave.auth_ui.extensions.toOrientation
 import com.apiguave.auth_ui.extensions.toProviderAccount

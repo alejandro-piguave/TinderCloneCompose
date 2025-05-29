@@ -1,5 +1,6 @@
-package com.apiguave.tinderclonecompose.di
+package com.apiguave.feature_profile.di
 
+import com.apiguave.domain_auth.usecases.SignOutUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
@@ -13,14 +14,10 @@ import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { GetProfileUseCase(get()) }
-    factory { LikeProfileUseCase(get(), get()) }
-    factory { PassProfileUseCase(get()) }
-    factory { SendMessageUseCase(get()) }
-    factory { GetMessagesUseCase(get()) }
-    factory { GetMatchesUseCase(get()) }
+    factory { SignOutUseCase(get()) }
     factory { UpdateProfileUseCase(get()) }
-    factory { GetProfilesUseCase(get()) }
+    factory { GetProfileUseCase(get()) }
     factory { GetPictureUseCase(get()) }
     factory { UpdatePicturesUseCase(get(), get()) }
+
 }

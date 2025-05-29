@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.editprofile
+package com.apiguave.feature_profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

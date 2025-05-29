@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.editprofile
+package com.apiguave.feature_profile
 
 import android.net.Uri
 import android.util.Log
@@ -6,13 +6,13 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apiguave.core_ui.model.PictureState
 import com.apiguave.domain_auth.usecases.SignOutUseCase
-import com.apiguave.tinderclonecompose.extension.filterIndex
-import com.apiguave.tinderclonecompose.extension.getTaskResult
-import com.apiguave.tinderclonecompose.extension.toGender
-import com.apiguave.tinderclonecompose.extension.toLongString
-import com.apiguave.tinderclonecompose.extension.toOrientation
-import com.apiguave.tinderclonecompose.model.PictureState
+import com.apiguave.feature_profile.extensions.toGender
+import com.apiguave.feature_profile.extensions.toLongString
+import com.apiguave.feature_profile.extensions.toOrientation
+import com.apiguave.feature_profile.extensions.filterIndex
+import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
 import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.picture.RemotePicture
 import com.apiguave.tinderclonedomain.profile.UserProfile

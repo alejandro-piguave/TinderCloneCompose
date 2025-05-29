@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonecompose.di
+package com.apiguave.feature_profile.di
 
-import com.apiguave.tinderclonecompose.editprofile.EditProfileViewModel
+import com.apiguave.feature_profile.EditProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.editprofile
+package com.apiguave.feature_profile
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -25,18 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.components.dialogs.ErrorDialog
-import com.apiguave.tinderclonecompose.components.FormDivider
-import com.apiguave.tinderclonecompose.components.FormTextField
-import com.apiguave.tinderclonecompose.components.HorizontalPicker
-import com.apiguave.tinderclonecompose.components.LoadingView
-import com.apiguave.tinderclonecompose.components.PictureGridRow
-import com.apiguave.tinderclonecompose.components.RowCount
-import com.apiguave.tinderclonecompose.components.SectionTitle
-import com.apiguave.tinderclonecompose.components.TextRow
-import com.apiguave.tinderclonecompose.components.dialogs.DeleteConfirmationDialog
-import com.apiguave.tinderclonecompose.components.dialogs.SelectPictureDialog
+import com.apiguave.core_ui.components.FormDivider
+import com.apiguave.core_ui.components.FormTextField
+import com.apiguave.core_ui.components.HorizontalPicker
+import com.apiguave.core_ui.components.LoadingView
+import com.apiguave.core_ui.components.PictureGridRow
+import com.apiguave.core_ui.components.RowCount
+import com.apiguave.core_ui.components.SectionTitle
+import com.apiguave.core_ui.components.TextRow
+import com.apiguave.core_ui.components.dialogs.DeleteConfirmationDialog
+import com.apiguave.core_ui.components.dialogs.ErrorDialog
+import com.apiguave.core_ui.components.dialogs.SelectPictureDialog
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 
 @Composable

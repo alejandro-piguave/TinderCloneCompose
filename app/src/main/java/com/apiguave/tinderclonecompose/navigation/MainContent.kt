@@ -16,7 +16,7 @@ import com.apiguave.feature_home.HomeScreen
 import com.apiguave.feature_chat.chat.ChatScreen
 import com.apiguave.feature_chat.chat.ChatViewModel
 import com.apiguave.feature_chat.match_list.MatchListScreen
-import com.apiguave.tinderclonecompose.editprofile.EditProfileScreen
+import com.apiguave.feature_profile.EditProfileScreen
 import org.koin.androidx.compose.getViewModel
 
 @Composable

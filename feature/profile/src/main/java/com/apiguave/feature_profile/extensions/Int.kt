@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.extension
+package com.apiguave.feature_profile.extensions
 
 import com.apiguave.tinderclonedomain.profile.Gender
 import com.apiguave.tinderclonedomain.profile.Orientation
