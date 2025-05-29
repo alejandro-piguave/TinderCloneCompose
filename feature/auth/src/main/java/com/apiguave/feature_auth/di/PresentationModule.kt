@@ -12,6 +12,6 @@ val presentationModule = module {
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
 
-    //Orchestrators
+    //Feature use cases
     factory { SignUpUseCase(get(), get(), get()) }
 }

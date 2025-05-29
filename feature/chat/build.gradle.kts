@@ -15,9 +15,6 @@ android {
     }
 
     buildTypes {
-        create("mock") {
-            initWith(getByName("debug"))
-        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -67,11 +64,6 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":domain:message"))
-    implementation(project(":data:message"))
-
     implementation(project(":domain:match"))
-    implementation(project(":data:match"))
-
     implementation(project(":domain:picture"))
-    implementation(project(":data:picture"))
 }

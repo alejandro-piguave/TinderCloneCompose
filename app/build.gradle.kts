@@ -94,4 +94,13 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:profile"))
+
+
+
+    implementation(project(":data:auth"))
+    implementation(project(":data:match"))
+    implementation(project(":data:message"))
+    implementation(project(":data:picture"))
+    implementation(project(":data:profile"))
+
 }

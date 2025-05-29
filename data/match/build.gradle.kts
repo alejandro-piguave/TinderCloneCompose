@@ -41,6 +41,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.koin.android)
 
     implementation(project(":domain:match"))
     implementation(project(":core:network"))
