@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.piguave.core_ui"
+    namespace = "com.apiguave.core_ui"
     compileSdk = 34
 
     defaultConfig {
@@ -15,6 +15,9 @@ android {
     }
 
     buildTypes {
+        create("mock") {
+            initWith(getByName("debug"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -30,6 +33,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 }
 
 dependencies {
@@ -44,5 +54,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.activity.compose)
+
 
 }

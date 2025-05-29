@@ -24,6 +24,7 @@ import com.apiguave.feature_auth.components.AnimatedLogo
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.feature_auth.R
 
 @Composable
 fun LoginView(uiState: LoginViewState,

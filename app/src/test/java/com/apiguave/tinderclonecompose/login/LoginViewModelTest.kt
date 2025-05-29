@@ -4,8 +4,6 @@ import androidx.activity.result.ActivityResult
 import com.apiguave.tinderclonecompose.MainDispatcherRule
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
 import com.apiguave.tinderclonedomain.auth.Account
-import com.apiguave.tinderclonedomain.usecase.IsUserSignedInUseCase
-import com.apiguave.tinderclonedomain.usecase.SignInUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

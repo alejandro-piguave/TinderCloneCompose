@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.piguave.feature_auth"
+    namespace = "com.apiguave.feature_auth"
     compileSdk = 34
 
     defaultConfig {
@@ -29,6 +29,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 }
 
@@ -58,4 +66,5 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":domain:auth"))
     implementation(project(":domain"))
+    implementation(project(":data"))
 }

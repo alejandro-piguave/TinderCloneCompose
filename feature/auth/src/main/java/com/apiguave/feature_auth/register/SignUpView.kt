@@ -1,4 +1,4 @@
-package com.apiguave.auth_ui.register
+package com.apiguave.feature_auth.register
 
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.apiguave.core_ui.components.dialogs.DeleteConfirmationDialog
 import com.apiguave.core_ui.components.dialogs.ErrorDialog
 import com.apiguave.core_ui.components.dialogs.SelectPictureDialog
-import com.apiguave.auth_ui.R
+import com.apiguave.feature_auth.R
 import com.apiguave.feature_auth.components.GradientGoogleButton
 import com.apiguave.feature_auth.components.dialogs.FormDatePickerDialog
 import com.apiguave.auth_ui.extensions.isValidUsername
@@ -34,8 +34,6 @@ import com.apiguave.core_ui.components.PictureGridRow
 import com.apiguave.core_ui.components.RowCount
 import com.apiguave.core_ui.components.SectionTitle
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
-import com.apiguave.feature_auth.register.SignUpDialogState
-import com.apiguave.feature_auth.register.SignUpViewState
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

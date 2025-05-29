@@ -15,7 +15,7 @@
         android:theme="@style/Theme.TinderCloneCompose"
         tools:targetApi="31">
         <provider
-            android:name=".fileprovider.ComposeFileProvider"
+            android:name="com.apiguave.core_ui.fileprovider.ComposeFileProvider"
             android:authorities="com.apiguave.tinderclonecompose.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">

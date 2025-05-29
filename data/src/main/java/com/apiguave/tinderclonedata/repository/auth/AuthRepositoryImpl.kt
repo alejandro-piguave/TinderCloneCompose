@@ -1,7 +1,7 @@
 package com.apiguave.tinderclonedata.repository.auth
 
-import com.apiguave.tinderclonedomain.auth.Account
-import com.apiguave.tinderclonedomain.auth.AuthRepository
+import com.apiguave.domain_auth.model.Account
+import com.apiguave.domain_auth.repository.AuthRepository
 import com.apiguave.tinderclonedata.repository.auth.exception.SignInException
 import com.apiguave.tinderclonedata.repository.auth.exception.SignUpException
 

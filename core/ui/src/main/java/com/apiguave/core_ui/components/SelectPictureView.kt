@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.core_ui.components
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,12 +27,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.core_ui.fileprovider.ComposeFileProvider
+import com.apiguave.core_ui.R
 import com.apiguave.core_ui.theme.LightPurple
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 import com.apiguave.core_ui.theme.Purple
+import com.apiguave.core_ui.fileprovider.ComposeFileProvider
 
 @Composable
 fun SelectPictureView(onCloseClicked: () -> Unit, onReceiveUri: (Uri) -> Unit){

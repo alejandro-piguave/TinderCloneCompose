@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import com.apiguave.feature_auth.register.SignUpView
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.apiguave.feature_auth.register.SignUpViewModel
 import kotlinx.coroutines.launch

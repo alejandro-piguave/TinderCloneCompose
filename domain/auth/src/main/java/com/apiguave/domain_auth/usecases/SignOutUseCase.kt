@@ -1,6 +1,7 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_auth.usecases
 
-import com.apiguave.tinderclonedomain.auth.AuthRepository
+import com.apiguave.domain_auth.repository.AuthRepository
+
 
 class SignOutUseCase(private val authRepository: AuthRepository) {
     operator fun invoke(): Result<Unit> {

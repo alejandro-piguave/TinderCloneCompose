@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apiguave.domain_auth.usecases.SignOutUseCase
 import com.apiguave.tinderclonecompose.extension.filterIndex
 import com.apiguave.tinderclonecompose.extension.getTaskResult
 import com.apiguave.tinderclonecompose.extension.toGender
@@ -17,7 +18,6 @@ import com.apiguave.tinderclonedomain.picture.RemotePicture
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
-import com.apiguave.tinderclonedomain.usecase.SignOutUseCase
 import com.apiguave.tinderclonedomain.usecase.UpdatePicturesUseCase
 import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

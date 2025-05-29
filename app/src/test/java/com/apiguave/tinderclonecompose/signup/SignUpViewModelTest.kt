@@ -7,8 +7,6 @@ import com.apiguave.tinderclonecompose.MainDispatcherRule
 import com.apiguave.tinderclonecompose.extension.toProviderAccount
 import com.apiguave.tinderclonecompose.model.PictureState
 import com.apiguave.tinderclonedomain.auth.Account
-import com.apiguave.tinderclonedomain.usecase.GetMaxBirthdateUseCase
-import com.apiguave.tinderclonedomain.usecase.SignUpUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

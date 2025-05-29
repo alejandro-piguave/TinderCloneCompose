@@ -49,4 +49,5 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     implementation(project(":domain"))
+    implementation(project(":domain:auth"))
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
+import com.apiguave.feature_auth.R
 
 @Composable
 fun GradientGoogleButton(enabled: Boolean, onClick: () -> Unit) {

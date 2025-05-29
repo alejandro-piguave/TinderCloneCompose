@@ -1,6 +1,7 @@
 package com.apiguave.tinderclonedata.repository.auth
 
-import com.apiguave.tinderclonedomain.auth.Account
+import com.apiguave.domain_auth.model.Account
+
 
 interface AuthRemoteDataSource {
     val userId: String?
