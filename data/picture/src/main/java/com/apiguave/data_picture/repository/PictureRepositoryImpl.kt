@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.repository.picture
+package com.apiguave.data_picture.repository
 
 import android.net.Uri
 import com.apiguave.tinderclonedomain.picture.PictureRepository

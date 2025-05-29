@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.source.mock.extension
+package com.apiguave.data_picture.source.extensions
 
 import android.content.ContentResolver
 import android.content.Context

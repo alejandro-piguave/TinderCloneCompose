@@ -1,12 +1,12 @@
-package com.apiguave.tinderclonedata.source.mock
+package com.apiguave.data_picture.source
 
 import android.content.Context
 import android.net.Uri
-import com.apiguave.tinderclonedata.R
-import com.apiguave.tinderclonedata.repository.picture.PictureRemoteDataSource
-import com.apiguave.tinderclonedata.source.mock.extension.resourceUri
+import com.apiguave.data_picture.repository.PictureRemoteDataSource
 import kotlinx.coroutines.delay
 import kotlin.random.Random
+import com.apiguave.data_picture.R
+import com.apiguave.data_picture.source.extensions.resourceUri
 
 class PictureRemoteDataSourceMockImpl(private val context: Context): PictureRemoteDataSource {
     override suspend fun addPictures(localPictures: List<Uri>): List<String> {
