@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.matchlist
+package com.apiguave.feature_chat.match_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,18 +26,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.components.AnimatedGradientLogo
-import com.apiguave.tinderclonecompose.components.CenterAppBar
+import com.apiguave.core_ui.components.AnimatedGradientLogo
 import com.apiguave.core_ui.components.GradientButton
-import com.apiguave.tinderclonecompose.model.MatchState
 import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.core_ui.theme.LightLightGray
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.feature_chat.components.CenterAppBar
+import com.apiguave.feature_chat.model.MatchState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.apiguave.feature_chat.R
 
 @OptIn(ExperimentalTextApi::class)
 @Composable

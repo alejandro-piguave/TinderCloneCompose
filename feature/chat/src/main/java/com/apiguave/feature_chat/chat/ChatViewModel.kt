@@ -1,10 +1,10 @@
-package com.apiguave.tinderclonecompose.chat
+package com.apiguave.feature_chat.chat
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.model.MatchState
 import com.apiguave.core_ui.model.ProfilePictureState
+import com.apiguave.feature_chat.model.MatchState
 import com.apiguave.tinderclonedomain.usecase.GetMessagesUseCase
 import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.tinderclonedomain.usecase.SendMessageUseCase

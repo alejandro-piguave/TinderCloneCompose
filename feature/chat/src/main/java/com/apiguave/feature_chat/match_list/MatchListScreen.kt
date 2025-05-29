@@ -1,9 +1,9 @@
-package com.apiguave.tinderclonecompose.matchlist
+package com.apiguave.feature_chat.match_list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.apiguave.tinderclonecompose.model.MatchState
+import com.apiguave.feature_chat.model.MatchState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

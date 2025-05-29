@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.model
+package com.apiguave.feature_chat.model
 
 import androidx.compose.runtime.Immutable
 import com.apiguave.core_ui.model.ProfilePictureState

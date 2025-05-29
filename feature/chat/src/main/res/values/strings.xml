@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">TinderCloneCompose</string>
+    <string name="send">Send</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="create_account">Create account</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="about_me">About Me</string>
+    <string name="write_something_interesting">Write something interesting…</string>
+    <string name="gender">Gender</string>
+    <string name="i_am_interested_in">I am interested in</string>
+    <string name="sign_up_with_google">Sign Up with Google</string>
+    <string name="pick_a_date">Pick a date</string>
+    <string name="name">Name</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="select_content_type">Select content type</string>
+    <string name="create_new">Create new</string>
+    <string name="photo">Photo</string>
+    <string name="camera">Camera</string>
+    <string name="upload">Upload</string>
+    <string name="capture_from">Capture from</string>
+    <string name="delete_confirmation_title">Delete Confirmation</string>
+    <string name="delete_confirmation_body">Are you sure you want to delete this item?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="no_more_profiles">There\'s no one new around you!</string>
+    <string name="generate_profiles">Generate profiles</string>
+    <string name="messages">Messages</string>
+    <string name="say_something_nice">Say something nice!</string>
+    <string name="no_matches">You don\'t have any matches yet :(</string>
+    <string name="you_matched_with_on">You matched with %1$s on %2$s</string>
+    <string name="no_match_value_passed">No match value passed</string>
+    <string name="its_a">It\'s a</string>
+    <string name="match">match!</string>
+    <string name="done">Done</string>
+    <string name="sign_up_error">There was an error while signing up. Please, try again later.</string>
+
+</resources>

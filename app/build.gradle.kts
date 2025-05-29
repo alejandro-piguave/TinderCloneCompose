@@ -95,4 +95,5 @@ dependencies {
 
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:chat"))
 }

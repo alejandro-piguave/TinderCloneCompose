@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.chat
+package com.apiguave.feature_chat.chat
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
@@ -8,12 +8,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.apiguave.tinderclonecompose.R
+import com.apiguave.feature_chat.R
 
 @Composable
 fun ChatScreen(
     onArrowBackPressed: () -> Unit,
-    viewModel: ChatViewModel) {
+    viewModel: ChatViewModel
+) {
     val chatViewState by viewModel.viewState.collectAsState()
     chatViewState?.let {
         val messages by viewModel.getMessages(it.match.id).collectAsState(

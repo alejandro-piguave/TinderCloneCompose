@@ -112,11 +112,12 @@ object UserApi {
     }
 
     private suspend fun hasUserLikedBack(swipedUserId: String): Boolean{
+        val currentUserId = AuthApi.userId!!
         val result = FirebaseFirestore.getInstance()
             .collection(USERS)
             .document(swipedUserId)
             .collection(FirestoreUserProperties.liked)
-            .document(AuthApi.userId!!)
+            .document(currentUserId)
             .get()
             .getTaskResult()
         return result.exists()

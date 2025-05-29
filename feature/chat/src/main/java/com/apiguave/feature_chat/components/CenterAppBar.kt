@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.feature_chat.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -16,8 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.extension.withLinearGradient
+import com.apiguave.core_ui.modifiers.withLinearGradient
+import com.apiguave.feature_chat.R
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 
