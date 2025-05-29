@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import com.apiguave.tinderclonecompose.extension.conditional
 import com.apiguave.tinderclonecompose.extension.withLinearGradient
-import com.piguave.core_ui.theme.Orange
-import com.piguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
 
 @Composable
 fun TopBarIcon(painter: Painter, modifier: Modifier, onClick: (() -> Unit )? = null){

@@ -32,10 +32,10 @@ import com.apiguave.tinderclonecompose.components.CenterAppBar
 import com.apiguave.tinderclonecompose.components.GradientButton
 import com.apiguave.tinderclonecompose.model.MatchState
 import com.apiguave.tinderclonecompose.model.ProfilePictureState
-import com.piguave.core_ui.theme.LightLightGray
-import com.piguave.core_ui.theme.Orange
-import com.piguave.core_ui.theme.Pink
-import com.piguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.core_ui.theme.LightLightGray
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

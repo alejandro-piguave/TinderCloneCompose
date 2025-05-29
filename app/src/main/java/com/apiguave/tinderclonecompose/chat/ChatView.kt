@@ -25,9 +25,9 @@ import com.apiguave.tinderclonecompose.components.ChatFooter
 import com.apiguave.tinderclonecompose.extension.toShortString
 import com.apiguave.tinderclonecompose.model.MatchState
 import com.apiguave.tinderclonecompose.model.ProfilePictureState
-import com.piguave.core_ui.theme.AntiFlashWhite
-import com.piguave.core_ui.theme.TinderCloneComposeTheme
-import com.piguave.core_ui.theme.UltramarineBlue
+import com.apiguave.core_ui.theme.AntiFlashWhite
+import com.apiguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.core_ui.theme.UltramarineBlue
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.message.Message
 import com.apiguave.tinderclonedomain.profile.Profile

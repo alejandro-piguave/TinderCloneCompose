@@ -42,6 +42,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material)
-
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
 }

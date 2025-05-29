@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.piguave.core_ui.theme.Orange
-import com.piguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
 
 
 @Composable

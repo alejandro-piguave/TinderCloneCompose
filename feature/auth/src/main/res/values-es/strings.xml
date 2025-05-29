@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_with_google">Acceder con Google</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="create_profile">Crear Perfil</string>
+    <string name="personal_information">Información Personal</string>
+    <string name="enter_your_name">Introduce tu nombre</string>
+    <string name="birth_date">Fecha de Nacimiento</string>
+    <string name="about_me">Sobre Mí</string>
+    <string name="write_something_interesting">Escribe algo interesante…</string>
+    <string name="gender">Género</string>
+    <string name="i_am_interested_in">Me interesan</string>
+    <string name="pick_a_date">Selecciona una fecha</string>
+    <string name="sign_up_error">Se produjo un error durante el registro. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="sign_up_with_google">Registrarse con Google</string>
+
+</resources>

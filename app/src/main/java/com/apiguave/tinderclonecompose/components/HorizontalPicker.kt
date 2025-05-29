@@ -22,9 +22,9 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.piguave.core_ui.theme.Orange
-import com.piguave.core_ui.theme.Pink
-import com.piguave.core_ui.theme.SystemGray4
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.SystemGray4
 
 @Composable
 fun HorizontalPicker(@ArrayRes id: Int, selectedIndex: Int, onOptionClick: (Int) -> Unit) {

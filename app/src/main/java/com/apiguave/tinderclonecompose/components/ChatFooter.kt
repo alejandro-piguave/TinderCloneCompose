@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.apiguave.tinderclonecompose.R
-import com.piguave.core_ui.theme.LightLightGray
-import com.piguave.core_ui.theme.UltramarineBlue
+import com.apiguave.core_ui.theme.LightLightGray
+import com.apiguave.core_ui.theme.UltramarineBlue
 
 
 @Composable

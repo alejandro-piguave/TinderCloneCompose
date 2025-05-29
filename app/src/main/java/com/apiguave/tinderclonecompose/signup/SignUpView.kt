@@ -27,7 +27,7 @@ import com.apiguave.tinderclonecompose.components.dialogs.DeleteConfirmationDial
 import com.apiguave.tinderclonecompose.components.dialogs.ErrorDialog
 import com.apiguave.tinderclonecompose.components.dialogs.FormDatePickerDialog
 import com.apiguave.tinderclonecompose.components.dialogs.SelectPictureDialog
-import com.piguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

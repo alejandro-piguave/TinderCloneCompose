@@ -1,0 +1,16 @@
+<resources>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="create_account">Create account</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="about_me">About Me</string>
+    <string name="write_something_interesting">Write something interesting…</string>
+    <string name="gender">Gender</string>
+    <string name="i_am_interested_in">I am interested in</string>
+    <string name="pick_a_date">Pick a date</string>
+    <string name="sign_up_error">There was an error while signing up. Please, try again later.</string>
+    <string name="sign_up_with_google">Sign Up with Google</string>
+
+</resources>

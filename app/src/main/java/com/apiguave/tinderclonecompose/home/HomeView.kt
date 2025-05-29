@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.sp
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.*
 import com.apiguave.tinderclonecompose.components.dialogs.NewMatchDialog
-import com.piguave.core_ui.theme.Green1
-import com.piguave.core_ui.theme.Green2
-import com.piguave.core_ui.theme.Orange
-import com.piguave.core_ui.theme.Pink
-import com.piguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.core_ui.theme.Green1
+import com.apiguave.core_ui.theme.Green2
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import kotlinx.coroutines.*
 
 @Composable
