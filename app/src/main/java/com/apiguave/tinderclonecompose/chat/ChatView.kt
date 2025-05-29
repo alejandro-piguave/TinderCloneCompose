@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.CenterAppBar
-import com.apiguave.tinderclonecompose.components.ChatFooter
+import com.apiguave.core_ui.components.ChatFooter
 import com.apiguave.tinderclonecompose.extension.toShortString
 import com.apiguave.tinderclonecompose.model.MatchState
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.core_ui.theme.AntiFlashWhite
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import com.apiguave.core_ui.theme.UltramarineBlue

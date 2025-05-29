@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_more_profiles">¡No hay nadie más a tu alrededor!</string>
+    <string name="its_a">It\'s a</string>
+    <string name="match">match!</string>
+    <string name="retry">Reintentar</string>
+
+</resources>

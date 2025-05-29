@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.home
+package com.apiguave.feature_home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
@@ -18,14 +18,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.components.*
-import com.apiguave.tinderclonecompose.components.dialogs.NewMatchDialog
+import com.apiguave.core_ui.components.AnimatedGradientLogo
+import com.apiguave.core_ui.components.GradientButton
 import com.apiguave.core_ui.theme.Green1
 import com.apiguave.core_ui.theme.Green2
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.feature_home.components.ProfileCardView
+import com.apiguave.feature_home.components.RoundGradientButton
+import com.apiguave.feature_home.components.SwipingDirection
+import com.apiguave.feature_home.components.TopBarIcon
+import com.apiguave.feature_home.components.dialogs.NewMatchDialog
+import com.apiguave.feature_home.components.rememberSwipeableCardState
+import com.apiguave.feature_home.components.swipableCard
 import kotlinx.coroutines.*
 
 @Composable

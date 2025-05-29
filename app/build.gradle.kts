@@ -94,4 +94,5 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":feature:auth"))
+    implementation(project(":feature:home"))
 }

@@ -2,7 +2,6 @@ package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.tinderclonecompose.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.editprofile.EditProfileViewModel
-import com.apiguave.tinderclonecompose.home.HomeViewModel
 import com.apiguave.tinderclonecompose.matchlist.MatchListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -13,5 +12,4 @@ val presentationModule = module {
     viewModel { ChatViewModel(get(), get(), get()) }
     viewModel { EditProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { MatchListViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
 }

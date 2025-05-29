@@ -1,10 +1,10 @@
-package com.apiguave.tinderclonecompose.home
+package com.apiguave.feature_home
 
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase

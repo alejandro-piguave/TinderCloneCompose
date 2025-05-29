@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.home
+package com.apiguave.feature_home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

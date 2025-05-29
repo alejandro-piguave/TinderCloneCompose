@@ -29,9 +29,9 @@ import coil.compose.AsyncImage
 import com.apiguave.tinderclonecompose.R
 import com.apiguave.tinderclonecompose.components.AnimatedGradientLogo
 import com.apiguave.tinderclonecompose.components.CenterAppBar
-import com.apiguave.tinderclonecompose.components.GradientButton
+import com.apiguave.core_ui.components.GradientButton
 import com.apiguave.tinderclonecompose.model.MatchState
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.core_ui.theme.LightLightGray
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink

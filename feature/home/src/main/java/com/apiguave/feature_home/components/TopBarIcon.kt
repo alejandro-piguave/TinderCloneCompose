@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.feature_home.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -9,8 +9,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
-import com.apiguave.tinderclonecompose.extension.conditional
-import com.apiguave.tinderclonecompose.extension.withLinearGradient
+import com.apiguave.core_ui.modifiers.withLinearGradient
 import com.apiguave.core_ui.theme.Orange
 import com.apiguave.core_ui.theme.Pink
 
@@ -20,7 +19,8 @@ fun TopBarIcon(painter: Painter, modifier: Modifier, onClick: (() -> Unit )? = n
         painter = painter,
         modifier = modifier
             .withLinearGradient(Pink, Orange)
-            .conditional(onClick != null) { clickable(onClick = onClick!!) },
+            then(if(onClick != null) Modifier.clickable(onClick = onClick!!) else Modifier)
+            ,
         contentDescription = null)
 
 }

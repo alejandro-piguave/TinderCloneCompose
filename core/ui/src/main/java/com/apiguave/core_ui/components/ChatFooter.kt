@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.core_ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.apiguave.tinderclonecompose.R
 import com.apiguave.core_ui.theme.LightLightGray
 import com.apiguave.core_ui.theme.UltramarineBlue
+import com.apiguave.core_ui.R
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.core_ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

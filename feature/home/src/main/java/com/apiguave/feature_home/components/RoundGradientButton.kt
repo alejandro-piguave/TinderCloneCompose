@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.feature_home.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import com.apiguave.tinderclonecompose.extension.withLinearGradient
+import com.apiguave.core_ui.modifiers.withLinearGradient
 
 @Composable
 fun RoundGradientButton(onClick: () -> Unit, enabled: Boolean = true,  imageVector: ImageVector, color1: Color, color2: Color){

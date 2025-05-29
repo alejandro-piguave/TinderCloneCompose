@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.home
+package com.apiguave.feature_home.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import com.apiguave.tinderclonecompose.R
-import com.apiguave.tinderclonecompose.components.ChatFooter
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.components.ChatFooter
+import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.core_ui.theme.Green1
+import com.apiguave.feature_home.R
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

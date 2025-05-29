@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose.components
+package com.apiguave.feature_home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.tinderclonedomain.profile.Profile
 
 @Composable

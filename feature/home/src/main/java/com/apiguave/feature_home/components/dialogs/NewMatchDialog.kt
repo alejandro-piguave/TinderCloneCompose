@@ -1,10 +1,10 @@
-package com.apiguave.tinderclonecompose.components.dialogs
+package com.apiguave.feature_home.components.dialogs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.apiguave.tinderclonecompose.home.NewMatchView
-import com.apiguave.tinderclonecompose.model.ProfilePictureState
+import com.apiguave.core_ui.model.ProfilePictureState
+import com.apiguave.feature_home.components.NewMatchView
 
 @Composable
 fun NewMatchDialog(

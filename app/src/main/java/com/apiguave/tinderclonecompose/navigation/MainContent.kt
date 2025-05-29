@@ -12,10 +12,10 @@ import androidx.navigation.compose.rememberNavController
 import com.apiguave.auth_ui.register.SignUpScreen
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import com.apiguave.feature_auth.login.LoginScreen
+import com.apiguave.feature_home.HomeScreen
 import com.apiguave.tinderclonecompose.chat.ChatScreen
 import com.apiguave.tinderclonecompose.chat.ChatViewModel
 import com.apiguave.tinderclonecompose.editprofile.EditProfileScreen
-import com.apiguave.tinderclonecompose.home.HomeScreen
 import com.apiguave.tinderclonecompose.matchlist.MatchListScreen
 import org.koin.androidx.compose.getViewModel
 
