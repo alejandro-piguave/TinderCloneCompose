@@ -1,9 +1,11 @@
-package com.apiguave.tinderclonecompose.login
+package com.apiguave.feature_auth.login
 
 import androidx.activity.result.ActivityResult
-import com.apiguave.tinderclonecompose.MainDispatcherRule
-import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonedomain.auth.Account
+import com.apiguave.auth_ui.extensions.toProviderAccount
+import com.apiguave.domain_auth.model.Account
+import com.apiguave.domain_auth.usecases.IsUserSignedInUseCase
+import com.apiguave.domain_auth.usecases.SignInUseCase
+import com.apiguave.feature_auth.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

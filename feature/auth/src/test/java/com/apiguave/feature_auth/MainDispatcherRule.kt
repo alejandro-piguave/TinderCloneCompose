@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonecompose
+package com.apiguave.feature_auth
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

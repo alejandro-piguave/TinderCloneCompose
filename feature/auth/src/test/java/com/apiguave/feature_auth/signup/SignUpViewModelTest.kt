@@ -1,12 +1,16 @@
-package com.apiguave.tinderclonecompose.signup
+package com.apiguave.feature_auth.signup
 
 import android.net.Uri
 import androidx.activity.result.ActivityResult
 import androidx.compose.ui.text.input.TextFieldValue
-import com.apiguave.tinderclonecompose.MainDispatcherRule
-import com.apiguave.tinderclonecompose.extension.toProviderAccount
-import com.apiguave.tinderclonecompose.model.PictureState
-import com.apiguave.tinderclonedomain.auth.Account
+import com.apiguave.auth_ui.extensions.toProviderAccount
+import com.apiguave.core_ui.model.PictureState
+import com.apiguave.domain_auth.model.Account
+import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
+import com.apiguave.feature_auth.MainDispatcherRule
+import com.apiguave.feature_auth.orchestrators.SignUpUseCase
+import com.apiguave.feature_auth.register.SignUpDialogState
+import com.apiguave.feature_auth.register.SignUpViewModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
