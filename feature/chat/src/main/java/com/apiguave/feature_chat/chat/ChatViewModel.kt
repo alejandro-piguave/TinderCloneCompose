@@ -6,17 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.feature_chat.model.MatchState
 import com.apiguave.domain_message.usecases.GetMessagesUseCase
-import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.domain_message.usecases.SendMessageUseCase
+import com.apiguave.domain_picture.usecases.GetPictureUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-    private val getMessagesUseCase: com.apiguave.domain_message.usecases.GetMessagesUseCase,
-    private val sendMessageUseCase: com.apiguave.domain_message.usecases.SendMessageUseCase,
-    private val getPictureUseCase: GetPictureUseCase): ViewModel() {
+    private val getMessagesUseCase: GetMessagesUseCase,
+    private val sendMessageUseCase: SendMessageUseCase,
+    private val getPictureUseCase: GetPictureUseCase
+): ViewModel() {
     private val _viewState = MutableStateFlow<MatchState?>(null)
     val viewState = _viewState.asStateFlow()
 

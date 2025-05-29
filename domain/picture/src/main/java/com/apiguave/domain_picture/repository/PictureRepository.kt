@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedomain.picture
+package com.apiguave.domain_picture.repository
 
 interface PictureRepository {
     suspend fun addPictures(localPictures: List<String>): List<String>

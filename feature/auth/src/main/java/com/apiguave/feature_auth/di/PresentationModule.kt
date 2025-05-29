@@ -1,7 +1,7 @@
 package com.apiguave.feature_auth.di
 
 import com.apiguave.feature_auth.login.LoginViewModel
-import com.apiguave.feature_auth.orchestrators.SignUpOrchestrator
+import com.apiguave.feature_auth.orchestrators.SignUpUseCase
 import com.apiguave.feature_auth.register.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -13,5 +13,5 @@ val presentationModule = module {
     viewModel { LoginViewModel(get(), get()) }
 
     //Orchestrators
-    factory { SignUpOrchestrator(get(), get(), get()) }
+    factory { SignUpUseCase(get(), get(), get()) }
 }

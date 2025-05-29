@@ -12,7 +12,7 @@ import com.apiguave.auth_ui.extensions.toOrientation
 import com.apiguave.auth_ui.extensions.toProviderAccount
 import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
 import com.apiguave.core_ui.model.PictureState
-import com.apiguave.feature_auth.orchestrators.SignUpOrchestrator
+import com.apiguave.feature_auth.orchestrators.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +21,7 @@ import java.time.LocalDate
 
 class SignUpViewModel(
     getMaxBirthdateUseCase: GetMaxBirthdateUseCase,
-    private val signUpUseCase: SignUpOrchestrator
+    private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpViewState())
     val uiState = _uiState.asStateFlow()

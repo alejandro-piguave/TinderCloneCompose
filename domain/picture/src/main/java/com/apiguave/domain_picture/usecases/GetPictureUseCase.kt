@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_picture.usecases
 
-import com.apiguave.tinderclonedomain.picture.PictureRepository
+import com.apiguave.domain_picture.repository.PictureRepository
 
 class GetPictureUseCase(private val pictureRepository: PictureRepository) {
     suspend operator fun invoke(userId: String, pictureName: String): Result<String> {

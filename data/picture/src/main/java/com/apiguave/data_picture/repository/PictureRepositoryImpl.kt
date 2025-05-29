@@ -1,9 +1,10 @@
 package com.apiguave.data_picture.repository
 
 import android.net.Uri
-import com.apiguave.tinderclonedomain.picture.PictureRepository
+import com.apiguave.domain_picture.repository.PictureRepository
 
-class PictureRepositoryImpl(private val pictureRemoteDataSource: PictureRemoteDataSource): PictureRepository {
+class PictureRepositoryImpl(private val pictureRemoteDataSource: PictureRemoteDataSource):
+    PictureRepository {
     override suspend fun addPictures(localPictures: List<String>): List<String> {
         return pictureRemoteDataSource.addPictures(localPictures.map { Uri.parse(it) })
     }
