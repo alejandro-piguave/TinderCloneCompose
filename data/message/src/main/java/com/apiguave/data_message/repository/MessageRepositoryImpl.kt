@@ -1,6 +1,7 @@
 package com.apiguave.data_message.repository
 
-import com.apiguave.tinderclonedomain.message.MessageRepository
+import com.apiguave.domain_message.repository.MessageRepository
+
 
 class MessageRepositoryImpl(
     private val messageRemoteDataSource: MessageRemoteDataSource

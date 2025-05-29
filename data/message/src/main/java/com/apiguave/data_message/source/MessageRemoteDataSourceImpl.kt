@@ -1,11 +1,11 @@
 package com.apiguave.data_message.source
 
-import com.apiguave.tinderclonedomain.message.Message
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.apiguave.core_network.MessageApi
 import com.apiguave.core_network.AuthApi
 import com.apiguave.data_message.repository.MessageRemoteDataSource
+import com.apiguave.domain_message.model.Message
 
 class MessageRemoteDataSourceImpl: MessageRemoteDataSource {
 

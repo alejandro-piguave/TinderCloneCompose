@@ -1,5 +1,6 @@
-package com.apiguave.tinderclonedomain.message
+package com.apiguave.domain_message.repository
 
+import com.apiguave.domain_message.model.Message
 import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {

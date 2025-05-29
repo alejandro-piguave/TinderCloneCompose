@@ -1,7 +1,7 @@
 package com.apiguave.data_message.source
 
 import com.apiguave.data_message.repository.MessageRemoteDataSource
-import com.apiguave.tinderclonedomain.message.Message
+import com.apiguave.domain_message.model.Message
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

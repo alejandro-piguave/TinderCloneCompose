@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_message.usecases
 
-import com.apiguave.tinderclonedomain.message.MessageRepository
+import com.apiguave.domain_message.repository.MessageRepository
 
 class SendMessageUseCase(private val messageRepository: MessageRepository) {
 

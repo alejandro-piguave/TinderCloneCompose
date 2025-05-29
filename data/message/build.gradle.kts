@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.coroutines.core)
 
-    implementation(project(":domain"))
+    implementation(project(":domain:message"))
     implementation(project(":core:network"))
 
 }

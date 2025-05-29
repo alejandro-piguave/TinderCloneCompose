@@ -1,6 +1,6 @@
 package com.apiguave.data_message.repository
 
-import com.apiguave.tinderclonedomain.message.Message
+import com.apiguave.domain_message.model.Message
 import kotlinx.coroutines.flow.Flow
 
 interface MessageRemoteDataSource {

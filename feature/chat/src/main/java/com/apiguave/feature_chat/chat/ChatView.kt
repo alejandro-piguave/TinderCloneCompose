@@ -24,12 +24,12 @@ import com.apiguave.core_ui.model.ProfilePictureState
 import com.apiguave.core_ui.theme.AntiFlashWhite
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import com.apiguave.core_ui.theme.UltramarineBlue
+import com.apiguave.domain_message.model.Message
 import com.apiguave.feature_chat.R
 import com.apiguave.feature_chat.components.CenterAppBar
 import com.apiguave.feature_chat.extensions.toShortString
 import com.apiguave.feature_chat.model.MatchState
 import com.apiguave.tinderclonedomain.match.Match
-import com.apiguave.tinderclonedomain.message.Message
 import com.apiguave.tinderclonedomain.profile.Profile
 import java.time.LocalDate
 

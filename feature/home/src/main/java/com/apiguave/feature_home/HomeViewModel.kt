@@ -11,7 +11,7 @@ import com.apiguave.tinderclonedomain.usecase.GetPictureUseCase
 import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
 import com.apiguave.tinderclonedomain.usecase.LikeProfileUseCase
 import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
-import com.apiguave.tinderclonedomain.usecase.SendMessageUseCase
+import com.apiguave.domain_message.usecases.SendMessageUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

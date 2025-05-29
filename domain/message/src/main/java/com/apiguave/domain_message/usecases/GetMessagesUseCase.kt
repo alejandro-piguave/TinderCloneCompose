@@ -1,7 +1,7 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_message.usecases
 
-import com.apiguave.tinderclonedomain.message.Message
-import com.apiguave.tinderclonedomain.message.MessageRepository
+import com.apiguave.domain_message.model.Message
+import com.apiguave.domain_message.repository.MessageRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetMessagesUseCase(private val messageRepository: MessageRepository) {

@@ -16,9 +16,9 @@ import com.apiguave.data_profile.repository.ProfileRemoteDataSource
 import com.apiguave.data_profile.repository.ProfileRepositoryImpl
 import com.apiguave.data_profile.source.ProfileRemoteDataSourceImpl
 import com.apiguave.data_profile.source.ProfileRemoteDataSourceMockImpl
+import com.apiguave.domain_message.repository.MessageRepository
 import com.apiguave.feature_home.BuildConfig
 import com.apiguave.tinderclonedomain.match.MatchRepository
-import com.apiguave.tinderclonedomain.message.MessageRepository
 import com.apiguave.tinderclonedomain.picture.PictureRepository
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import org.koin.dsl.module
