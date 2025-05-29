@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apiguave.core_ui.model.ProfilePictureState
-import com.apiguave.tinderclonedomain.profile.Profile
+import com.apiguave.domain_profile.model.Profile
 
 @Composable
 fun ProfileCardView(profile: Profile, pictures: List<ProfilePictureState>, modifier: Modifier = Modifier, contentModifier: Modifier = Modifier){

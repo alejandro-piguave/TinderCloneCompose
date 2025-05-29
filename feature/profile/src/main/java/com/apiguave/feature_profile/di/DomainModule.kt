@@ -2,9 +2,8 @@ package com.apiguave.feature_profile.di
 
 import com.apiguave.domain_auth.usecases.SignOutUseCase
 import com.apiguave.domain_picture.usecases.GetPictureUseCase
-import com.apiguave.feature_profile.usecases.UpdatePicturesUseCase
-import com.apiguave.tinderclonedomain.usecase.GetProfileUseCase
-import com.apiguave.tinderclonedomain.usecase.UpdateProfileUseCase
+import com.apiguave.domain_profile.usecases.GetProfileUseCase
+import com.apiguave.domain_profile.usecases.UpdateProfileUseCase
 import org.koin.dsl.module
 
 val domainModule = module {

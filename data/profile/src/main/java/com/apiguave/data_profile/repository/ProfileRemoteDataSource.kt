@@ -1,9 +1,9 @@
 package com.apiguave.data_profile.repository
 
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.UserProfile
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.model.Profile
+import com.apiguave.domain_profile.model.UserProfile
 import java.time.LocalDate
 
 interface ProfileRemoteDataSource {

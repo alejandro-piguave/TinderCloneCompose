@@ -1,8 +1,8 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_profile.usecases
 
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.repository.ProfileRepository
 
 class UpdateProfileUseCase(private val profileRepository: ProfileRepository) {
 

@@ -1,7 +1,7 @@
 package com.apiguave.data_profile.source.extensions
 
+import com.apiguave.domain_profile.model.Orientation
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
-import com.apiguave.tinderclonedomain.profile.Orientation
 
 fun Orientation.toFirestoreOrientation(): FirestoreOrientation = when(this) {
     Orientation.MEN -> FirestoreOrientation.men

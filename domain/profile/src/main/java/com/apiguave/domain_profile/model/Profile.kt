@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedomain.profile
+package com.apiguave.domain_profile.model
 
 
 class Profile(

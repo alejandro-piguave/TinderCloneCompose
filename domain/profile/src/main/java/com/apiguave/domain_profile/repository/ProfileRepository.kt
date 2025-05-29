@@ -1,5 +1,9 @@
-package com.apiguave.tinderclonedomain.profile
+package com.apiguave.domain_profile.repository
 
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.model.Profile
+import com.apiguave.domain_profile.model.UserProfile
 import java.time.LocalDate
 
 interface ProfileRepository {

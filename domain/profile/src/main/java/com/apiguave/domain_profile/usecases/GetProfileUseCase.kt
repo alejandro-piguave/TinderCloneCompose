@@ -1,7 +1,7 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_profile.usecases
 
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
-import com.apiguave.tinderclonedomain.profile.UserProfile
+import com.apiguave.domain_profile.model.UserProfile
+import com.apiguave.domain_profile.repository.ProfileRepository
 
 class GetProfileUseCase(private val profileRepository: ProfileRepository) {
 

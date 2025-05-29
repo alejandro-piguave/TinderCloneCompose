@@ -7,8 +7,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.feature_auth.extensions.filterIndex
-import com.apiguave.auth_ui.extensions.toGender
-import com.apiguave.auth_ui.extensions.toOrientation
+import com.apiguave.feature_auth.extensions.toGender
+import com.apiguave.feature_auth.extensions.toOrientation
 import com.apiguave.auth_ui.extensions.toProviderAccount
 import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
 import com.apiguave.core_ui.model.PictureState

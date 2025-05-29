@@ -2,8 +2,8 @@ package com.apiguave.feature_home.usecases
 
 import com.apiguave.domain_match.model.Match
 import com.apiguave.domain_match.repository.MatchRepository
-import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.domain_profile.model.Profile
+import com.apiguave.domain_profile.repository.ProfileRepository
 
 class LikeProfileUseCase(private val profileRepository: ProfileRepository, private val matchRepository: MatchRepository) {
 

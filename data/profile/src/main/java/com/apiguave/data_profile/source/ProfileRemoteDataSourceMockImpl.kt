@@ -1,10 +1,10 @@
 package com.apiguave.data_profile.source
 
 import com.apiguave.data_profile.repository.ProfileRemoteDataSource
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.UserProfile
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.model.Profile
+import com.apiguave.domain_profile.model.UserProfile
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.util.UUID

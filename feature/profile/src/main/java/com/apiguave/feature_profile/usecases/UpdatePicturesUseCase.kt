@@ -4,7 +4,7 @@ import com.apiguave.domain_picture.model.LocalPicture
 import com.apiguave.domain_picture.model.Picture
 import com.apiguave.domain_picture.model.RemotePicture
 import com.apiguave.domain_picture.repository.PictureRepository
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.domain_profile.repository.ProfileRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

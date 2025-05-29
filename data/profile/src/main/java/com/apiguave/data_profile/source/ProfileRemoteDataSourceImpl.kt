@@ -1,10 +1,6 @@
 package com.apiguave.data_profile.source
 
 import com.apiguave.core_network.model.FirestoreUser
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.Profile
-import com.apiguave.tinderclonedomain.profile.UserProfile
 import java.time.LocalDate
 import com.apiguave.core_network.AuthApi
 import com.apiguave.core_network.UserApi
@@ -14,6 +10,10 @@ import com.apiguave.data_profile.source.extensions.toBoolean
 import com.apiguave.data_profile.source.extensions.toOrientation
 import com.apiguave.data_profile.source.extensions.toFirestoreOrientation
 import com.apiguave.data_profile.source.extensions.toLocalDate
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.model.Profile
+import com.apiguave.domain_profile.model.UserProfile
 
 class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 

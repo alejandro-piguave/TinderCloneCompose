@@ -3,9 +3,9 @@ package com.apiguave.feature_auth.orchestrators
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.domain_auth.repository.AuthRepository
 import com.apiguave.domain_picture.repository.PictureRepository
-import com.apiguave.tinderclonedomain.profile.Gender
-import com.apiguave.tinderclonedomain.profile.Orientation
-import com.apiguave.tinderclonedomain.profile.ProfileRepository
+import com.apiguave.domain_profile.model.Gender
+import com.apiguave.domain_profile.model.Orientation
+import com.apiguave.domain_profile.repository.ProfileRepository
 import java.time.LocalDate
 
 

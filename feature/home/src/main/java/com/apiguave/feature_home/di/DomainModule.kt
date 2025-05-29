@@ -1,7 +1,7 @@
 package com.apiguave.feature_home.di
 
-import com.apiguave.tinderclonedomain.usecase.GetProfilesUseCase
-import com.apiguave.tinderclonedomain.usecase.PassProfileUseCase
+import com.apiguave.domain_profile.usecases.GetProfilesUseCase
+import com.apiguave.domain_profile.usecases.PassProfileUseCase
 import com.apiguave.domain_message.usecases.SendMessageUseCase
 import com.apiguave.domain_picture.usecases.GetPictureUseCase
 import org.koin.dsl.module

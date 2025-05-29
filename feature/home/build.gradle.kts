@@ -65,7 +65,6 @@ dependencies {
 
     implementation(project(":core:ui"))
 
-    implementation(project(":domain"))
 
     implementation(project(":domain:message"))
     implementation(project(":data:message"))
@@ -73,6 +72,7 @@ dependencies {
     implementation(project(":domain:picture"))
     implementation(project(":data:picture"))
 
+    implementation(project(":domain:profile"))
     implementation(project(":data:profile"))
 
     implementation(project(":domain:match"))
