@@ -29,11 +29,6 @@ This project follows **Clean Architecture + Modularization**, broken into 3 laye
 
 📦 Each feature is self-contained. Domain defines logic, data implements it, and feature uses it.
 
-🧩 **Dependency flow**:
-feature → domain → data
-↘ ↙ ↖
-core:ui core:network
-
 ---
 
 ## 🛠️ Tech Stack
