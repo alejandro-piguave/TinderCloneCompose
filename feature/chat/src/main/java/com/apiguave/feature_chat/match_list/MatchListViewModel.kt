@@ -5,10 +5,10 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apiguave.core_ui.model.ProfilePictureState
+import com.apiguave.domain_match.model.Match
+import com.apiguave.domain_match.usecases.GetMatchesUseCase
 import com.apiguave.domain_picture.usecases.GetPictureUseCase
 import com.apiguave.feature_chat.model.MatchState
-import com.apiguave.tinderclonedomain.match.Match
-import com.apiguave.tinderclonedomain.usecase.GetMatchesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

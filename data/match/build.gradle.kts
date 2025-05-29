@@ -42,6 +42,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.coroutines.core)
 
-    implementation(project(":domain"))
+    implementation(project(":domain:match"))
     implementation(project(":core:network"))
 }

@@ -1,6 +1,7 @@
 package com.apiguave.data_match.repository
 
-import com.apiguave.tinderclonedomain.match.Match
+import com.apiguave.domain_match.model.Match
+
 
 interface MatchRemoteDataSource {
     suspend fun getMatches(): List<Match>

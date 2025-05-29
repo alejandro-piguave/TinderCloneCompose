@@ -12,10 +12,10 @@ import com.apiguave.data_picture.repository.PictureRemoteDataSource
 import com.apiguave.data_picture.repository.PictureRepositoryImpl
 import com.apiguave.data_picture.source.PictureRemoteDataSourceImpl
 import com.apiguave.data_picture.source.PictureRemoteDataSourceMockImpl
+import com.apiguave.domain_match.repository.MatchRepository
 import com.apiguave.domain_message.repository.MessageRepository
 import com.apiguave.domain_picture.repository.PictureRepository
 import com.apiguave.feature_chat.BuildConfig
-import com.apiguave.tinderclonedomain.match.MatchRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {

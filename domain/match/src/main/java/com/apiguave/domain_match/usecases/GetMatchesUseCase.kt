@@ -1,7 +1,7 @@
-package com.apiguave.tinderclonedomain.usecase
+package com.apiguave.domain_match.usecases
 
-import com.apiguave.tinderclonedomain.match.Match
-import com.apiguave.tinderclonedomain.match.MatchRepository
+import com.apiguave.domain_match.model.Match
+import com.apiguave.domain_match.repository.MatchRepository
 
 class GetMatchesUseCase(private val matchRepository: MatchRepository) {
 

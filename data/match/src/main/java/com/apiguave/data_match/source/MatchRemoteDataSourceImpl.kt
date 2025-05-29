@@ -3,8 +3,6 @@ package com.apiguave.data_match.source
 import com.apiguave.core_network.model.FirestoreMatch
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import com.apiguave.tinderclonedomain.match.Match
-import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.awaitAll
 import com.apiguave.core_network.AuthApi
 import com.apiguave.core_network.MatchApi
@@ -12,6 +10,8 @@ import com.apiguave.core_network.UserApi
 import com.apiguave.data_match.repository.MatchRemoteDataSource
 import com.apiguave.data_match.source.extensions.toAge
 import com.apiguave.data_match.source.extensions.toLocalDate
+import com.apiguave.domain_match.model.Match
+import com.apiguave.domain_match.model.MatchProfile
 
 
 class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
@@ -27,7 +27,7 @@ class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
         val user = UserApi.getUser(userId) ?: return null
         return Match(
             this.id,
-            Profile(
+            MatchProfile(
                 userId,
                 user.name,
                 user.birthDate!!.toAge(),

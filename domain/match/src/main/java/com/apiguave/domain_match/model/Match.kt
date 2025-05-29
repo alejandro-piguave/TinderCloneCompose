@@ -1,11 +1,11 @@
-package com.apiguave.tinderclonedomain.match
+package com.apiguave.domain_match.model
 
-import com.apiguave.tinderclonedomain.profile.Profile
 import java.time.LocalDate
 
 data class Match(
     val id: String,
-    val profile: Profile,
+    val profile: MatchProfile,
     val creationDate: LocalDate,
     val lastMessage: String?
 )
+

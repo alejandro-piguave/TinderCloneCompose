@@ -66,11 +66,10 @@ dependencies {
 
     implementation(project(":core:ui"))
 
-    implementation(project(":domain"))
-
     implementation(project(":domain:message"))
     implementation(project(":data:message"))
 
+    implementation(project(":domain:match"))
     implementation(project(":data:match"))
 
     implementation(project(":domain:picture"))

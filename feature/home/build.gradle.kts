@@ -74,6 +74,8 @@ dependencies {
     implementation(project(":data:picture"))
 
     implementation(project(":data:profile"))
+
+    implementation(project(":domain:match"))
     implementation(project(":data:match"))
 
 }
