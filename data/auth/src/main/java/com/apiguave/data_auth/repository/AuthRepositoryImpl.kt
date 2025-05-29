@@ -1,9 +1,9 @@
-package com.apiguave.tinderclonedata.repository.auth
+package com.apiguave.data_auth.repository
 
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.domain_auth.repository.AuthRepository
-import com.apiguave.tinderclonedata.repository.auth.exception.SignInException
-import com.apiguave.tinderclonedata.repository.auth.exception.SignUpException
+import com.apiguave.data_auth.repository.exception.SignInException
+import com.apiguave.data_auth.repository.exception.SignUpException
 
 class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource

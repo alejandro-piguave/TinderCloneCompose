@@ -1,4 +1,4 @@
-package com.apiguave.tinderclonedata.repository.auth
+package com.apiguave.data_auth.repository
 
 import com.apiguave.domain_auth.model.Account
 

@@ -1,9 +1,8 @@
-package com.apiguave.tinderclonedata.source.mock
+package com.apiguave.data_auth.source
 
 import com.apiguave.domain_auth.model.Account
-import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
 
-class AuthRemoteDataSourceMockImpl: AuthRemoteDataSource {
+class AuthRemoteDataSourceMockImpl: com.apiguave.data_auth.repository.AuthRemoteDataSource {
     private var signedIn = true
     override val userId: String?
         get() = if(signedIn) "mock_user" else null

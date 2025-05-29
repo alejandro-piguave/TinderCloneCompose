@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.feature_profile"
+    namespace = "com.apiguave.data_auth"
     compileSdk = 34
 
     defaultConfig {
@@ -15,9 +15,6 @@ android {
     }
 
     buildTypes {
-        create("mock") {
-            initWith(getByName("debug"))
-        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -33,15 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
 }
 
 dependencies {
@@ -52,25 +40,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.play.services.auth)
 
-
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.material)
-
-    implementation(libs.coil)
-    implementation(libs.coil.compose)
-
-    implementation(project(":core:ui"))
-
-    implementation(project(":domain"))
     implementation(project(":domain:auth"))
-    implementation(project(":data"))
-    implementation(project(":data:auth"))
+    implementation(project(":core:network"))
 }
