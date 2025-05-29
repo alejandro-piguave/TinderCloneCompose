@@ -4,19 +4,17 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.tinderclonedata"
+    namespace = "com.apiguave.core_network"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        create("mock") {
-            initWith(getByName("debug"))
-        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -36,7 +34,9 @@ android {
 
 dependencies {
 
-    implementation(platform(libs.kotlin.bom))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -45,11 +45,4 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-    implementation(project(":domain"))
-    implementation(project(":domain:auth"))
-
-    implementation(project(":core:network"))
 }

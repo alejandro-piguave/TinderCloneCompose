@@ -9,6 +9,10 @@ import kotlinx.coroutines.coroutineScope
 import com.apiguave.tinderclonedomain.match.Match
 import com.apiguave.tinderclonedomain.profile.Profile
 import kotlinx.coroutines.awaitAll
+import com.apiguave.core_network.AuthApi
+import com.apiguave.core_network.MatchApi
+import com.apiguave.core_network.UserApi
+
 
 class MatchRemoteDataSourceImpl: MatchRemoteDataSource {
 

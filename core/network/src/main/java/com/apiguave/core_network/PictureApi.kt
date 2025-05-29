@@ -1,7 +1,7 @@
-package com.apiguave.tinderclonedata.source.firebase
+package com.apiguave.core_network
 
 import android.net.Uri
-import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
+import com.apiguave.core_network.extensions.getTaskResult
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

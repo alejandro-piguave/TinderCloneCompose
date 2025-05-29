@@ -1,6 +1,6 @@
-package com.apiguave.tinderclonedata.source.firebase
+package com.apiguave.core_network
 
-import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
+import com.apiguave.core_network.extensions.getTaskResult
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatch
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatchProperties
 import com.google.firebase.firestore.FirebaseFirestore

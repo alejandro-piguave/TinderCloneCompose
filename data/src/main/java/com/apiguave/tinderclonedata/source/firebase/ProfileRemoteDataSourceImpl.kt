@@ -13,6 +13,8 @@ import com.apiguave.tinderclonedomain.profile.Orientation
 import com.apiguave.tinderclonedomain.profile.Profile
 import com.apiguave.tinderclonedomain.profile.UserProfile
 import java.time.LocalDate
+import com.apiguave.core_network.AuthApi
+import com.apiguave.core_network.UserApi
 
 class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
 

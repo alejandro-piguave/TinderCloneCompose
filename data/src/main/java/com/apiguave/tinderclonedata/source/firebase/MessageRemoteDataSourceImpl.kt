@@ -4,6 +4,8 @@ import com.apiguave.tinderclonedata.repository.message.MessageRemoteDataSource
 import com.apiguave.tinderclonedomain.message.Message
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.apiguave.core_network.MessageApi
+import com.apiguave.core_network.AuthApi
 
 class MessageRemoteDataSourceImpl: MessageRemoteDataSource {
 

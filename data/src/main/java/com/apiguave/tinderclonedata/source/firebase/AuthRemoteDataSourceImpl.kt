@@ -2,6 +2,7 @@ package com.apiguave.tinderclonedata.source.firebase
 
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.tinderclonedata.repository.auth.AuthRemoteDataSource
+import com.apiguave.core_network.AuthApi
 
 class AuthRemoteDataSourceImpl: AuthRemoteDataSource {
     override val userId: String?
