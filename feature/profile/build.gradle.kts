@@ -71,7 +71,8 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":domain:auth"))
-    implementation(project(":data"))
+
     implementation(project(":data:auth"))
     implementation(project(":data:picture"))
+    implementation(project(":data:profile"))
 }

@@ -12,7 +12,7 @@ import com.apiguave.feature_profile.extensions.toGender
 import com.apiguave.feature_profile.extensions.toLongString
 import com.apiguave.feature_profile.extensions.toOrientation
 import com.apiguave.feature_profile.extensions.filterIndex
-import com.apiguave.tinderclonedata.source.firebase.extension.getTaskResult
+import com.apiguave.feature_profile.extensions.getTaskResult
 import com.apiguave.tinderclonedomain.picture.LocalPicture
 import com.apiguave.tinderclonedomain.picture.RemotePicture
 import com.apiguave.tinderclonedomain.profile.UserProfile

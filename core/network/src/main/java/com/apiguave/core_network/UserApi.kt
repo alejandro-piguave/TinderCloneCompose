@@ -1,15 +1,18 @@
 package com.apiguave.core_network
 
 import com.apiguave.core_network.extensions.getTaskResult
-import com.apiguave.tinderclonedata.source.firebase.model.FirestoreMatchProperties
+import com.apiguave.core_network.extensions.toDate
+import com.apiguave.core_network.model.FirestoreMatchProperties
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
-import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUser
-import com.apiguave.tinderclonedata.source.firebase.model.FirestoreUserProperties
+import com.apiguave.core_network.model.FirestoreUser
+import com.apiguave.core_network.model.FirestoreUserProperties
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import java.time.LocalDate
+import java.util.Date
 
 object UserApi {
 
@@ -19,14 +22,14 @@ object UserApi {
     suspend fun createUser(
         userId: String,
         name: String,
-        birthdate: Timestamp,
+        birthdate: LocalDate,
         bio: String,
         isMale: Boolean,
         orientation: FirestoreOrientation
     ) {
         val user = FirestoreUser(
             name = name,
-            birthDate = birthdate,
+            birthDate = birthdate.toDate(),
             bio = bio,
             male = isMale,
             orientation = orientation,

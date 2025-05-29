@@ -1,14 +1,14 @@
-package com.apiguave.tinderclonedata.source.firebase.model
+package com.apiguave.core_network.model
 
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
+import java.util.Date
 
 data class FirestoreMatch(
     @DocumentId
     var id: String="",
     val usersMatched: List<String> = emptyList(),
-    val timestamp: Timestamp? = null,
+    val timestamp: Date? = null,
     val lastMessage: String?=null
 )
 object FirestoreMatchProperties{

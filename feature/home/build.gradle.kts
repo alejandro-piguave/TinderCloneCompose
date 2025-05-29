@@ -66,7 +66,10 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":domain"))
-    implementation(project(":data"))
+
+    implementation(project(":data:profile"))
     implementation(project(":data:picture"))
+    implementation(project(":data:message"))
+    implementation(project(":data:match"))
 
 }

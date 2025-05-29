@@ -1,13 +1,14 @@
-package com.apiguave.tinderclonedata.source.firebase.model
+package com.apiguave.core_network.model
 
-import com.google.firebase.Timestamp
+import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
 import com.google.firebase.firestore.DocumentId
+import java.util.Date
 
 data class FirestoreUser(
     @DocumentId
     var id: String="",
     val name: String="",
-    val birthDate: Timestamp?=null,
+    val birthDate: Date?=null,
     val bio: String="",
     @field:JvmField
     val male: Boolean?=null,

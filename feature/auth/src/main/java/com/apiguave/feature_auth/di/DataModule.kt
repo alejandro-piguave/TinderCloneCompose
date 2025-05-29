@@ -8,16 +8,12 @@ import com.apiguave.data_picture.repository.PictureRemoteDataSource
 import com.apiguave.data_picture.repository.PictureRepositoryImpl
 import com.apiguave.data_picture.source.PictureRemoteDataSourceImpl
 import com.apiguave.data_picture.source.PictureRemoteDataSourceMockImpl
+import com.apiguave.data_profile.repository.ProfileRemoteDataSource
+import com.apiguave.data_profile.repository.ProfileRepositoryImpl
+import com.apiguave.data_profile.source.ProfileRemoteDataSourceImpl
+import com.apiguave.data_profile.source.ProfileRemoteDataSourceMockImpl
 import com.apiguave.domain_auth.repository.AuthRepository
 import com.apiguave.feature_auth.BuildConfig
-import com.apiguave.tinderclonedata.repository.match.MatchRemoteDataSource
-import com.apiguave.tinderclonedata.repository.message.MessageRemoteDataSource
-import com.apiguave.tinderclonedata.repository.profile.ProfileRemoteDataSource
-import com.apiguave.tinderclonedata.repository.profile.ProfileRepositoryImpl
-import com.apiguave.tinderclonedata.source.firebase.ProfileRemoteDataSourceImpl
-import com.apiguave.tinderclonedata.source.mock.MatchRemoteDataSourceMockImpl
-import com.apiguave.tinderclonedata.source.mock.MessageRemoteDataSourceMockImpl
-import com.apiguave.tinderclonedata.source.mock.ProfileRemoteDataSourceMockImpl
 import com.apiguave.tinderclonedomain.picture.PictureRepository
 import com.apiguave.tinderclonedomain.profile.ProfileRepository
 import org.koin.dsl.module
@@ -37,8 +33,6 @@ val sourceModule = module {
 val mockSourceModule = module {
     single<PictureRemoteDataSource> { PictureRemoteDataSourceMockImpl(get()) }
     single<ProfileRemoteDataSource> { ProfileRemoteDataSourceMockImpl() }
-    single<MessageRemoteDataSource> { MessageRemoteDataSourceMockImpl() }
-    single<MatchRemoteDataSource> { MatchRemoteDataSourceMockImpl() }
     single<AuthRemoteDataSource> { AuthRemoteDataSourceMockImpl() }
 }
 
