@@ -1,19 +1,55 @@
-# TinderCloneCompose
+# 🔥 Tinder Clone – Modular Android App
 
-<p float="left">
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/home_screen.gif" width="250">
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen.gif" width="250" />
-  <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/edit_profile_screen_dark.gif" width="250" /> 
-</p>
+A fully modularized Tinder-like dating application built with **Jetpack Compose**, **Kotlin**, **Firebase**, and **Clean Architecture principles**.  
+It features user authentication, swiping to match with other users, real-time chat, and profile customization.
 
-Tinder clone application written with Jetpack Compose and Firebase, using Clean Architecture and MVVM with Kotlin coroutines, flows and dependency injection with Koin.
+---
 
-Notes:
-- The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. 
-- However, you can test the application with mocked data selecting the "mock" build variant. 
+## 📲 Features
+
+- 🔐 **Authentication** (Sign up / Login via Firebase)
+- 🏠 **Home Screen** with swipe-to-match functionality
+- 🧑‍💼 **Edit Profile** with image uploads
+- 💬 **Chat** with matched users
+- 🌈 Modern **Compose UI** & reusable components
+
+---
+
+## 🧱 Module Structure
+
+This project follows **Clean Architecture + Modularization**, broken into 3 layers per feature: `feature`, `domain`, and `data`.
+
+- :app → App entry point + dependency injection
+- :core:ui → Shared UI styles and components (theme, colors)
+- :core:network → Shared networking layer (Firebase)
+
+- :feature:* → UI, ViewModel and components for each feature
+- :domain:* → Business logic, use cases, and repository interfaces
+- :data:* → Repository implementations and data sources
 
 
-Disclaimer: All the images used for testing purposes are taken from thispersondoesnotexist.com
+📦 Each feature is self-contained. Domain defines logic, data implements it, and feature uses it.
+
+🧩 **Dependency flow**:
+feature → domain → data
+↘ ↙ ↖
+core:ui core:network
+
+---
+
+## 🛠️ Tech Stack
+
+- **Kotlin**
+- **Jetpack Compose**
+- **Koin** for Dependency Injection
+- **Firebase** (Auth, Firestore, Storage)
+- **Coroutines** + **Flow**
+- **MVVM** + **Clean Architecture**
+- **Modularization** (by feature and layer)
+
+---
+
+## Screens
 
 ## Login and Create Profile
 
@@ -57,7 +93,7 @@ In this screen the user can modify the same fields as in the "create profile" sc
 </p>
 
 ## Messages screen
-Here the user will be able to see his matches and access the corresponding Chat screen to send them messages.
+Here the user will be able to see their matches and access the corresponding Chat screen to send them messages.
 
 <p float="left">
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/messages_screen.png" width="250" />
@@ -65,9 +101,16 @@ Here the user will be able to see his matches and access the corresponding Chat 
 </p>
 
 ## Chat Screen
-Here the user will be able to send messages to his matches and they will be updated in real time using Firebase snaphot listeners.
+Here the user will be able to send messages to their matches and they will be updated in real time using Firebase snaphot listeners.
 
 <p float="left">
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/chat_screen.png" width="250" />
   <img src="https://github.com/alejandro-piguave/TinderCloneCompose/blob/master/screenshots/chat_screen_dark.png" width="250" /> 
 </p>
+
+---
+
+Notes:
+- All the images used for testing purposes are taken from thispersondoesnotexist.com
+- The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. However, you can test the application with mocked data selecting the "mock" build variant. 
+
