@@ -101,5 +101,6 @@ Here the user will be able to see their matches and access the corresponding Cha
 
 ## Notes
 - All the images used for testing purposes are taken from thispersondoesnotexist.com
-- The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. However, you can test the application with mocked data selecting the "mock" build variant. 
+- The file "google-services.json" inside the "app" directory that is required for the project to work is missing. You will need to connect it to your own Firebase project. However, you can test the application with mocked data selecting the "mock" build variant.
+- Although the app is small, the domain and data layer is modularized by business capability (auth, profile, message, etc.) to showcase how a clean architecture would scale in a real-world app with independent domain and data boundaries.
 
