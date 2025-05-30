@@ -1,6 +1,5 @@
 package com.apiguave.core_network.extensions
 
-import com.google.firebase.Timestamp
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
