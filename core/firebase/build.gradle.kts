@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.core_network"
+    namespace = "com.apiguave.core_firebase"
     compileSdk = 34
 
     defaultConfig {

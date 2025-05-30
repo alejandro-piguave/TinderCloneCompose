@@ -1,4 +1,4 @@
-package com.apiguave.core_network.model
+package com.apiguave.core_firebase.model
 
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue

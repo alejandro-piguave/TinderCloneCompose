@@ -1,12 +1,12 @@
 package com.apiguave.data_match.source
 
-import com.apiguave.core_network.model.FirestoreMatch
+import com.apiguave.core_firebase.model.FirestoreMatch
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.awaitAll
-import com.apiguave.core_network.AuthApi
-import com.apiguave.core_network.MatchApi
-import com.apiguave.core_network.UserApi
+import com.apiguave.core_firebase.AuthApi
+import com.apiguave.core_firebase.MatchApi
+import com.apiguave.core_firebase.UserApi
 import com.apiguave.data_match.repository.MatchRemoteDataSource
 import com.apiguave.data_match.source.extensions.toAge
 import com.apiguave.data_match.source.extensions.toLocalDate

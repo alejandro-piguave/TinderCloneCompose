@@ -1,7 +1,7 @@
 package com.apiguave.data_picture.source
 
 import android.net.Uri
-import com.apiguave.core_network.PictureApi
+import com.apiguave.core_firebase.PictureApi
 import com.apiguave.data_picture.repository.PictureRemoteDataSource
 
 class PictureRemoteDataSourceImpl: PictureRemoteDataSource {

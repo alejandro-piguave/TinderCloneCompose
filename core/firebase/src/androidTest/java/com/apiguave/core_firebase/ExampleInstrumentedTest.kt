@@ -1,4 +1,4 @@
-package com.apiguave.core_network
+package com.apiguave.core_firebase
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

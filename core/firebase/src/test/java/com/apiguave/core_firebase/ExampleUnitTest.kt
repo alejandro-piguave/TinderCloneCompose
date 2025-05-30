@@ -1,4 +1,4 @@
-package com.apiguave.core_network
+package com.apiguave.core_firebase
 
 import org.junit.Test
 

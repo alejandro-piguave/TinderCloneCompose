@@ -1,7 +1,7 @@
-package com.apiguave.core_network
+package com.apiguave.core_firebase
 
-import com.apiguave.core_network.exception.AuthException
-import com.apiguave.core_network.extensions.getTaskResult
+import com.apiguave.core_firebase.exception.AuthException
+import com.apiguave.core_firebase.extensions.getTaskResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 

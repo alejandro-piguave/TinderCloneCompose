@@ -1,4 +1,4 @@
-package com.apiguave.core_network.extensions
+package com.apiguave.core_firebase.extensions
 
 import java.time.LocalDate
 import java.time.ZoneId

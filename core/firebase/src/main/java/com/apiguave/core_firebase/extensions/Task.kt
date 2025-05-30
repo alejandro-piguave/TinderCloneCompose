@@ -1,4 +1,4 @@
-package com.apiguave.core_network.extensions
+package com.apiguave.core_firebase.extensions
 
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.suspendCancellableCoroutine

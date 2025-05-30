@@ -1,10 +1,10 @@
-package com.apiguave.core_network
+package com.apiguave.core_firebase
 
-import com.apiguave.core_network.extensions.getTaskResult
-import com.apiguave.core_network.extensions.toDate
-import com.apiguave.core_network.model.FirestoreMatchProperties
-import com.apiguave.core_network.model.FirestoreUser
-import com.apiguave.core_network.model.FirestoreUserProperties
+import com.apiguave.core_firebase.extensions.getTaskResult
+import com.apiguave.core_firebase.extensions.toDate
+import com.apiguave.core_firebase.model.FirestoreMatchProperties
+import com.apiguave.core_firebase.model.FirestoreUser
+import com.apiguave.core_firebase.model.FirestoreUserProperties
 import com.apiguave.tinderclonedata.source.firebase.model.FirestoreOrientation
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,9 +1,9 @@
 package com.apiguave.data_profile.source
 
-import com.apiguave.core_network.model.FirestoreUser
+import com.apiguave.core_firebase.model.FirestoreUser
 import java.time.LocalDate
-import com.apiguave.core_network.AuthApi
-import com.apiguave.core_network.UserApi
+import com.apiguave.core_firebase.AuthApi
+import com.apiguave.core_firebase.UserApi
 import com.apiguave.data_profile.repository.ProfileRemoteDataSource
 import com.apiguave.data_profile.source.extensions.toAge
 import com.apiguave.data_profile.source.extensions.toBoolean
