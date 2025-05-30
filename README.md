@@ -20,7 +20,7 @@ This project follows **Clean Architecture + Modularization**, broken into 3 laye
 
 - :app → App entry point + dependency injection
 - :core:ui → Shared UI styles and components (theme, colors)
-- :core:network → Shared networking layer (Firebase)
+- :core:firebase → Shared Firebase logic (auth, firestore, storage)
 
 - :feature:* → UI, ViewModel and components for each feature
 - :domain:* → Business logic, use cases, and repository interfaces

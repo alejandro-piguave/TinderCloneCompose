@@ -41,7 +41,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.koin.android)
+    implementation(project(":core:firebase"))
 
-    implementation(project(":core:network"))
     implementation(project(":domain:picture"))
 }

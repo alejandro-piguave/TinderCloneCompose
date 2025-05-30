@@ -43,5 +43,5 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(project(":domain:profile"))
-    implementation(project(":core:network"))
+    implementation(project(":core:firebase"))
 }

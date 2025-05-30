@@ -44,6 +44,6 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(project(":domain:message"))
-    implementation(project(":core:network"))
+    implementation(project(":core:firebase"))
 
 }

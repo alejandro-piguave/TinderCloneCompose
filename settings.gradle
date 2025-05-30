@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "TinderCloneCompose"
 include ':app'
 include ':core:ui'
-include ':core:network'
+include ':core:firebase'
 
 include ':feature:auth'
 include ':feature:home'
