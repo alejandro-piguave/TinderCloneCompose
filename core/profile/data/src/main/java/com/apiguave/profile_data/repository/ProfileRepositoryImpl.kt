@@ -6,6 +6,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.apiguave.core_firebase.AuthApi
+import com.apiguave.core_firebase.UserApi
+import com.apiguave.core_firebase.model.FirestoreUser
+import com.apiguave.profile_data.extensions.toBoolean
+import com.apiguave.profile_data.extensions.toFirestoreOrientation
+import com.apiguave.profile_data.extensions.toLocalDate
+import com.apiguave.profile_data.extensions.toOrientation
 import com.apiguave.profile_domain.model.Gender
 import com.apiguave.profile_domain.model.Orientation
 import com.apiguave.profile_domain.model.Profile
@@ -21,9 +28,27 @@ class ProfileRepositoryImpl(
     private val dataStore: DataStore<Preferences>
 ): ProfileRepository {
 
+    private var currentUser: FirestoreUser? = null
 
     override suspend fun getProfile(): UserProfile {
-        return profileRemoteDataSource.getUserProfile()
+        val currentUser = getCurrentUser()
+        return UserProfile(
+            currentUser.id,
+            currentUser.name,
+            currentUser.birthDate!!.toLocalDate(),
+            currentUser.bio,
+            if(currentUser.male!!) Gender.MALE else Gender.FEMALE,
+            currentUser.orientation!!.toOrientation(),
+            currentUser.pictures
+        )
+    }
+
+    private suspend fun getCurrentUser(): FirestoreUser {
+        return currentUser ?: run {
+            val user = UserApi.getUser(AuthApi.userId!!)!!
+            currentUser = user
+            user
+        }
     }
 
     override suspend fun hasProfile(userId: String): Boolean {
@@ -46,10 +71,12 @@ class ProfileRepositoryImpl(
         orientation: Orientation
     ) {
         profileRemoteDataSource.updateProfile(bio, gender, orientation)
+        currentUser = currentUser?.copy(bio = bio, male = gender.toBoolean(), orientation = orientation.toFirestoreOrientation())
     }
 
     override suspend fun updatePictures(pictureNames: List<String>) {
         profileRemoteDataSource.updateProfile(pictureNames)
+        currentUser = currentUser?.copy(pictures = pictureNames)
     }
 
     override suspend fun addProfile(
@@ -72,7 +99,7 @@ class ProfileRepositoryImpl(
     }
 
     override suspend fun getProfiles(): List<Profile> {
-        return profileRemoteDataSource.getProfiles()
+        return profileRemoteDataSource.getProfiles(getCurrentUser())
     }
 
 }
