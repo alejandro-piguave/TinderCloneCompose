@@ -17,10 +17,10 @@ include ':app'
 include ':core:ui'
 include ':core:firebase'
 
-include ':feature:auth'
+include ':feature:onboarding'
 include ':feature:home'
 include ':feature:chat'
-include ':feature:profile'
+include ':feature:editprofile'
 
 include ':auth:data'
 include ':auth:domain'
