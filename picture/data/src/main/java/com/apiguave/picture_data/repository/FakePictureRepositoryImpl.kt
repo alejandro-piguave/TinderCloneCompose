@@ -1,22 +1,21 @@
-package com.apiguave.picture_data.source
+package com.apiguave.picture_data.repository
 
 import android.content.Context
-import android.net.Uri
-import com.apiguave.picture_data.repository.PictureRemoteDataSource
-import kotlinx.coroutines.delay
-import kotlin.random.Random
 import com.apiguave.picture_data.R
 import com.apiguave.picture_data.source.extensions.resourceUri
+import com.apiguave.picture_domain.repository.PictureRepository
+import kotlinx.coroutines.delay
+import kotlin.random.Random
 
-class PictureRemoteDataSourceMockImpl(private val context: Context): PictureRemoteDataSource {
-    override suspend fun addPictures(localPictures: List<Uri>): List<String> {
+class FakePictureRepositoryImpl(private val context: Context): PictureRepository {
+    override suspend fun addPictures(localPictures: List<String>): List<String> {
         delay(1000)
         return localPictures.mapIndexed { _, i ->
             "picture$i.jpg"
         }
     }
 
-    override suspend fun addPicture(localPicture: Uri): String {
+    override suspend fun addPicture(localPicture: String): String {
         delay(1000)
         return "picture1.jpg"
     }
@@ -25,7 +24,7 @@ class PictureRemoteDataSourceMockImpl(private val context: Context): PictureRemo
         delay(500)
     }
 
-    override suspend fun getPicture(userId: String, pictureName: String): Uri {
+    override suspend fun getPicture(userId: String, pictureName: String): String {
         //The random delayed is used to showcase the picture asynchronous loading
         delay(Random.nextLong(1000, 4000))
         return when(pictureName){
@@ -54,6 +53,6 @@ class PictureRemoteDataSourceMockImpl(private val context: Context): PictureRemo
             "woman_11.jpg" -> context.resourceUri(R.drawable.woman_11)
             "woman_12.jpg" -> context.resourceUri(R.drawable.woman_12)
             else -> context.resourceUri(R.drawable.man_1)
-        }
+        }.toString()
     }
 }
