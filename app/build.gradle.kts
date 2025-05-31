@@ -89,11 +89,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":core:ui"))
-    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:onboarding:ui"))
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:chat"))
-    implementation(project(":feature:editprofile"))
+    implementation(project(":feature:home:ui"))
+    implementation(project(":feature:chat:ui"))
+    implementation(project(":feature:editprofile:ui"))
 
     implementation(project(":auth:data"))
     implementation(project(":match:data"))
