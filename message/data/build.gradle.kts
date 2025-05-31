@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_message"
+    namespace = "com.apiguave.message_data"
     compileSdk = 34
 
     defaultConfig {

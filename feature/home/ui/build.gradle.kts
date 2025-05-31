@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.feature_home"
+    namespace = "com.apiguave.home_ui"
     compileSdk = 34
 
     defaultConfig {

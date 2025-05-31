@@ -1,7 +1,7 @@
 package com.apiguave.onboarding_domain
 
-import com.apiguave.domain_auth.repository.AuthRepository
-import com.apiguave.domain_profile.repository.ProfileRepository
+import com.apiguave.auth_domain.repository.AuthRepository
+import com.apiguave.profile_domain.repository.ProfileRepository
 
 enum class StartDestination {
     SignIn,

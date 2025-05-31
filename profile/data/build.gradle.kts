@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_profile"
+    namespace = "com.apiguave.profile_data"
     compileSdk = 34
 
     defaultConfig {

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.feature_chat"
+    namespace = "com.apiguave.chat_ui"
     compileSdk = 34
 
     defaultConfig {

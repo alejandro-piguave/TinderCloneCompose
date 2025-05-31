@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_match"
+    namespace = "com.apiguave.match_data"
     compileSdk = 34
 
     defaultConfig {

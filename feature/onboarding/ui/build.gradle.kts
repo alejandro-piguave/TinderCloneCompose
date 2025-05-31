@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.feature_auth"
+    namespace = "com.apiguave.onboarding_ui"
     compileSdk = 34
 
     defaultConfig {

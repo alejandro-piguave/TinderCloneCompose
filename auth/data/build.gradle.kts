@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_auth"
+    namespace = "com.apiguave.auth_data"
     compileSdk = 34
 
     defaultConfig {

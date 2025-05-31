@@ -1,10 +1,10 @@
 package com.apiguave.onboarding_domain
 
-import com.apiguave.domain_auth.repository.AuthRepository
-import com.apiguave.domain_picture.repository.PictureRepository
-import com.apiguave.domain_profile.model.Gender
-import com.apiguave.domain_profile.model.Orientation
-import com.apiguave.domain_profile.repository.ProfileRepository
+import com.apiguave.auth_domain.repository.AuthRepository
+import com.apiguave.picture_domain.repository.PictureRepository
+import com.apiguave.profile_domain.model.Gender
+import com.apiguave.profile_domain.model.Orientation
+import com.apiguave.profile_domain.repository.ProfileRepository
 import java.time.LocalDate
 
 

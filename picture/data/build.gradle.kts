@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_picture"
+    namespace = "com.apiguave.picture_data"
     compileSdk = 34
 
     defaultConfig {

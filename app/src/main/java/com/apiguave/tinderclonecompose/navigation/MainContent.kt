@@ -9,15 +9,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.apiguave.feature_auth.create_profile.CreateProfileScreen
+import com.apiguave.onboarding_ui.create_profile.CreateProfileScreen
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
-import com.apiguave.feature_auth.login.LoginScreen
-import com.apiguave.feature_auth.splash.SplashScreen
-import com.apiguave.feature_home.HomeScreen
-import com.apiguave.feature_chat.chat.ChatScreen
-import com.apiguave.feature_chat.chat.ChatViewModel
-import com.apiguave.feature_chat.match_list.MatchListScreen
-import com.apiguave.feature_profile.EditProfileScreen
+import com.apiguave.onboarding_ui.login.LoginScreen
+import com.apiguave.onboarding_ui.splash.SplashScreen
+import com.apiguave.home_ui.HomeScreen
+import com.apiguave.chat_ui.chat.ChatScreen
+import com.apiguave.chat_ui.chat.ChatViewModel
+import com.apiguave.chat_ui.match_list.MatchListScreen
+import com.apiguave.editprofile_ui.EditProfileScreen
 import org.koin.androidx.compose.getViewModel
 
 @Composable

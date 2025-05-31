@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.feature_profile"
+    namespace = "com.apiguave.editprofile_ui"
     compileSdk = 34
 
     defaultConfig {
