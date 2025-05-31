@@ -4,8 +4,8 @@ import com.apiguave.auth_data.di.authDataMode
 import com.apiguave.auth_data.di.fakeAuthDataModule
 import com.apiguave.match_data.di.matchDataModule
 import com.apiguave.match_data.di.fakeMatchDataModule
-import com.apiguave.message_data.di.dataMessageModule
-import com.apiguave.message_data.di.mockDataMessageModule
+import com.apiguave.message_data.di.messageDataModule
+import com.apiguave.message_data.di.fakeMessageDataModule
 import com.apiguave.picture_data.di.dataPictureModule
 import com.apiguave.picture_data.di.mockDataPictureModule
 import com.apiguave.profile_data.di.dataProfileModule
@@ -40,13 +40,13 @@ val appModule = module {
     if(BuildConfig.BUILD_TYPE == "mock") {
         includes(fakeAuthDataModule)
         includes(fakeMatchDataModule)
-        includes(mockDataMessageModule)
+        includes(fakeMessageDataModule)
         includes(mockDataPictureModule)
         includes(mockDataProfileModule)
     } else {
         includes(authDataMode)
         includes(matchDataModule)
-        includes(dataMessageModule)
+        includes(messageDataModule)
         includes(dataPictureModule)
         includes(dataProfileModule)
     }
