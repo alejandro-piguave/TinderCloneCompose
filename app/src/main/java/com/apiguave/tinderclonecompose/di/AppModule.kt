@@ -8,8 +8,8 @@ import com.apiguave.message_data.di.messageDataModule
 import com.apiguave.message_data.di.fakeMessageDataModule
 import com.apiguave.picture_data.di.pictureDataModule
 import com.apiguave.picture_data.di.fakePictureDataModule
-import com.apiguave.profile_data.di.dataProfileModule
-import com.apiguave.profile_data.di.mockDataProfileModule
+import com.apiguave.profile_data.di.profileDataModule
+import com.apiguave.profile_data.di.fakeProfileDatModule
 import com.apiguave.auth_domain.di.domainAuthModule
 import com.apiguave.match_domain.di.domainMatchModule
 import com.apiguave.message_domain.di.domainMessageModule
@@ -42,13 +42,13 @@ val appModule = module {
         includes(fakeMatchDataModule)
         includes(fakeMessageDataModule)
         includes(fakePictureDataModule)
-        includes(mockDataProfileModule)
+        includes(fakeProfileDatModule)
     } else {
         includes(authDataMode)
         includes(matchDataModule)
         includes(messageDataModule)
         includes(pictureDataModule)
-        includes(dataProfileModule)
+        includes(profileDataModule)
     }
 
 }

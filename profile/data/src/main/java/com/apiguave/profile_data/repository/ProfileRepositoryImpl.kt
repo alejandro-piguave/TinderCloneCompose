@@ -16,7 +16,6 @@ import java.time.LocalDate
 
 val Context.dataStore by preferencesDataStore(name = "user_prefs")
 
-
 class ProfileRepositoryImpl(
     private val profileRemoteDataSource: ProfileRemoteDataSource,
     private val dataStore: DataStore<Preferences>

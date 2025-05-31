@@ -1,16 +1,16 @@
-package com.apiguave.profile_data.source
+package com.apiguave.profile_data.repository
 
-import com.apiguave.profile_data.repository.ProfileRemoteDataSource
 import com.apiguave.profile_domain.model.Gender
 import com.apiguave.profile_domain.model.Orientation
 import com.apiguave.profile_domain.model.Profile
 import com.apiguave.profile_domain.model.UserProfile
+import com.apiguave.profile_domain.repository.ProfileRepository
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.util.UUID
 import kotlin.random.Random
 
-class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
+class FakeProfileRepositoryImpl: ProfileRepository {
     private val userProfile = UserProfile(
         "mock_user",
         "John Doe",
@@ -20,12 +20,7 @@ class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
         Orientation.WOMEN,
         listOf("man_1.jpg, man_2.jpg", "man_3.jpg")
     )
-    override suspend fun getUserProfile(): UserProfile = userProfile
-    override suspend fun hasUserProfile(): Boolean {
-        return true
-    }
-
-    override suspend fun createProfile(
+    override suspend fun addProfile(
         userId: String,
         name: String,
         birthdate: LocalDate,
@@ -36,26 +31,32 @@ class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
         delay(2000)
     }
 
-    override suspend fun updateProfile(
-        bio: String,
-        gender: Gender,
-        orientation: Orientation
-    ) {
+    override suspend fun updateProfile(bio: String, gender: Gender, orientation: Orientation) {
         delay(2000)
     }
 
-    override suspend fun updateProfile(pictureNames: List<String>) {
+    override suspend fun updatePictures(pictureNames: List<String>) {
         delay(2000)
     }
+
+    override suspend fun getProfile(): UserProfile {
+        return userProfile
+    }
+
+    override suspend fun hasProfile(userId: String): Boolean {
+        return true
+    }
+
+    override suspend fun likeProfile(profile: Profile): String? {
+        return null
+    }
+
+    override suspend fun passProfile(profile: Profile) { }
 
     override suspend fun getProfiles(): List<Profile> {
         delay(1000)
         return (0 until 10).map { getRandomProfile(false) }.toList()
     }
-
-    override suspend fun passProfile(profile: Profile) {}
-
-    override suspend fun likeProfile(profile: Profile): String? = null
 
     private fun getRandomProfile(isMale: Boolean): Profile {
         val name = getRandomName(isMale)

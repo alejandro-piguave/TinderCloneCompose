@@ -15,6 +15,9 @@ android {
     }
 
     buildTypes {
+        create("mock") {
+            initWith(getByName("debug"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
