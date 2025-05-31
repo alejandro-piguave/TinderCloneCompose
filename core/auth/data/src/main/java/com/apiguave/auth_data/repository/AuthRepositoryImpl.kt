@@ -4,9 +4,10 @@ import com.apiguave.auth_domain.model.Account
 import com.apiguave.auth_domain.repository.AuthRepository
 import com.apiguave.auth_data.repository.exception.SignInException
 import com.apiguave.auth_data.repository.exception.SignUpException
+import com.apiguave.auth_data.source.AuthFirebaseDataSource
 
 class AuthRepositoryImpl(
-    private val authRemoteDataSource: AuthRemoteDataSource
+    private val authRemoteDataSource: AuthFirebaseDataSource
 ): AuthRepository {
 
     override val userId: String?
