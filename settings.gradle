@@ -22,14 +22,17 @@ include ':feature:home'
 include ':feature:chat'
 include ':feature:profile'
 
-include ':data:auth'
-include ':data:picture'
-include ':data:message'
-include ':data:match'
-include ':data:profile'
+include ':auth:data'
+include ':auth:domain'
 
-include ':domain:message'
-include ':domain:picture'
-include ':domain:match'
-include ':domain:profile'
-include ':domain:auth'
+include ':picture:data'
+include ':picture:domain'
+
+include ':message:data'
+include ':message:domain'
+
+include ':match:data'
+include ':match:domain'
+
+include ':profile:data'
+include ':profile:domain'

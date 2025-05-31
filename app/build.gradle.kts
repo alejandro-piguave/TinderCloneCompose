@@ -95,17 +95,17 @@ dependencies {
     implementation(project(":feature:chat"))
     implementation(project(":feature:profile"))
 
-    implementation(project(":data:auth"))
-    implementation(project(":data:match"))
-    implementation(project(":data:message"))
-    implementation(project(":data:picture"))
-    implementation(project(":data:profile"))
+    implementation(project(":auth:data"))
+    implementation(project(":match:data"))
+    implementation(project(":message:data"))
+    implementation(project(":picture:data"))
+    implementation(project(":profile:data"))
 
-    implementation(project(":domain:auth"))
-    implementation(project(":domain:match"))
-    implementation(project(":domain:message"))
-    implementation(project(":domain:picture"))
-    implementation(project(":domain:profile"))
+    implementation(project(":auth:domain"))
+    implementation(project(":match:domain"))
+    implementation(project(":message:domain"))
+    implementation(project(":picture:domain"))
+    implementation(project(":profile:domain"))
 
 
 }

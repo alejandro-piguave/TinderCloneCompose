@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_auth"
+    namespace = "com.apiguave.data_message"
     compileSdk = 34
 
     defaultConfig {
@@ -35,8 +35,10 @@ android {
 dependencies {
 
     testImplementation(libs.junit)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.koin.android)
 
-    implementation(project(":domain:auth"))
+    implementation(project(":message:domain"))
     implementation(project(":core:firebase"))
+
 }

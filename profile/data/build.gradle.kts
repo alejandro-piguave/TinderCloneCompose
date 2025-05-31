@@ -36,6 +36,6 @@ dependencies {
     testImplementation(libs.junit)
     implementation(libs.koin.android)
 
-    implementation(project(":domain:profile"))
+    implementation(project(":profile:domain"))
     implementation(project(":core:firebase"))
 }

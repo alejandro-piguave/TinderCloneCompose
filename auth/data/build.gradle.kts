@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_match"
+    namespace = "com.apiguave.data_auth"
     compileSdk = 34
 
     defaultConfig {
@@ -33,10 +33,10 @@ android {
 }
 
 dependencies {
+
     testImplementation(libs.junit)
-    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.koin.android)
 
-    implementation(project(":domain:match"))
+    implementation(project(":auth:domain"))
     implementation(project(":core:firebase"))
 }

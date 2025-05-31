@@ -37,5 +37,5 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(project(":core:firebase"))
-    implementation(project(":domain:picture"))
+    implementation(project(":picture:domain"))
 }

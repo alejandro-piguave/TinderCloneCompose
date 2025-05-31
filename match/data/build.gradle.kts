@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.data_message"
+    namespace = "com.apiguave.data_match"
     compileSdk = 34
 
     defaultConfig {
@@ -33,12 +33,10 @@ android {
 }
 
 dependencies {
-
     testImplementation(libs.junit)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.koin.android)
 
-    implementation(project(":domain:message"))
+    implementation(project(":match:domain"))
     implementation(project(":core:firebase"))
-
 }
