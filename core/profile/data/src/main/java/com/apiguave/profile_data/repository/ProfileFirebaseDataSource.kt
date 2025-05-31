@@ -1,21 +1,20 @@
-package com.apiguave.profile_data.source
+package com.apiguave.profile_data.repository
 
 import com.apiguave.core_firebase.model.FirestoreUser
 import java.time.LocalDate
 import com.apiguave.core_firebase.AuthApi
 import com.apiguave.core_firebase.UserApi
-import com.apiguave.profile_data.repository.ProfileRemoteDataSource
-import com.apiguave.profile_data.source.extensions.toAge
-import com.apiguave.profile_data.source.extensions.toBoolean
-import com.apiguave.profile_data.source.extensions.toOrientation
-import com.apiguave.profile_data.source.extensions.toFirestoreOrientation
-import com.apiguave.profile_data.source.extensions.toLocalDate
+import com.apiguave.profile_data.extensions.toAge
+import com.apiguave.profile_data.extensions.toBoolean
+import com.apiguave.profile_data.extensions.toOrientation
+import com.apiguave.profile_data.extensions.toFirestoreOrientation
+import com.apiguave.profile_data.extensions.toLocalDate
 import com.apiguave.profile_domain.model.Gender
 import com.apiguave.profile_domain.model.Orientation
 import com.apiguave.profile_domain.model.Profile
 import com.apiguave.profile_domain.model.UserProfile
 
-class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
+class ProfileFirebaseDataSource {
 
     /*
    These properties are stored due to the particularities of Firebase.
@@ -34,7 +33,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         }
     }
 
-    override suspend fun getUserProfile(): UserProfile {
+    suspend fun getUserProfile(): UserProfile {
         val currentUser = getCurrentUser()
         return UserProfile(
             currentUser.id,
@@ -47,7 +46,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         )
     }
 
-    override suspend fun createProfile(
+    suspend fun createProfile(
         userId: String,
         name: String,
         birthdate: LocalDate,
@@ -65,7 +64,7 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         )
     }
 
-    override suspend fun updateProfile(
+    suspend fun updateProfile(
         bio: String,
         gender: Gender,
         orientation: Orientation
@@ -76,25 +75,25 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         currentUser = currentUser?.copy(bio = bio, male = isMale, orientation = firestoreOrientation)
     }
 
-    override suspend fun updateProfile(pictureNames: List<String>) {
+    suspend fun updateProfile(pictureNames: List<String>) {
         UserApi.updateUserPictures(pictureNames)
         currentUser = currentUser?.copy(pictures = pictureNames)
     }
 
-    override suspend fun getProfiles(): List<Profile> {
+    suspend fun getProfiles(): List<Profile> {
         val users = UserApi.getCompatibleUsers(getCurrentUser())
         return users.map { Profile(it.id, it.name, it.birthDate!!.toAge(), it.pictures) }
     }
 
-    override suspend fun hasUserProfile(): Boolean {
+    suspend fun hasUserProfile(): Boolean {
         return UserApi.userExists()
     }
 
-    override suspend fun passProfile(profile: Profile) {
+    suspend fun passProfile(profile: Profile) {
         UserApi.swipeUser(profile.id, false)
     }
 
-    override suspend fun likeProfile(profile: Profile): String? {
+    suspend fun likeProfile(profile: Profile): String? {
         return UserApi.swipeUser(profile.id, true)
     }
 

@@ -1,4 +1,4 @@
-package com.apiguave.profile_data.source.extensions
+package com.apiguave.profile_data.extensions
 
 import java.time.LocalDate
 import java.time.ZoneId

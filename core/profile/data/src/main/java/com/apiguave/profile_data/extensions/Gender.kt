@@ -1,4 +1,4 @@
-package com.apiguave.profile_data.source.extensions
+package com.apiguave.profile_data.extensions
 
 import com.apiguave.profile_domain.model.Gender
 
