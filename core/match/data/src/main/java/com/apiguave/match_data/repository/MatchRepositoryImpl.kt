@@ -5,7 +5,7 @@ import com.apiguave.match_domain.repository.MatchRepository
 
 
 class MatchRepositoryImpl(
-    private val matchRemoteDataSource: MatchRemoteDataSource
+    private val matchRemoteDataSource: MatchFirebaseDataSource
 ): MatchRepository {
 
     override suspend fun getMatches(): List<Match> = matchRemoteDataSource.getMatches()

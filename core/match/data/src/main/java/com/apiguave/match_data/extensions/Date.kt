@@ -1,4 +1,4 @@
-package com.apiguave.match_data.source.extensions
+package com.apiguave.match_data.extensions
 
 import java.time.LocalDate
 import java.time.ZoneId
