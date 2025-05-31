@@ -1,6 +1,7 @@
-package com.apiguave.auth_ui.extensions
+package com.apiguave.feature_auth.extensions
 
 import androidx.activity.result.ActivityResult
+import com.apiguave.auth_ui.extensions.getTaskResult
 import com.apiguave.domain_auth.model.Account
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 

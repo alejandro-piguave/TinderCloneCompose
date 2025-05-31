@@ -38,6 +38,11 @@ object UserApi {
         FirebaseFirestore.getInstance().collection(USERS).document(userId).set(user).getTaskResult()
     }
 
+    suspend fun userExists(): Boolean {
+        val snapshot = FirebaseFirestore.getInstance().collection(USERS).document(AuthApi.userId!!).get().getTaskResult()
+        return snapshot.exists()
+    }
+
     suspend fun getUser(userId: String): FirestoreUser? {
         val snapshot = FirebaseFirestore.getInstance().collection(USERS).document(userId).get().getTaskResult()
         return snapshot.toObject<FirestoreUser>()

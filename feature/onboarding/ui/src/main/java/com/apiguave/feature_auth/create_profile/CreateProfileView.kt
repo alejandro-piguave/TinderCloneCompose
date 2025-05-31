@@ -1,4 +1,4 @@
-package com.apiguave.feature_auth.register
+package com.apiguave.feature_auth.create_profile
 
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -24,7 +25,6 @@ import com.apiguave.core_ui.components.dialogs.DeleteConfirmationDialog
 import com.apiguave.core_ui.components.dialogs.ErrorDialog
 import com.apiguave.core_ui.components.dialogs.SelectPictureDialog
 import com.apiguave.feature_auth.R
-import com.apiguave.feature_auth.components.GradientGoogleButton
 import com.apiguave.feature_auth.components.dialogs.FormDatePickerDialog
 import com.apiguave.auth_ui.extensions.isValidUsername
 import com.apiguave.core_ui.components.FormTextField
@@ -40,8 +40,8 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun SignUpView(
-    uiState: SignUpViewState,
+fun CreateProfileView(
+    uiState: CreateProfileViewState,
     onPictureSelected: (Uri) -> Unit,
     removePictureAt: (Int) -> Unit,
     onSignUpClicked: () -> Unit,
@@ -150,7 +150,9 @@ fun SignUpView(
                             .fillMaxWidth()
                             .height(32.dp))
 
-                    GradientGoogleButton(enabled = isSignUpEnabled.value, onClick = onSignUpClicked)
+                    Button(enabled = isSignUpEnabled.value, onClick = onSignUpClicked, modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
+                        Text(stringResource(id = R.string.create_profile), modifier = Modifier.padding(vertical = 4.dp))
+                    }
                     Spacer(
                         Modifier
                             .fillMaxWidth()
@@ -162,7 +164,7 @@ fun SignUpView(
 
     //Dialogs
     when(uiState.dialogState) {
-        is SignUpDialogState.DeleteConfirmationDialog -> {
+        is CreateProfileDialogState.DeleteConfirmationDialog -> {
             DeleteConfirmationDialog(
                 onDismissRequest = onCloseDialogClicked,
                 onConfirm = {
@@ -170,17 +172,17 @@ fun SignUpView(
                     removePictureAt(uiState.dialogState.index)},
                 onDismiss = onCloseDialogClicked)
         }
-        is SignUpDialogState.ErrorDialog -> {
+        is CreateProfileDialogState.ErrorDialog -> {
             ErrorDialog(
                 errorDescription = stringResource(id = R.string.sign_up_error),
                 onDismissRequest = onCloseDialogClicked,
                 onConfirm = onCloseDialogClicked
             )
         }
-        SignUpDialogState.Loading -> {
+        CreateProfileDialogState.Loading -> {
             LoadingView()
         }
-        SignUpDialogState.SelectPictureDialog -> {
+        CreateProfileDialogState.SelectPictureDialog -> {
             SelectPictureDialog(onCloseClick = onCloseDialogClicked, onReceiveUri = {
                 onCloseDialogClicked()
                 onPictureSelected(it)
@@ -193,10 +195,10 @@ fun SignUpView(
 
 @Preview
 @Composable
-fun SignUpViewPreview() {
+fun CreateProfileViewPreview() {
     TinderCloneComposeTheme {
-        SignUpView(
-            uiState = SignUpViewState(),
+        CreateProfileView(
+            uiState = CreateProfileViewState(),
             onPictureSelected = {},
             removePictureAt = {},
             onSignUpClicked = {},

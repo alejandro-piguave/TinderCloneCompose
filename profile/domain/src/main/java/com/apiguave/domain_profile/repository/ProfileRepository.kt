@@ -18,6 +18,7 @@ interface ProfileRepository {
     suspend fun updateProfile(bio: String, gender: Gender, orientation: Orientation)
     suspend fun updatePictures(pictureNames: List<String>)
     suspend fun getProfile(): UserProfile
+    suspend fun hasProfile(userId: String): Boolean
 
     suspend fun likeProfile(profile: Profile): String?
     suspend fun passProfile(profile: Profile)

@@ -7,6 +7,7 @@ import com.apiguave.domain_profile.model.UserProfile
 import java.time.LocalDate
 
 interface ProfileRemoteDataSource {
+    suspend fun hasUserProfile(): Boolean
     suspend fun getUserProfile(): UserProfile
     suspend fun createProfile(
         userId: String,

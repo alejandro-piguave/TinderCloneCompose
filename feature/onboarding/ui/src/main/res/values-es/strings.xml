@@ -13,5 +13,7 @@
     <string name="pick_a_date">Selecciona una fecha</string>
     <string name="sign_up_error">Se produjo un error durante el registro. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="sign_up_with_google">Registrarse con Google</string>
+    <string name="splash_screen_error_message">Hubo un problema al iniciar la aplicación. Por favor, comprueba tu conexión o inténtalo de nuevo.</string>
+    <string name="try_again">Reintentar</string>
 
 </resources>

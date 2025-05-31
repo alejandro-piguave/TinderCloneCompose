@@ -1,18 +1,44 @@
 package com.apiguave.data_profile.repository
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import com.apiguave.domain_profile.model.Gender
 import com.apiguave.domain_profile.model.Orientation
 import com.apiguave.domain_profile.model.Profile
 import com.apiguave.domain_profile.model.UserProfile
 import com.apiguave.domain_profile.repository.ProfileRepository
+import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 
+val Context.dataStore by preferencesDataStore(name = "user_prefs")
+
+
 class ProfileRepositoryImpl(
-    private val profileRemoteDataSource: ProfileRemoteDataSource
+    private val profileRemoteDataSource: ProfileRemoteDataSource,
+    private val dataStore: DataStore<Preferences>
 ): ProfileRepository {
+
 
     override suspend fun getProfile(): UserProfile {
         return profileRemoteDataSource.getUserProfile()
+    }
+
+    override suspend fun hasProfile(userId: String): Boolean {
+        val preferences = dataStore.data.first()
+        val hasProfileKey = booleanPreferencesKey("HAS_PROFILE_$userId")
+        return preferences[hasProfileKey] ?: run {
+            val hasProfile = profileRemoteDataSource.hasUserProfile()
+            if(hasProfile){
+                dataStore.edit { preferences ->
+                    preferences[hasProfileKey] = true
+                }
+            }
+            return hasProfile
+        }
     }
 
     override suspend fun updateProfile(

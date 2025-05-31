@@ -86,6 +86,10 @@ class ProfileRemoteDataSourceImpl: ProfileRemoteDataSource {
         return users.map { Profile(it.id, it.name, it.birthDate!!.toAge(), it.pictures) }
     }
 
+    override suspend fun hasUserProfile(): Boolean {
+        return UserApi.userExists()
+    }
+
     override suspend fun passProfile(profile: Profile) {
         UserApi.swipeUser(profile.id, false)
     }

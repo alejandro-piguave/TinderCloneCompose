@@ -12,5 +12,7 @@
     <string name="pick_a_date">Pick a date</string>
     <string name="sign_up_error">There was an error while signing up. Please, try again later.</string>
     <string name="sign_up_with_google">Sign Up with Google</string>
+    <string name="splash_screen_error_message">We ran into a problem starting the app. Please check your connection or try again.</string>
+    <string name="try_again">Try again</string>
 
 </resources>

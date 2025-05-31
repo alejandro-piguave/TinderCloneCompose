@@ -3,16 +3,14 @@ package com.apiguave.feature_auth.signup
 import android.net.Uri
 import androidx.activity.result.ActivityResult
 import androidx.compose.ui.text.input.TextFieldValue
-import com.apiguave.auth_ui.extensions.toProviderAccount
+import com.apiguave.feature_auth.extensions.toProviderAccount
 import com.apiguave.core_ui.model.PictureState
 import com.apiguave.domain_auth.model.Account
-import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
 import com.apiguave.feature_auth.MainDispatcherRule
-import com.apiguave.onboarding_domain.SignUpUseCase
-import com.apiguave.feature_auth.register.SignUpDialogState
-import com.apiguave.feature_auth.register.SignUpViewModel
+import com.apiguave.onboarding_domain.CreateProfileUseCase
+import com.apiguave.feature_auth.create_profile.CreateProfileDialogState
+import com.apiguave.feature_auth.create_profile.CreateProfileViewModel
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,23 +20,20 @@ import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
 
-class SignUpViewModelTest {
+class CreateProfileViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val signUpUseCase: SignUpUseCase = mockk()
+    private val createProfileUseCase: CreateProfileUseCase = mockk()
     private val maxBirthdate = LocalDate.of(2000, 1, 1)
-    private val getMaxBirthdateUseCase: GetMaxBirthdateUseCase = mockk<GetMaxBirthdateUseCase> {
-        every<LocalDate> { this@mockk.invoke() } returns LocalDate.of(2000, 1, 1)
-    }
     private val mockAccount = Account("john.doe@gmail.com", "123456890")
-    private lateinit var viewModel: SignUpViewModel
+    private lateinit var viewModel: CreateProfileViewModel
 
     @Before
     fun initialize() {
-        viewModel = SignUpViewModel(getMaxBirthdateUseCase, signUpUseCase)
+        viewModel = CreateProfileViewModel(createProfileUseCase)
         mockkStatic(ActivityResult::toProviderAccount)
         coEvery { any<ActivityResult>().toProviderAccount() } returns mockAccount
     }
@@ -94,7 +89,7 @@ class SignUpViewModelTest {
     fun testCloseDialog() {
         viewModel.closeDialog()
         val state = viewModel.uiState.value
-        assertEquals(SignUpDialogState.NoDialog, state.dialogState)
+        assertEquals(CreateProfileDialogState.NoDialog, state.dialogState)
     }
 
     @Test
@@ -102,14 +97,14 @@ class SignUpViewModelTest {
         val testIndex = 2
         viewModel.showConfirmDeletionDialog(testIndex)
         val state = viewModel.uiState.value
-        assertEquals(SignUpDialogState.DeleteConfirmationDialog(testIndex), state.dialogState)
+        assertEquals(CreateProfileDialogState.DeleteConfirmationDialog(testIndex), state.dialogState)
     }
 
     @Test
     fun testShowSelectPictureDialog() {
         viewModel.showSelectPictureDialog()
         val state = viewModel.uiState.value
-        assertEquals(SignUpDialogState.SelectPictureDialog, state.dialogState)
+        assertEquals(CreateProfileDialogState.SelectPictureDialog, state.dialogState)
     }
 
     @Test
@@ -132,27 +127,25 @@ class SignUpViewModelTest {
     }
 
     @Test
-    fun testSignUpSuccess() {
-        val activityResult: ActivityResult = mockk<ActivityResult>()
-        coEvery { signUpUseCase.invoke(any(),any(),any(),any(),any(),any(),any()) } returns Result.success(Unit)
+    fun testCreateProfileSuccess() {
+        coEvery { createProfileUseCase.invoke(any(),any(),any(),any(),any(),any()) } returns Result.success(Unit)
 
         viewModel.setGenderIndex(0)
         viewModel.setOrientationIndex(0)
-        viewModel.signUp(activityResult)
+        viewModel.createProfile()
         val state = viewModel.uiState.value
         assertEquals(true, state.isUserSignedIn)
     }
 
     @Test
-    fun testSignUpFailure() {
-        val activityResult: ActivityResult = mockk<ActivityResult>()
-        coEvery { signUpUseCase.invoke(any(),any(),any(),any(),any(),any(),any()) } returns Result.failure(Exception())
+    fun testCreateProfileFailure() {
+        coEvery { createProfileUseCase.invoke(any(),any(),any(),any(),any(),any()) } returns Result.failure(Exception())
 
         viewModel.setGenderIndex(0)
         viewModel.setOrientationIndex(0)
-        viewModel.signUp(activityResult)
+        viewModel.createProfile()
         val state = viewModel.uiState.value
-        assertEquals(SignUpDialogState.ErrorDialog, state.dialogState)
+        assertEquals(CreateProfileDialogState.ErrorDialog, state.dialogState)
     }
     
 }

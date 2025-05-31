@@ -1,7 +1,7 @@
 package com.apiguave.feature_auth.login
 
 import androidx.activity.result.ActivityResult
-import com.apiguave.auth_ui.extensions.toProviderAccount
+import com.apiguave.feature_auth.extensions.toProviderAccount
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.domain_auth.usecases.IsUserSignedInUseCase
 import com.apiguave.domain_auth.usecases.SignInUseCase
@@ -24,21 +24,14 @@ class LoginViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val signInUseCase = mockk<SignInUseCase>()
-    private val userSignedInUseCase = mockk<IsUserSignedInUseCase> {
-        every { this@mockk.invoke() } returns true
-    }
-    private val userNotSignedInUseCase = mockk<IsUserSignedInUseCase> {
-        every { this@mockk.invoke() } returns false
-    }
-
     private lateinit var signedInViewModel: LoginViewModel
     private lateinit var notSignedInViewModel: LoginViewModel
 
 
     @Before
     fun initialize() {
-        signedInViewModel = LoginViewModel(userSignedInUseCase, signInUseCase)
-        notSignedInViewModel = LoginViewModel(userNotSignedInUseCase, signInUseCase)
+        signedInViewModel = LoginViewModel(signInUseCase)
+        notSignedInViewModel = LoginViewModel(signInUseCase)
         val account = Account("john.doe@gmail.com", "123456890")
         mockkStatic(ActivityResult::toProviderAccount)
         coEvery { any<ActivityResult>().toProviderAccount() } returns account
@@ -46,12 +39,12 @@ class LoginViewModelTest {
 
     @Test
     fun testInitializeSignedIn() {
-        assertEquals(LoginViewState.SignedIn, signedInViewModel.uiState.value)
+        assertEquals(LoginViewState.Ready, signedInViewModel.uiState.value)
     }
 
     @Test
     fun testInitializeSigningIn() {
-        assertEquals(LoginViewState.SigningIn, notSignedInViewModel.uiState.value)
+        assertEquals(LoginViewState.Ready, notSignedInViewModel.uiState.value)
     }
 
     @Test
@@ -59,7 +52,7 @@ class LoginViewModelTest {
         val activityResult: ActivityResult = mockk<ActivityResult>()
         coEvery { signInUseCase.invoke(any()) } returns Result.success(Unit)
         signedInViewModel.signIn(activityResult)
-        assertEquals(LoginViewState.SignedIn, signedInViewModel.uiState.value)
+        assertEquals(LoginViewState.Loading, signedInViewModel.uiState.value)
     }
 
     @Test
@@ -67,7 +60,7 @@ class LoginViewModelTest {
         val activityResult: ActivityResult = mockk<ActivityResult>()
         coEvery { signInUseCase.invoke(any()) } returns Result.failure(Exception())
         signedInViewModel.signIn(activityResult)
-        assertEquals(LoginViewState.Error, signedInViewModel.uiState.value)
+        assertEquals(LoginViewState.Ready, signedInViewModel.uiState.value)
     }
 
 }

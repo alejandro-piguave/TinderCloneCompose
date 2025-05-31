@@ -21,6 +21,9 @@ class ProfileRemoteDataSourceMockImpl : ProfileRemoteDataSource {
         listOf("man_1.jpg, man_2.jpg", "man_3.jpg")
     )
     override suspend fun getUserProfile(): UserProfile = userProfile
+    override suspend fun hasUserProfile(): Boolean {
+        return true
+    }
 
     override suspend fun createProfile(
         userId: String,

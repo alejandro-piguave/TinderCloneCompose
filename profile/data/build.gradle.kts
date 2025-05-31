@@ -35,6 +35,7 @@ android {
 dependencies {
     testImplementation(libs.junit)
     implementation(libs.koin.android)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation(project(":profile:domain"))
     implementation(project(":core:firebase"))

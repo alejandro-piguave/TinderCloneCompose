@@ -68,19 +68,21 @@ class EditProfileViewModel(
     }
 
     fun loadUserProfile() = viewModelScope.launch {
-        getProfileUseCase().onSuccess { currentProfile ->
-            _uiState.update {
-                it.copy(
-                    currentProfile = currentProfile,
-                    name = currentProfile.name,
-                    bio = TextFieldValue(currentProfile.bio),
-                    birthDate = currentProfile.birthDate.toLongString(),
-                    genderIndex = currentProfile.gender.ordinal,
-                    orientationIndex = currentProfile.orientation.ordinal,
-                    pictures = currentProfile.pictureNames.map { pictureName -> PictureState.Loading(pictureName) }
-                )
+        getProfileUseCase().onSuccess { success ->
+            success?.let { currentProfile ->
+                _uiState.update {
+                    it.copy(
+                        currentProfile = currentProfile,
+                        name = currentProfile.name,
+                        bio = TextFieldValue(currentProfile.bio),
+                        birthDate = currentProfile.birthDate.toLongString(),
+                        genderIndex = currentProfile.gender.ordinal,
+                        orientationIndex = currentProfile.orientation.ordinal,
+                        pictures = currentProfile.pictureNames.map { pictureName -> PictureState.Loading(pictureName) }
+                    )
+                }
+                loadProfilePictures(currentProfile.id, currentProfile.pictureNames)
             }
-            loadProfilePictures(currentProfile.id, currentProfile.pictureNames)
         }
     }
 

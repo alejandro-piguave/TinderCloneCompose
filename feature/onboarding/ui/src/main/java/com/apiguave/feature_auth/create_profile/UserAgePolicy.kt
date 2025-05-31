@@ -1,4 +1,4 @@
-package com.apiguave.feature_auth.register
+package com.apiguave.feature_auth.create_profile
 
 import java.time.LocalDate
 

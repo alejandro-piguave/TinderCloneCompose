@@ -28,7 +28,6 @@ import com.apiguave.feature_auth.R
 
 @Composable
 fun LoginView(uiState: LoginViewState,
-              onNavigateToSignUp: () -> Unit,
               onSignInClicked: () -> Unit) {
 
     Column(
@@ -53,29 +52,7 @@ fun LoginView(uiState: LoginViewState,
         )
         Column(modifier = Modifier.weight(1.0f)){
             Spacer(modifier = Modifier.weight(1f))
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .alpha(if (uiState is LoginViewState.Loading) 0f else 1f),
-                onClick = onNavigateToSignUp,
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    top = 12.dp,
-                    end = 20.dp,
-                    bottom = 12.dp
-                ),
-                shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(stringResource(id = R.string.create_account).uppercase(), color = Color.Gray)
-                }
 
-            }
-
-            Spacer(Modifier.height(6.dp))
 
             OutlinedButton(
                 modifier = Modifier
@@ -112,8 +89,7 @@ fun LoginView(uiState: LoginViewState,
 fun LoginViewPreview() {
     TinderCloneComposeTheme {
         LoginView(
-            uiState = LoginViewState.Loading,
-            onNavigateToSignUp = { },
+            uiState = LoginViewState.Ready,
             onSignInClicked = {}
         )
     }
