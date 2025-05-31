@@ -7,7 +7,7 @@ It features user authentication, swiping to match with other users, real-time ch
 
 ## 📲 Features
 
-- 🔐 **Authentication** (Sign up / Login via Firebase)
+- 🔐 **Onboarding** (Login via Firebase / Profile Creation)
 - 🏠 **Home Screen** with swipe-to-match functionality
 - 🧑‍💼 **Edit Profile** with image uploads
 - 💬 **Chat** with matched users
