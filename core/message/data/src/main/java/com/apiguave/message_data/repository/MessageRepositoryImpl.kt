@@ -1,10 +1,11 @@
 package com.apiguave.message_data.repository
 
+import com.apiguave.message_data.source.MessageFirebaseDataSource
 import com.apiguave.message_domain.repository.MessageRepository
 
 
 class MessageRepositoryImpl(
-    private val messageRemoteDataSource: MessageRemoteDataSource
+    private val messageRemoteDataSource: MessageFirebaseDataSource
 ):
     MessageRepository {
 
