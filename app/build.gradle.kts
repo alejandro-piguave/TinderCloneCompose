@@ -96,17 +96,17 @@ dependencies {
     implementation(project(":feature:chat:ui"))
     implementation(project(":feature:editprofile:ui"))
 
-    implementation(project(":auth:data"))
-    implementation(project(":match:data"))
-    implementation(project(":message:data"))
-    implementation(project(":picture:data"))
-    implementation(project(":profile:data"))
+    implementation(project(":core:auth:data"))
+    implementation(project(":core:match:data"))
+    implementation(project(":core:message:data"))
+    implementation(project(":core:picture:data"))
+    implementation(project(":core:profile:data"))
 
-    implementation(project(":auth:domain"))
-    implementation(project(":match:domain"))
-    implementation(project(":message:domain"))
-    implementation(project(":picture:domain"))
-    implementation(project(":profile:domain"))
+    implementation(project(":core:auth:domain"))
+    implementation(project(":core:match:domain"))
+    implementation(project(":core:message:domain"))
+    implementation(project(":core:picture:domain"))
+    implementation(project(":core:profile:domain"))
 
 
 }

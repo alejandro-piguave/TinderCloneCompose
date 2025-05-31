@@ -10,7 +10,7 @@ java {
 
 dependencies {
     implementation(libs.koin.core)
-    implementation(project(":profile:domain"))
-    implementation(project(":auth:domain"))
-    implementation(project(":picture:domain"))
+    implementation(project(":core:profile:domain"))
+    implementation(project(":core:auth:domain"))
+    implementation(project(":core:picture:domain"))
 }

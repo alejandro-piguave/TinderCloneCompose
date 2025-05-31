@@ -70,8 +70,8 @@ dependencies {
 
 
     implementation(project(":core:ui"))
-    implementation(project(":auth:domain"))
-    implementation(project(":profile:domain"))
+    implementation(project(":core:auth:domain"))
+    implementation(project(":core:profile:domain"))
     implementation(project(":feature:onboarding:domain"))
 
 }

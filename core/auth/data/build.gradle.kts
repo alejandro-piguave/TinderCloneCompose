@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apiguave.profile_data"
+    namespace = "com.apiguave.auth_data"
     compileSdk = 34
 
     defaultConfig {
@@ -36,10 +36,10 @@ android {
 }
 
 dependencies {
+
     testImplementation(libs.junit)
     implementation(libs.koin.android)
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    implementation(project(":profile:domain"))
+    implementation(project(":core:auth:domain"))
     implementation(project(":core:firebase"))
 }

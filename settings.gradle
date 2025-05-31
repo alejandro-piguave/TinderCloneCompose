@@ -22,18 +22,18 @@ include ':feature:home:ui'
 include ':feature:chat:ui'
 include ':feature:editprofile:ui'
 
-include ':auth:data'
-include ':auth:domain'
+include ':core:auth:data'
+include ':core:auth:domain'
 
-include ':picture:data'
-include ':picture:domain'
+include ':core:picture:data'
+include ':core:picture:domain'
 
-include ':message:data'
-include ':message:domain'
+include ':core:message:data'
+include ':core:message:domain'
 
-include ':match:data'
-include ':match:domain'
+include ':core:match:data'
+include ':core:match:domain'
 
-include ':profile:data'
-include ':profile:domain'
+include ':core:profile:data'
+include ':core:profile:domain'
 include ':feature:onboarding:domain'
