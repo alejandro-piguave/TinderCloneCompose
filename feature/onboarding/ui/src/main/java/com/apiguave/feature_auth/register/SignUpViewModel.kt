@@ -6,13 +6,12 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apiguave.auth_ui.extensions.toProviderAccount
+import com.apiguave.core_ui.model.PictureState
 import com.apiguave.feature_auth.extensions.filterIndex
 import com.apiguave.feature_auth.extensions.toGender
 import com.apiguave.feature_auth.extensions.toOrientation
-import com.apiguave.auth_ui.extensions.toProviderAccount
-import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
-import com.apiguave.core_ui.model.PictureState
-import com.apiguave.feature_auth.orchestrators.SignUpUseCase
+import com.apiguave.onboarding_domain.SignUpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,17 +19,10 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class SignUpViewModel(
-    getMaxBirthdateUseCase: GetMaxBirthdateUseCase,
     private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpViewState())
     val uiState = _uiState.asStateFlow()
-
-    init {
-        getMaxBirthdateUseCase().let { max ->
-            _uiState.update { it.copy(maxBirthDate = max, birthDate = max) }
-        }
-    }
 
     fun setBirthDate(birthDate: LocalDate) {
         _uiState.update { it.copy(birthDate = birthDate) }
@@ -107,7 +99,7 @@ sealed class SignUpDialogState {
 @Immutable
 data class SignUpViewState(
     val name: TextFieldValue = TextFieldValue(),
-    val maxBirthDate: LocalDate = LocalDate.now(),
+    val maxBirthDate: LocalDate = UserAgePolicy.getMaxBirthdate(),
     val birthDate: LocalDate = LocalDate.now(),
     val bio: TextFieldValue = TextFieldValue(),
     val genderIndex: Int = -1,

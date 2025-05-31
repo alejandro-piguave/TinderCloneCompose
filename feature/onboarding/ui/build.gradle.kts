@@ -67,9 +67,8 @@ dependencies {
 
 
     implementation(project(":core:ui"))
-
-    implementation(project(":profile:domain"))
     implementation(project(":auth:domain"))
-    implementation(project(":picture:domain"))
+    implementation(project(":profile:domain"))
+    implementation(project(":feature:onboarding:domain"))
 
 }

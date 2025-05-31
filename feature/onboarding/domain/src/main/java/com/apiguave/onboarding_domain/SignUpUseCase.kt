@@ -1,4 +1,4 @@
-package com.apiguave.feature_auth.orchestrators
+package com.apiguave.onboarding_domain
 
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.domain_auth.repository.AuthRepository

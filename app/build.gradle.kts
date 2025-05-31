@@ -90,6 +90,7 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":feature:onboarding:ui"))
+    implementation(project(":feature:onboarding:domain"))
 
     implementation(project(":feature:home:ui"))
     implementation(project(":feature:chat:ui"))

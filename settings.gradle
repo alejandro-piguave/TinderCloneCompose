@@ -36,3 +36,4 @@ include ':match:domain'
 
 include ':profile:data'
 include ':profile:domain'
+include ':feature:onboarding:domain'

@@ -20,6 +20,7 @@ import com.apiguave.feature_auth.di.authFeatureModule
 import com.apiguave.feature_chat.di.chatFeatureModule
 import com.apiguave.feature_home.di.homeFeatureModule
 import com.apiguave.feature_profile.di.profileFeatureModule
+import com.apiguave.onboarding_domain.di.onboardingDomainModule
 import org.koin.dsl.module
 
 val appModule = module {
@@ -33,6 +34,8 @@ val appModule = module {
     includes(domainMessageModule)
     includes(domainPictureModule)
     includes(domainProfileModule)
+
+    includes(onboardingDomainModule)
 
     if(BuildConfig.BUILD_TYPE == "mock") {
         includes(mockDataAuthModule)

@@ -8,7 +8,7 @@ import com.apiguave.core_ui.model.PictureState
 import com.apiguave.domain_auth.model.Account
 import com.apiguave.domain_auth.usecases.GetMaxBirthdateUseCase
 import com.apiguave.feature_auth.MainDispatcherRule
-import com.apiguave.feature_auth.orchestrators.SignUpUseCase
+import com.apiguave.onboarding_domain.SignUpUseCase
 import com.apiguave.feature_auth.register.SignUpDialogState
 import com.apiguave.feature_auth.register.SignUpViewModel
 import io.mockk.coEvery
