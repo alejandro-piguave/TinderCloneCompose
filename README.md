@@ -23,8 +23,8 @@ This project follows **Clean Architecture + Modularization**, broken into 3 laye
 - :core:firebase → Shared Firebase logic (auth, firestore, storage)
 
 - :feature:* → UI, ViewModel and components for each feature
-- *:domain: → Business logic, use cases, and repository interfaces
-- *:data: → Repository implementations and data sources
+- :core:*:domain: → Business logic, use cases, and repository interfaces
+- :core:*:data: → Repository implementations and data sources
 
 
 📦 Each feature is self-contained. Domain defines logic, data implements it, and feature uses it.
