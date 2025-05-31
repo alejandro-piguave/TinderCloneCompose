@@ -1,4 +1,4 @@
-package com.apiguave.picture_data.source.extensions
+package com.apiguave.picture_data.extensions
 
 import android.content.ContentResolver
 import android.content.Context

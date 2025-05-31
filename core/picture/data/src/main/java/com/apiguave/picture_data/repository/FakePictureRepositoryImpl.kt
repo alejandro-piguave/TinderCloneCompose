@@ -2,7 +2,7 @@ package com.apiguave.picture_data.repository
 
 import android.content.Context
 import com.apiguave.picture_data.R
-import com.apiguave.picture_data.source.extensions.resourceUri
+import com.apiguave.picture_data.extensions.resourceUri
 import com.apiguave.picture_domain.repository.PictureRepository
 import kotlinx.coroutines.delay
 import kotlin.random.Random
