@@ -1,12 +1,12 @@
-package com.apiguave.match_data.source
+package com.apiguave.match_data.repository
 
-import com.apiguave.match_data.repository.MatchRemoteDataSource
 import com.apiguave.match_domain.model.Match
 import com.apiguave.match_domain.model.MatchProfile
+import com.apiguave.match_domain.repository.MatchRepository
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
-class MatchRemoteDataSourceMockImpl : MatchRemoteDataSource {
+class FakeMatchRepositoryImpl: MatchRepository {
     private val matchList = listOf(
         Match(
             "1",
@@ -75,7 +75,6 @@ class MatchRemoteDataSourceMockImpl : MatchRemoteDataSource {
             "Hey!"
         )
     )
-
     override suspend fun getMatches(): List<Match> {
         delay(1000)
         return matchList

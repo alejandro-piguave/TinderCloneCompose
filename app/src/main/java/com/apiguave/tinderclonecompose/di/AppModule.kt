@@ -2,8 +2,8 @@ package com.apiguave.tinderclonecompose.di
 
 import com.apiguave.auth_data.di.authDataMode
 import com.apiguave.auth_data.di.fakeAuthDataModule
-import com.apiguave.match_data.di.dataMatchModule
-import com.apiguave.match_data.di.mockDataMatchModule
+import com.apiguave.match_data.di.matchDataModule
+import com.apiguave.match_data.di.fakeMatchDataModule
 import com.apiguave.message_data.di.dataMessageModule
 import com.apiguave.message_data.di.mockDataMessageModule
 import com.apiguave.picture_data.di.dataPictureModule
@@ -39,13 +39,13 @@ val appModule = module {
 
     if(BuildConfig.BUILD_TYPE == "mock") {
         includes(fakeAuthDataModule)
-        includes(mockDataMatchModule)
+        includes(fakeMatchDataModule)
         includes(mockDataMessageModule)
         includes(mockDataPictureModule)
         includes(mockDataProfileModule)
     } else {
         includes(authDataMode)
-        includes(dataMatchModule)
+        includes(matchDataModule)
         includes(dataMessageModule)
         includes(dataPictureModule)
         includes(dataProfileModule)
