@@ -2,9 +2,8 @@ package com.apiguave.auth_data.repository
 
 import com.apiguave.auth_domain.model.Account
 import com.apiguave.auth_domain.repository.AuthRepository
-import com.apiguave.auth_data.repository.exception.SignInException
-import com.apiguave.auth_data.repository.exception.SignUpException
-import com.apiguave.auth_data.source.AuthFirebaseDataSource
+import com.apiguave.auth_data.exception.SignInException
+import com.apiguave.auth_data.exception.SignUpException
 
 class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthFirebaseDataSource

@@ -1,4 +1,4 @@
-package com.apiguave.auth_data.source
+package com.apiguave.auth_data.repository
 
 import com.apiguave.auth_domain.model.Account
 import com.apiguave.core_firebase.AuthApi

@@ -1,3 +1,3 @@
-package com.apiguave.auth_data.repository.exception
+package com.apiguave.auth_data.exception
 
 class SignUpException(message: String): Exception(message)
