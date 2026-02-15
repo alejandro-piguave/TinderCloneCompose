@@ -18,7 +18,7 @@ class SplashViewModel(
     private val _event = Channel<StartDestination>()
     val eventFlow = _event.receiveAsFlow()
 
-    private val _state = MutableStateFlow<SplashViewState>(SplashViewState.Loading)
+    private val _state = MutableStateFlow<SplashUiState>(SplashUiState.Loading)
     val state = _state.asStateFlow()
 
     init {
@@ -26,18 +26,13 @@ class SplashViewModel(
     }
 
     fun resolveStartDestination() {
-        _state.update { SplashViewState.Loading }
+        _state.update { SplashUiState.Loading }
         viewModelScope.launch {
             resolveStartDestinationUseCase().onSuccess { result ->
                 _event.send(result)
             }.onFailure {
-                _state.update { SplashViewState.Error }
+                _state.update { SplashUiState.Error }
             }
         }
     }
-}
-
-sealed class SplashViewState {
-    data object Loading: SplashViewState()
-    data object Error: SplashViewState()
 }

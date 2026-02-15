@@ -1,35 +1,86 @@
 package com.apiguave.onboarding_ui.splash
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
-import com.apiguave.onboarding_domain.StartDestination
-import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.apiguave.core_ui.theme.Orange
+import com.apiguave.core_ui.theme.Pink
+import com.apiguave.core_ui.theme.TinderCloneComposeTheme
+import com.apiguave.onboarding_ui.components.AnimatedLogo
+import com.apiguave.onboarding_ui.R
 
 @Composable
-fun SplashScreen(
-    onNavigateToCreateProfile: () -> Unit,
-    onNavigateToSignIn: () -> Unit,
-    onNavigateToHome: () -> Unit) {
-    val viewModel: SplashViewModel = koinViewModel()
-    val state by viewModel.state.collectAsState()
+fun SplashScreen(state: SplashUiState, onTryAgainClick: () -> Unit = {}) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Pink,
+                        Orange
+                    )
+                )
+            ),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.eventFlow.collect {
-                when(it) {
-                    StartDestination.SignIn -> onNavigateToSignIn()
-                    StartDestination.CreateProfile -> onNavigateToCreateProfile()
-                    StartDestination.Home -> onNavigateToHome()
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        when(state) {
+            SplashUiState.Loading -> {
+                AnimatedLogo(modifier = Modifier
+                    .fillMaxWidth(.4f)
+                    .padding(bottom = 8.dp), isAnimating = true
+                )
+            }
+
+            SplashUiState.Error -> {
+                Column(Modifier.padding(horizontal = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        tint = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(stringResource(id = R.string.splash_screen_error_message), textAlign = TextAlign.Center, color = Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = onTryAgainClick) {
+                        Text(stringResource(id = R.string.try_again))
+                    }
                 }
             }
-         }
-    }
+        }
 
-    SplashView(state, onTryAgainClick = { viewModel.resolveStartDestination() })
+        Spacer(modifier = Modifier.weight(1f))
+    }
+}
+
+@Preview
+@Composable
+fun SplashScreenPreview() {
+    TinderCloneComposeTheme {
+        SplashScreen(SplashUiState.Error)
+    }
 }
