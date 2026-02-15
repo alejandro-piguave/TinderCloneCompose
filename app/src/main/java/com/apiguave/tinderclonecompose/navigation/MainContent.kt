@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.apiguave.onboarding_ui.create_profile.CreateProfileScreen
 import com.apiguave.core_ui.theme.TinderCloneComposeTheme
 import com.apiguave.onboarding_ui.login.LoginScreen
-import com.apiguave.onboarding_ui.splash.SplashRoute
+import com.apiguave.onboarding_ui.splash.SplashScreen
 import com.apiguave.home_ui.HomeScreen
 import com.apiguave.chat_ui.chat.ChatScreen
 import com.apiguave.chat_ui.chat.ChatViewModel
@@ -27,7 +27,7 @@ fun NavigationGraph() {
         val chatViewModel: ChatViewModel = getViewModel()
         NavHost(navController = navController, startDestination = Routes.Splash) {
             animatedComposable(Routes.Splash) {
-                SplashRoute(
+                SplashScreen(
                    onNavigateToHome = {
                        navController.navigate(Routes.Home){
                            popUpTo(Routes.Splash){
